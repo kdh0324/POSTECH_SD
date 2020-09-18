@@ -7,32 +7,40 @@ package edu.postech.csed332.homework1;
  * The balance should always be greater than or equal to 1000.
  */
 class HighInterestAccount implements Account {
-    //TODO implement this
+    String owner;
+    double balance;
+    int accountNumber;
+
+    HighInterestAccount(String _owner, double _balance, int _accountNumber) {
+        owner = _owner;
+        balance = _balance;
+        accountNumber = _accountNumber;
+    }
 
     public int getAccountNumber() {
-        //TODO implement this
-        return 0;
+        return accountNumber;
     }
 
     public double getBalance() {
-        //TODO implement this
-        return 0;
+        return balance;
     }
 
     public String getOwner() {
-        //TODO implement this
-        return null;
+        return owner;
     }
 
     public void updateBalance(int elapsedDate) {
-        //TODO implement this
+        for (int i = 0; i < elapsedDate; i++)
+            balance *= 1.01;
     }
 
     public void deposit(double amount) {
-        //TODO implement this
+        balance += amount;
     }
 
     public void withdraw(double amount) throws IllegalOperationException {
-        //TODO implement this
+        if (amount > balance)
+            throw new IllegalOperationException("You account has less money than a money you request.");
+        balance -= amount;
     }
 }

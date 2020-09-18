@@ -1,7 +1,7 @@
 package edu.postech.csed332.homework1;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Bank manages a collection of accounts. An account number is assigned
@@ -10,14 +10,14 @@ import java.util.Map;
  */
 public class Bank {
 
-    // TODO: add more fields to implement this class
-    // (hint: use Java Collection Framework, including List, Map, Set, etc.)
+    List<Account> accountList;
+    private int accountNumber = 100000;
 
     /**
      * Create a bank. Initially, there is no account.
      */
     Bank() {
-        // TODO implement this
+        accountList = new ArrayList<>();
     }
 
     /**
@@ -27,7 +27,9 @@ public class Bank {
      * @return the account with number accNum; null if no such account exists
      */
     Account findAccount(int accNum) {
-        // TODO implement this
+        for (Account account : accountList)
+            if (account.getAccountNumber() == accNum)
+                return account;
         return null;
     }
 
@@ -37,9 +39,14 @@ public class Bank {
      * @param name owner's name
      * @return a list of accounts sorted in ascending order by account number
      */
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     List<Account> findAccountByName(String name) {
-        // TODO implement this
-        return null;
+        List<Account> test = new ArrayList<>();
+        for (Account account : accountList)
+            if (account.getOwner().equals(name))
+                test.add(account);
+
+        return test;
     }
 
     /**
@@ -51,8 +58,15 @@ public class Bank {
      * @return the newly created account; null if not possible
      */
     Account createAccount(String name, ACCTYPE accType, double initial) {
-        // TODO implement this
-        return null;
+        Account account = null;
+        if (accType == ACCTYPE.HIGH) {
+            if (initial < 1000)
+                return null;
+            account = new HighInterestAccount(name, initial, accountNumber++);
+        } else if (accType == ACCTYPE.LOW)
+            account = new LowInterestAccount(name, initial, accountNumber++);
+        accountList.add(account);
+        return account;
     }
 
     /**
@@ -64,6 +78,7 @@ public class Bank {
      * @throws IllegalOperationException if not possible
      */
     void transfer(Account src, Account dst, double amount) throws IllegalOperationException {
-        // TODO implement this
+        src.withdraw(amount);
+        dst.deposit(amount);
     }
 }
