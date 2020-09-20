@@ -23,9 +23,6 @@ public class MobClass implements Monster {
         else
             dirs = new int[][]{{1, 0}, {0, -1}, {0, 1}, {-1, 0}};
 
-        if (pos.getX() == board.getGoalPosition().getX())
-            return pos.getRelativePosition(dirs[1][0], dirs[1][1]);
-
         for (int i = 0; i < 4; i++) {
             int[] dir = dirs[i];
             Position relativePos = pos.getRelativePosition(dir[0], dir[1]);
