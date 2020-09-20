@@ -1,6 +1,7 @@
 package edu.postech.csed332.homework1;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A game board contains a set of units and a goal position. A game consists
@@ -12,7 +13,6 @@ import java.util.*;
  * (b) Different ground units cannot be on the same tile.
  * (c) Different air units cannot be on the same tile.
  * <p>
- * TODO: implements all the unimplemented methods (marked with TODO)
  * NOTE: do not modify the signature of public methods (which will be
  * used for GUI and grading). But you can feel free to add new fields
  * or new private methods if needed.
@@ -21,7 +21,10 @@ public class GameBoard {
     private final Position goal;
     private final int width, height;
 
-    // TODO: add more fields to implement this class
+    private Set<Monster> monsters;
+    private Set<Tower> towers;
+    private int killed = 0;
+    private int escaped = 0;
 
     /**
      * Creates a game board with a given width and height. The goal position
@@ -35,7 +38,8 @@ public class GameBoard {
         this.height = height;
         goal = new Position(width - 1, height / 2);
 
-        // TODO: add more lines if needed.
+        monsters = new HashSet<>();
+        towers = new HashSet<>();
     }
 
     /**
@@ -45,8 +49,30 @@ public class GameBoard {
      * @param p   the position of obj
      * @throws IllegalArgumentException if p is outside the bounds of the board.
      */
-    public void placeUnit(Unit obj, Position p) {
-        // TODO: implement this
+    public void placeUnit(Unit obj, Position p) throws IllegalArgumentException {
+        if (isOut(p))
+            throw new IllegalArgumentException();
+
+        if (obj instanceof Tower) {
+            towers.add((Tower) obj);
+            if (obj.isGround())
+                ((GroundTower) obj).setPos(p);
+            else
+                ((AirTower) obj).setPos(p);
+        } else {
+            monsters.add((Monster) obj);
+            if (obj.isGround())
+                ((GroundMob) obj).setPos(p);
+            else
+                ((AirMob) obj).setPos(p);
+        }
+
+        if (!isValid()) {
+            if (obj instanceof Tower)
+                towers.remove(obj);
+            else
+                monsters.remove(obj);
+        }
     }
 
     /**
@@ -54,7 +80,12 @@ public class GameBoard {
      * for game statistics are reset to 0.
      */
     public void clear() {
-        // TODO: implement this
+        monsters = null;
+        monsters = new HashSet<>();
+        towers = null;
+        towers = new HashSet<>();
+        killed = 0;
+        escaped = 0;
     }
 
     /**
@@ -65,8 +96,16 @@ public class GameBoard {
      * @return the set of units at position p
      */
     public Set<Unit> getUnitsAt(Position p) {
-        // TODO: implement this
-        return Collections.emptySet();
+        Set<Unit> units = new HashSet<>();
+
+        for (Monster monster : monsters)
+            if (monster.getPosition().getDistance(p) == 0)
+                units.add(monster);
+        for (Tower tower : towers)
+            if (tower.getPosition().getDistance(p) == 0)
+                units.add(tower);
+
+        return units;
     }
 
     /**
@@ -75,8 +114,7 @@ public class GameBoard {
      * @return the set of all monsters
      */
     public Set<Monster> getMonsters() {
-        // TODO: implement this
-        return Collections.emptySet();
+        return monsters;
     }
 
     /**
@@ -85,8 +123,7 @@ public class GameBoard {
      * @return the set of all towers
      */
     public Set<Tower> getTowers() {
-        // TODO: implement this
-        return Collections.emptySet();
+        return towers;
     }
 
     /**
@@ -96,8 +133,7 @@ public class GameBoard {
      * @return the position of obj
      */
     public Position getPosition(Unit obj) {
-        // TODO: implement this
-        return null;
+        return obj.getPosition();
     }
 
     /**
@@ -106,8 +142,25 @@ public class GameBoard {
      * (2) Each tower attacks nearby remaining monsters (using the attack method).
      * (3) All remaining monsters (neither escaped nor attacked) moves (using the goal method).
      */
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     public void step() {
-        // TODO: implement this
+        Set<Monster> removed = new HashSet<>();
+        for (Monster monster : monsters) {
+            Position pos = monster.move();
+            if (pos == null)
+                removed.add(monster);
+            else if (pos.equals(goal)) {
+                removed.add(monster);
+                escaped++;
+            } else
+                ((MobClass) monster).setPos(pos);
+        }
+        monsters.removeAll(removed);
+        for (Tower tower : towers) {
+            Set<Monster> attacked = tower.attack();
+            monsters.removeAll(attacked);
+            killed += attacked.size();
+        }
     }
 
     /**
@@ -119,8 +172,49 @@ public class GameBoard {
      * @return true if there is no problem. false otherwise.
      */
     public boolean isValid() {
-        // TODO: implement this
-        return false;
+        Set<Position> positions = new HashSet<>();
+
+        for (Monster monster : monsters) {
+            Position pos = monster.getPosition();
+            if (isOut(pos)) {
+                System.out.println("Out mob");
+                return false;
+            }
+
+            if (positions.contains(pos)) {
+                Set<Unit> units = getUnitsAt(pos);
+                for (Unit unit : units)
+                    if (!unit.equals(monster) && unit.isGround() == monster.isGround()) {
+                        System.out.println("Same type mob");
+                        return false;
+                    }
+            }
+            positions.add(pos);
+        }
+        for (Tower tower : towers) {
+            Position pos = tower.getPosition();
+            if (isOut(pos)) {
+                System.out.println("Out tower");
+                return false;
+            }
+
+            if (positions.contains(pos)) {
+                Set<Unit> units = getUnitsAt(pos);
+                for (Unit unit : units)
+                    if (!unit.equals(tower) && unit.isGround() == tower.isGround()) {
+                        System.out.println("Same type tower");
+                        return false;
+                    }
+            }
+            positions.add(pos);
+        }
+        return true;
+    }
+
+    public boolean isOut(Position p) {
+        int x = p.getX();
+        int y = p.getY();
+        return 0 > x || x >= width || 0 > y || y >= height;
     }
 
     /**
@@ -129,8 +223,7 @@ public class GameBoard {
      * @return the number of the monsters
      */
     public int getNumMobs() {
-        // TODO: implement this
-        return 0;
+        return monsters.size();
     }
 
     /**
@@ -139,8 +232,7 @@ public class GameBoard {
      * @return the number of the towers
      */
     public int getNumTowers() {
-        // TODO: implement this
-        return 0;
+        return towers.size();
     }
 
     /**
@@ -150,8 +242,7 @@ public class GameBoard {
      * @return the number of the monsters removed
      */
     public int getNumMobsKilled() {
-        // TODO: implement this
-        return 0;
+        return killed;
     }
 
     /**
@@ -161,8 +252,7 @@ public class GameBoard {
      * @return the number of the monsters escaped
      */
     public int getNumMobsEscaped() {
-        // TODO: implement this
-        return 0;
+        return escaped;
     }
 
     /**
