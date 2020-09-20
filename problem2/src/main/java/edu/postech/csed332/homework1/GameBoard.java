@@ -149,7 +149,6 @@ public class GameBoard {
      * (2) Each tower attacks nearby remaining monsters (using the attack method).
      * (3) All remaining monsters (neither escaped nor attacked) moves (using the goal method).
      */
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     public void step() {
         Set<Monster> removed = new HashSet<>();
         for (Monster monster : monsters) {

@@ -13,7 +13,6 @@ public abstract class TowerClass implements Tower {
         this.board = board;
     }
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Override
     public Set<Monster> attack() {
         Set<Monster> monsters = board.getMonsters();

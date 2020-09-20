@@ -1,16 +1,20 @@
 package edu.postech.csed332.homework1;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public abstract class MobClass implements Monster {
 
-    protected final GameBoard board;
-    protected Position pos;
+    private final GameBoard board;
     protected boolean isGround;
+    private Position pos;
+    private final Set<Position> positionSet;
+    private int check = 0;
 
     public MobClass(GameBoard board) {
         this.board = board;
+        positionSet = new HashSet<>();
     }
 
     @Override
@@ -52,8 +56,11 @@ public abstract class MobClass implements Monster {
                 if (flag)
                     break;
             }
-            if (!flag)
+            if (!flag) {
+                if (positionSet.contains(relativePos)) check++;
+                if (check > 1) return null;
                 return relativePos;
+            }
             flag = false;
         }
 
@@ -77,5 +84,6 @@ public abstract class MobClass implements Monster {
 
     public void setPos(Position p) {
         pos = p;
+        positionSet.add(p);
     }
 }
