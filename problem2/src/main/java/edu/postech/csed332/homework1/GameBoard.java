@@ -26,6 +26,8 @@ public class GameBoard {
     private int killed = 0;
     private int escaped = 0;
 
+    private Set<Position> killedPos;
+
     /**
      * Creates a game board with a given width and height. The goal position
      * is set to the middle of the end column.
@@ -40,6 +42,7 @@ public class GameBoard {
 
         monsters = new HashSet<>();
         towers = new HashSet<>();
+        killedPos = new HashSet<>();
     }
 
     /**
@@ -86,6 +89,7 @@ public class GameBoard {
         towers = new HashSet<>();
         killed = 0;
         escaped = 0;
+        killedPos = new HashSet<>();
     }
 
     /**
@@ -147,8 +151,11 @@ public class GameBoard {
         Set<Monster> removed = new HashSet<>();
         for (Monster monster : monsters) {
             Position pos = monster.move();
-            if (pos == null)
+            if (pos == null) {
                 removed.add(monster);
+                killedPos.add(monster.getPosition());
+                killed++;
+            }
             else if (pos.equals(goal)) {
                 removed.add(monster);
                 escaped++;
@@ -280,5 +287,9 @@ public class GameBoard {
      */
     public Position getGoalPosition() {
         return goal;
+    }
+
+    public Set<Position> getKilledPos() {
+        return killedPos;
     }
 }

@@ -3,7 +3,7 @@ package edu.postech.csed332.homework1;
 import java.util.Iterator;
 import java.util.Set;
 
-public class MobClass implements Monster {
+public abstract class MobClass implements Monster {
 
     protected final GameBoard board;
     protected Position pos;
@@ -28,6 +28,8 @@ public class MobClass implements Monster {
             Position relativePos = pos.getRelativePosition(dir[0], dir[1]);
             if (board.isOut(relativePos))
                 continue;
+            if (board.getKilledPos().contains(relativePos))
+                continue;
 
             Set<Unit> units = board.getUnitsAt(relativePos);
             if (units.size() != 0) {
@@ -43,7 +45,7 @@ public class MobClass implements Monster {
                 if (nextUnits.size() == 0)
                     continue;
                 for (Unit unit : nextUnits)
-                    if (!unit.equals(this) && unit instanceof Tower && unit.isGround() == isGround) {
+                    if (unit instanceof TowerClass && unit.isGround() == isGround) {
                         flag = true;
                         break;
                     }
