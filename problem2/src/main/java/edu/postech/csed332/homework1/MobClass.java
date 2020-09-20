@@ -28,7 +28,7 @@ public abstract class MobClass implements Monster {
             Position relativePos = pos.getRelativePosition(dir[0], dir[1]);
             if (board.isOut(relativePos))
                 continue;
-            if (board.getKilledPos().contains(relativePos))
+            if (board.getKilledPos(isGround).contains(relativePos))
                 continue;
 
             Set<Unit> units = board.getUnitsAt(relativePos);
@@ -54,6 +54,7 @@ public abstract class MobClass implements Monster {
             }
             if (!flag)
                 return relativePos;
+            flag = false;
         }
 
         return null;

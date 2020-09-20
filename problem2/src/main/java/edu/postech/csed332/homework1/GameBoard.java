@@ -26,7 +26,8 @@ public class GameBoard {
     private int killed = 0;
     private int escaped = 0;
 
-    private Set<Position> killedPos;
+    private Set<Position> groundKilledPos;
+    private Set<Position> airKilledPos;
 
     /**
      * Creates a game board with a given width and height. The goal position
@@ -42,7 +43,8 @@ public class GameBoard {
 
         monsters = new HashSet<>();
         towers = new HashSet<>();
-        killedPos = new HashSet<>();
+        groundKilledPos = new HashSet<>();
+        airKilledPos = new HashSet<>();
     }
 
     /**
@@ -89,7 +91,8 @@ public class GameBoard {
         towers = new HashSet<>();
         killed = 0;
         escaped = 0;
-        killedPos = new HashSet<>();
+        groundKilledPos = new HashSet<>();
+        airKilledPos = new HashSet<>();
     }
 
     /**
@@ -153,7 +156,10 @@ public class GameBoard {
             Position pos = monster.move();
             if (pos == null) {
                 removed.add(monster);
-                killedPos.add(monster.getPosition());
+                if (monster.isGround())
+                    groundKilledPos.add(monster.getPosition());
+                else
+                    airKilledPos.add(monster.getPosition());
                 killed++;
             }
             else if (pos.equals(goal)) {
@@ -165,6 +171,12 @@ public class GameBoard {
         monsters.removeAll(removed);
         for (Tower tower : towers) {
             Set<Monster> attacked = tower.attack();
+            for (Monster monster : attacked) {
+                if (monster.isGround())
+                    groundKilledPos.add(monster.getPosition());
+                else
+                    airKilledPos.add(monster.getPosition());
+            }
             monsters.removeAll(attacked);
             killed += attacked.size();
         }
@@ -183,35 +195,27 @@ public class GameBoard {
 
         for (Monster monster : monsters) {
             Position pos = monster.getPosition();
-            if (isOut(pos)) {
-                System.out.println("Out mob");
+            if (isOut(pos))
                 return false;
-            }
 
             if (positions.contains(pos)) {
                 Set<Unit> units = getUnitsAt(pos);
                 for (Unit unit : units)
-                    if (!unit.equals(monster) && unit.isGround() == monster.isGround()) {
-                        System.out.println("Same type mob");
+                    if (!unit.equals(monster) && unit.isGround() == monster.isGround())
                         return false;
-                    }
             }
             positions.add(pos);
         }
         for (Tower tower : towers) {
             Position pos = tower.getPosition();
-            if (isOut(pos)) {
-                System.out.println("Out tower");
+            if (isOut(pos))
                 return false;
-            }
 
             if (positions.contains(pos)) {
                 Set<Unit> units = getUnitsAt(pos);
                 for (Unit unit : units)
-                    if (!unit.equals(tower) && unit.isGround() == tower.isGround()) {
-                        System.out.println("Same type tower");
+                    if (!unit.equals(tower) && unit.isGround() == tower.isGround())
                         return false;
-                    }
             }
             positions.add(pos);
         }
@@ -289,7 +293,9 @@ public class GameBoard {
         return goal;
     }
 
-    public Set<Position> getKilledPos() {
-        return killedPos;
+    public Set<Position> getKilledPos(boolean isGround) {
+        if (isGround)
+            return groundKilledPos;
+        return airKilledPos;
     }
 }
