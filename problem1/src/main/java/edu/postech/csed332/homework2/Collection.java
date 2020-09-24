@@ -71,14 +71,10 @@ public final class Collection extends Element {
 
         return stringer
                 .array()
-                    .object()
-                        .key(JsonKey.NAME)
-                        .value(name)
-                    .endObject()
-                    .object()
-                        .key(JsonKey.COLLECTION)
-                        .value(array)
-                    .endObject()
+                    .key(JsonKey.NAME)
+                    .value(name)
+                    .key(JsonKey.COLLECTION)
+                    .value(array)
                 .endArray().toString();
     }
 
