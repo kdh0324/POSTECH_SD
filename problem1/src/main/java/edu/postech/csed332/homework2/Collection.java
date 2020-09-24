@@ -30,6 +30,16 @@ public final class Collection extends Element {
         setParentCollection(null);
     }
 
+    public Collection(JSONArray jsonArray, Collection parent) {
+        name = jsonArray.getJSONObject(0).getString(JsonKey.NAME);
+        elements = new ArrayList<>();
+        for (int i = 1; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            elements.add(new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION), this));
+        }
+        setParentCollection(parent);
+    }
+
     /**
      * Restores a collection from its string representation in JSON
      *
@@ -71,10 +81,14 @@ public final class Collection extends Element {
 
         return stringer
                 .array()
-                    .key(JsonKey.NAME)
-                    .value(name)
-                    .key(JsonKey.COLLECTION)
-                    .value(array)
+                    .object()
+                        .key(JsonKey.NAME)
+                        .value(name)
+                    .endObject()
+                    .object()
+                        .key(JsonKey.COLLECTION)
+                        .value(array)
+                    .endObject()
                 .endArray().toString();
     }
 
