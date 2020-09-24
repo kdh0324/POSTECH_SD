@@ -8,14 +8,37 @@ import java.util.Arrays;
 public class BookTest {
 
     @Test
-    public void testGetTitle() {
+    public void testBookConstructor() {
         Book book = new Book("Unit Testing", Arrays.asList("Name 1", "Name 2"));
         Assertions.assertEquals(book.getTitle(), "Unit Testing");
+        Assertions.assertEquals(book.getAuthors(), Arrays.asList("Name 1", "Name 2"));
+
+        String str = "{\"title\" : \"UnitTesting\", \"authors\" : [\"Name 1\", \"Name 2\"]}";
+        Book jsonBook = new Book(str);
+        Assertions.assertEquals(jsonBook.getTitle(), "UnitTesting");
+        Assertions.assertEquals(jsonBook.getAuthors(), Arrays.asList("Name 1", "Name 2"));
     }
 
-    /*
-     * TODO: add  test methods to achieve at least 80% statement coverage of Book.
-     * Each test method should have appropriate JUnit assertions to test a single behavior
-     * of the class. You should not add arbitrary code to test methods to just increase coverage.
-     */
+    @Test
+    public void testGetStringRepresentation() {
+        Book book = new Book("Unit Testing", Arrays.asList("Name 1", "Name 2"));
+        String str = "{\"title\":\"Unit Testing\",\"authors\":[\"Name 1\",\"Name 2\"]}";
+        Assertions.assertEquals(book.getStringRepresentation(), str);
+    }
+
+    @Test
+    public void testGetContainingCollections() {
+        Book book = new Book("Unit Testing", Arrays.asList("Name 1", "Name 2"));
+        Collection col1 = new Collection("Test Collection1");
+        Collection col1_1 = new Collection("Test Collection1_1");
+        Collection col1_2 = new Collection("Test Collection1_2");
+        Collection col1_1_1 = new Collection("Test Collection1_1_1");
+
+        col1.addElement(col1_1);
+        col1.addElement(col1_2);
+        col1_1.addElement(col1_1_1);
+        col1_1_1.addElement(book);
+
+        Assertions.assertEquals(book.getContainingCollections(), Arrays.asList(col1_1_1, col1_1, col1));
+    }
 }
