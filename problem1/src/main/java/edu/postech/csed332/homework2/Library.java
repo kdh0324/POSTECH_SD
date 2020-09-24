@@ -94,6 +94,8 @@ public final class Library {
         Set<Book> bookSet = new HashSet<>();
         for (Collection col : collections)
             bookSet.addAll(col.getBooksByCollection(collection));
+        if (bookSet.size() == 0)
+            return null;
         return bookSet;
     }
 
