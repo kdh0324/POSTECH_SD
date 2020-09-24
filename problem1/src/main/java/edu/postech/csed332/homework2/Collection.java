@@ -1,6 +1,13 @@
 package edu.postech.csed332.homework2;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The Collection class represents a single collection, which contains
@@ -9,8 +16,8 @@ import java.util.List;
  * also be exported to and imported from a JSON string representation.
  */
 public final class Collection extends Element {
-    private List<Element> elements;
-    private String name;
+    private final List<Element> elements;
+    private final String name;
 
     /**
      * Creates a new collection with the given name.
@@ -19,7 +26,8 @@ public final class Collection extends Element {
      */
     public Collection(String name) {
         this.name = name;
-        // TODO write more code if necessary
+        elements = new ArrayList<>();
+        setParentCollection(null);
     }
 
     /**
@@ -28,8 +36,20 @@ public final class Collection extends Element {
      * @param stringRepr the string representation
      */
     public static Collection restoreCollection(String stringRepr) {
-        // TODO implement this
-        return null;
+        JSONObject jo = new JSONObject(stringRepr);
+
+        String name = jo.getString(JsonKey.NAME);
+        Collection collection = new Collection(name);
+        JSONArray elements = jo.getJSONArray(JsonKey.COLLECTION);
+
+        for (int i = 0; i < elements.length(); i++) {
+            JSONObject jsonObject = elements.getJSONObject(i);
+            if (jsonObject.has(JsonKey.TITLE))
+                collection.addElement(new Book(jsonObject.toString()));
+            else
+                collection.addElement(restoreCollection(jsonObject.toString()));
+        }
+        return collection;
     }
 
     /**
@@ -40,8 +60,51 @@ public final class Collection extends Element {
      * @return string representation of this collection
      */
     public String getStringRepresentation() {
-        // TODO implement this
-        return null;
+        JSONStringer stringer = new JSONStringer();
+        JSONArray array = new JSONArray();
+        for (Element element : elements) {
+            if (element instanceof Book)
+                array.put(new JSONObject(((Book) element).getStringRepresentation()));
+            else
+                array.put(new JSONObject(((Collection) element).getStringRepresentation()));
+        }
+
+        return stringer
+                .array()
+                    .object()
+                        .key(JsonKey.NAME)
+                        .value(name)
+                    .endObject()
+                    .object()
+                        .key(JsonKey.COLLECTION)
+                        .value(array)
+                    .endObject()
+                .endArray().toString();
+    }
+
+    public Set<Book> getBooksByCollection(String collection) {
+        Set<Book> bookSet = new HashSet<>();
+        boolean flag = false;
+        if (name.equals(collection))
+            flag = true;
+        for (Element element : elements) {
+            if (flag && element instanceof Book)
+                bookSet.add((Book) element);
+            if (element instanceof Collection)
+                bookSet.addAll(((Collection) element).getBooksByCollection(collection));
+        }
+        return bookSet;
+    }
+
+    public Set<Book> getBooksByAuthor(String author) {
+        Set<Book> bookSet = new HashSet<>();
+        for (Element element : elements) {
+            if (element instanceof Book && ((Book) element).getAuthors().contains(author))
+                bookSet.add((Book) element);
+            if (element instanceof Collection)
+                bookSet.addAll(((Collection) element).getBooksByAuthor(author));
+        }
+        return bookSet;
     }
 
     /**
@@ -53,8 +116,13 @@ public final class Collection extends Element {
      * @return true on success, false on fail
      */
     public boolean addElement(Element element) {
-        // TODO implement this
-        return false;
+        try {
+            element.setParentCollection(this);
+            elements.add(element);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     /**
@@ -66,8 +134,13 @@ public final class Collection extends Element {
      * @return true on success, false on fail
      */
     public boolean deleteElement(Element element) {
-        // TODO implement this
-        return false;
+        try {
+            element.setParentCollection(null);
+            elements.remove(element);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     /**

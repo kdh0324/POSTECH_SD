@@ -4,5 +4,5 @@ final class JsonKey {
     static final String TITLE = "title";
     static final String AUTHORS = "authors";
     static final String NAME = "name";
-    static final String ELEMENTS = "elements";
+    static final String COLLECTION = "collection";
 }
