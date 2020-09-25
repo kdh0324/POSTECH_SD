@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Element.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">Element.java</span></div><h1>Element.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework2;
+
+/**
+ * The Element class is the superclass of both Book and Collection.
+ * It contains a reference to the parent collection that directly
+ * contains this element.
+ * &lt;p&gt;
+ * An element can directly belong to at most one parent collection,
+ * but that collection can belong to other collections. Therefore,
+ * an element can indirectly belong to several collections.
+ * &lt;p&gt;
+ * However, no collection can (even indirectly) belong to itself.
+ * The graph of connections along parentCollection should be acyclic.
+ * It is optional for your library code to enforce this constraint.
+ * &lt;p&gt;
+ * NOTE: do not modify the Element class.
+ */
+<span class="fc" id="L18">public abstract class Element {</span>
+    private Collection parentCollection;
+
+    /**
+     * Get the parent collection of this element.
+     *
+     * @return parent collection
+     */
+    public Collection getParentCollection() {
+<span class="fc" id="L27">        return parentCollection;</span>
+    }
+
+    /**
+     * Set the parent collection for this element.
+     *
+     * @param collection collection to be set as parent
+     */
+    public void setParentCollection(Collection collection) {
+<span class="fc" id="L36">        parentCollection = collection;</span>
+<span class="fc" id="L37">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
