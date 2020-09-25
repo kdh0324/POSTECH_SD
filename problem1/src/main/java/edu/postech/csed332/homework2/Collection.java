@@ -107,10 +107,8 @@ public final class Collection extends Element {
     public Set<Book> getBooksByCollection(String collection) {
         Set<Book> bookSet = new HashSet<>();
         boolean flag = false;
-        if (name.equals(collection))
-            flag = true;
         for (Element element : elements) {
-            if (flag && element instanceof Book)
+            if (element instanceof Book)
                 bookSet.add((Book) element);
             if (element instanceof Collection)
                 bookSet.addAll(((Collection) element).getBooksByCollection(collection));

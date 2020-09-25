@@ -8,14 +8,22 @@ import java.util.Arrays;
 public class BookTest {
 
     @Test
-    public void testBookConstructor() {
+    public void testGetTitle() {
         Book book = new Book("Unit Testing", Arrays.asList("Name 1", "Name 2"));
         Assertions.assertEquals(book.getTitle(), "Unit Testing");
-        Assertions.assertEquals(book.getAuthors(), Arrays.asList("Name 1", "Name 2"));
 
         String str = "{\"title\" : \"UnitTesting\", \"authors\" : [\"Name 1\", \"Name 2\"]}";
         Book jsonBook = new Book(str);
         Assertions.assertEquals(jsonBook.getTitle(), "UnitTesting");
+    }
+
+    @Test
+    public void testGetAuthors() {
+        Book book = new Book("Unit Testing", Arrays.asList("Name 1", "Name 2"));
+        Assertions.assertEquals(book.getAuthors(), Arrays.asList("Name 1", "Name 2"));
+
+        String str = "{\"title\" : \"UnitTesting\", \"authors\" : [\"Name 1\", \"Name 2\"]}";
+        Book jsonBook = new Book(str);
         Assertions.assertEquals(jsonBook.getAuthors(), Arrays.asList("Name 1", "Name 2"));
     }
 

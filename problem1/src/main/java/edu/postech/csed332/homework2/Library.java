@@ -2,7 +2,6 @@ package edu.postech.csed332.homework2;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,7 +40,8 @@ public final class Library {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 JSONArray collectionArray = jsonObject.getJSONArray(JsonKey.COLLECTION);
-                Collection collection = new Collection(collectionArray, null);
+                Collection collection = new Collection(collectionArray);
+                collection.setParentCollection(null);
                 collections.add(collection);
             }
         } catch (IOException e) {
@@ -55,18 +55,12 @@ public final class Library {
      * @param fileName the file where to save the library
      */
     public void saveLibraryToFile(String fileName) {
-        JSONStringer stringer = new JSONStringer();
-        stringer.array();
+        JSONArray jsonArray = new JSONArray();
         for (Collection collection : collections)
-            stringer
-                .object()
-                    .key(JsonKey.COLLECTION)
-                    .value(new JSONArray(collection.getStringRepresentation()))
-                .endObject();
-        stringer.endArray();
+            jsonArray.put(new JSONObject(collection.getStringRepresentation()));
 
         try (FileWriter fileWriter = new FileWriter(fileName)) {
-            fileWriter.write(stringer.toString());
+            fileWriter.write(jsonArray.toString());
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,6 +106,8 @@ public final class Library {
         Set<Book> bookSet = new HashSet<>();
         for (Collection col : collections)
             bookSet.addAll(col.getBooksByAuthor(author));
+        if (bookSet.size() == 0)
+            return null;
         return bookSet;
     }
 
