@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="edu.postech.csed332.homework2.BookTest" time="0.14" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="edu.postech.csed332.homework2.BookTest" time="0.156" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="13"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="KR"/>
     <property name="sun.boot.library.path" value="C:\Program Files\JAVA\jdk-13\bin"/>
-    <property name="sun.java.command" value="C:\Users\kimda\AppData\Local\Temp\surefire9763031207149207880\surefirebooter4492824327124197361.jar C:\Users\kimda\AppData\Local\Temp\surefire9763031207149207880 2020-09-26T03-05-20_381-jvmRun1 surefire11414118285793534571tmp surefire_016981768398601316267tmp"/>
+    <property name="sun.java.command" value="C:\Users\kimda\AppData\Local\Temp\surefire15264107620648685211\surefirebooter10253429200424638703.jar C:\Users\kimda\AppData\Local\Temp\surefire15264107620648685211 2020-09-26T03-42-53_101-jvmRun1 surefire5118065251157486463tmp surefire_017166077182576700519tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="D:\Desktop\POSTECH\CSE\SD\HW\homework2\problem1\target\test-classes;D:\Desktop\POSTECH\CSE\SD\HW\homework2\problem1\target\classes;C:\Users\kimda\.m2\repository\org\json\json\20190722\json-20190722.jar;C:\Users\kimda\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.6.2\junit-jupiter-api-5.6.2.jar;C:\Users\kimda\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\kimda\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\kimda\.m2\repository\org\junit\platform\junit-platform-commons\1.6.2\junit-platform-commons-1.6.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\kimda\AppData\Local\Temp\surefire9763031207149207880\surefirebooter4492824327124197361.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\kimda\AppData\Local\Temp\surefire15264107620648685211\surefirebooter10253429200424638703.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="13+33"/>
@@ -55,8 +55,8 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="57.0"/>
   </properties>
-  <testcase name="testGetTitle" classname="edu.postech.csed332.homework2.BookTest" time="0.102"/>
-  <testcase name="testGetAuthors" classname="edu.postech.csed332.homework2.BookTest" time="0.001"/>
-  <testcase name="testGetStringRepresentation" classname="edu.postech.csed332.homework2.BookTest" time="0.004"/>
+  <testcase name="testGetTitle" classname="edu.postech.csed332.homework2.BookTest" time="0.103"/>
+  <testcase name="testGetAuthors" classname="edu.postech.csed332.homework2.BookTest" time="0.002"/>
+  <testcase name="testGetStringRepresentation" classname="edu.postech.csed332.homework2.BookTest" time="0.005"/>
   <testcase name="testGetContainingCollections" classname="edu.postech.csed332.homework2.BookTest" time="0.001"/>
 </testsuite>
