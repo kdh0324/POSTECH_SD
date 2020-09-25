@@ -1,5 +1,11 @@
 package edu.postech.csed332.homework2;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +27,7 @@ public final class Book extends Element {
     public Book(String title, List<String> authors) {
         this.title = title;
         this.authors = authors;
-        // TODO write more code if necessary
+        setParentCollection(null);
     }
 
     /**
@@ -31,7 +37,16 @@ public final class Book extends Element {
      * @param stringRepr the JSON string representation
      */
     public Book(String stringRepr) {
-        // TODO implement this
+        try {
+            JSONObject jo = new JSONObject(stringRepr);
+            title = jo.getString(JsonKey.TITLE);
+            JSONArray authors = jo.getJSONArray(JsonKey.AUTHORS);
+            this.authors = new ArrayList<>();
+            for (int i = 0; i < authors.length(); i++)
+                this.authors.add(authors.getString(i));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -41,8 +56,12 @@ public final class Book extends Element {
      * @return the string representation
      */
     public String getStringRepresentation() {
-        // TODO implement this
-        return null;
+        JSONStringer stringer = new JSONStringer();
+        return stringer
+                .object()
+                    .key(JsonKey.TITLE).value(title)
+                    .key(JsonKey.AUTHORS).value(authors)
+                .endObject().toString();
     }
 
     /**
@@ -58,8 +77,13 @@ public final class Book extends Element {
      * @return the list of collections
      */
     public List<Collection> getContainingCollections() {
-        // TODO implement this
-        return null;
+        List<Collection> collections = new ArrayList<>();
+        Collection element = getParentCollection();
+        while (element != null) {
+            collections.add(element);
+            element = element.getParentCollection();
+        }
+        return collections;
     }
 
     /**

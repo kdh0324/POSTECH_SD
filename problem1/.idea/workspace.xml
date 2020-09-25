@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="8" />
+    <option name="CUSTOM_SCOPE_NAME" value="All Places" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
@@ -23,16 +27,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c36399f-70a3-43d5-8d18-364ed4f9ab0b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/postech/csed332/homework2/Collection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/postech/csed332/homework2/Collection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/postech/csed332/homework2/Library.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/postech/csed332/homework2/Library.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/postech/csed332/homework2/BookTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/postech/csed332/homework2/BookTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/postech/csed332/homework2/LibraryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/postech/csed332/homework2/LibraryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problem2/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../problem2/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problem2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../problem2/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -55,31 +75,100 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="aDefault" />
   </component>
-  <component name="RunManager" selected="JUnit.All in homework2 (1)">
-    <configuration name="All in homework2 (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="homework2" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+  <component name="RunManager" selected="JUnit.LibraryTest.testSaveLibraryToFile">
+    <configuration name="CollectionTest.testAddElementGetElements" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="problem1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.postech.csed332.homework2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.postech.csed332.homework2" />
+      <option name="MAIN_CLASS_NAME" value="edu.postech.csed332.homework2.CollectionTest" />
+      <option name="METHOD_NAME" value="testAddElementGetElements" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in homework2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="homework2" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+    <configuration name="CollectionTest.testRestoreCollection" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="problem1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.postech.csed332.homework2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.postech.csed332.homework2" />
+      <option name="MAIN_CLASS_NAME" value="edu.postech.csed332.homework2.CollectionTest" />
+      <option name="METHOD_NAME" value="testRestoreCollection" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LibraryTest.testFindBooksByAuthorsNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="problem1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.postech.csed332.homework2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.postech.csed332.homework2" />
+      <option name="MAIN_CLASS_NAME" value="edu.postech.csed332.homework2.LibraryTest" />
+      <option name="METHOD_NAME" value="testFindBooksByAuthorsNull" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LibraryTest.testLibraryFromFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="problem1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.postech.csed332.homework2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.postech.csed332.homework2" />
+      <option name="MAIN_CLASS_NAME" value="edu.postech.csed332.homework2.LibraryTest" />
+      <option name="METHOD_NAME" value="testLibraryFromFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LibraryTest.testSaveLibraryToFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="problem1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.postech.csed332.homework2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.postech.csed332.homework2" />
+      <option name="MAIN_CLASS_NAME" value="edu.postech.csed332.homework2.LibraryTest" />
+      <option name="METHOD_NAME" value="testSaveLibraryToFile" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.All in homework2 (1)" />
-        <item itemvalue="JUnit.All in homework2" />
+        <item itemvalue="JUnit.LibraryTest.testSaveLibraryToFile" />
+        <item itemvalue="JUnit.LibraryTest.testLibraryFromFile" />
+        <item itemvalue="JUnit.LibraryTest.testFindBooksByAuthorsNull" />
+        <item itemvalue="JUnit.CollectionTest.testRestoreCollection" />
+        <item itemvalue="JUnit.CollectionTest.testAddElementGetElements" />
       </list>
     </recent_temporary>
   </component>
@@ -111,6 +200,73 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="395" y="91" key="#Inspections" timestamp="1600790713877">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="395" y="91" key="#Inspections/0.0.1536.824@0.0.1536.824" timestamp="1600790713877" />
+    <state x="223" y="60" width="1089" height="764" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600968090485">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="223" y="60" width="1089" height="764" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1600968090485" />
+    <state x="93" y="93" width="1350" height="638" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1601058766846">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="93" y="93" width="1350" height="638" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1536.824@0.0.1536.824" timestamp="1601058766846" />
+    <state x="484" y="215" key="#com.intellij.refactoring.move.moveMembers.MoveMembersDialog" timestamp="1600790894576">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="484" y="215" key="#com.intellij.refactoring.move.moveMembers.MoveMembersDialog/0.0.1536.824@0.0.1536.824" timestamp="1600790894576" />
+    <state x="607" y="321" key="#com.intellij.refactoring.replaceConstructorWithFactory.ReplaceConstructorWithFactoryDialog" timestamp="1600791003509">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="607" y="321" key="#com.intellij.refactoring.replaceConstructorWithFactory.ReplaceConstructorWithFactoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1600791003509" />
+    <state x="515" y="254" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1600790576778">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="515" y="254" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.824@0.0.1536.824" timestamp="1600790576778" />
+    <state width="1493" height="211" key="GridCell.Tab.0.bottom" timestamp="1601058756263">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="211" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1601058756263" />
+    <state width="1493" height="211" key="GridCell.Tab.0.center" timestamp="1601058756262">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="211" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1601058756262" />
+    <state width="1493" height="211" key="GridCell.Tab.0.left" timestamp="1601058756262">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="211" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1601058756262" />
+    <state width="1493" height="211" key="GridCell.Tab.0.right" timestamp="1601058756263">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="211" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1601058756263" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1601058045284">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1601058045284" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1601058045284">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1601058045284" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1601058045284">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1601058045284" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1601058045284">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1601058045284" />
+    <state x="299" y="67" key="Maven.ArtifactSearchDialog" timestamp="1600778130170">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="299" y="67" key="Maven.ArtifactSearchDialog/0.0.1536.824@0.0.1536.824" timestamp="1600778130170" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600790561767">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1600790561767" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/homework2$All_in_homework2__1_.ic" NAME="All in homework2 (1) Coverage Results" MODIFIED="1569135878025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
