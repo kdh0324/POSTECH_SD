@@ -30,14 +30,22 @@ public final class Collection extends Element {
         setParentCollection(null);
     }
 
-    public Collection(JSONArray jsonArray, Collection parent) {
+    public Collection(JSONArray jsonArray) {
         name = jsonArray.getJSONObject(0).getString(JsonKey.NAME);
         elements = new ArrayList<>();
         for (int i = 1; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            elements.add(new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION), this));
+            if (jsonObject.has(JsonKey.COLLECTION)) {
+                Collection collection = new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION));
+                collection.setParentCollection(this);
+                elements.add(collection);
+            }
+            else {
+                Book book = new Book(jsonObject.toString());
+                book.setParentCollection(this);
+                elements.add(book);
+            }
         }
-        setParentCollection(parent);
     }
 
     /**
@@ -47,17 +55,23 @@ public final class Collection extends Element {
      */
     public static Collection restoreCollection(String stringRepr) {
         JSONObject jo = new JSONObject(stringRepr);
+        JSONArray jsonArray = jo.getJSONArray(JsonKey.COLLECTION);
 
-        String name = jo.getString(JsonKey.NAME);
+        String name = jsonArray.getJSONObject(0).getString(JsonKey.NAME);
         Collection collection = new Collection(name);
-        JSONArray elements = jo.getJSONArray(JsonKey.COLLECTION);
 
-        for (int i = 0; i < elements.length(); i++) {
-            JSONObject jsonObject = elements.getJSONObject(i);
-            if (jsonObject.has(JsonKey.TITLE))
-                collection.addElement(new Book(jsonObject.toString()));
-            else
-                collection.addElement(restoreCollection(jsonObject.toString()));
+        for (int i = 1; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if (jsonObject.has(JsonKey.COLLECTION)) {
+                Collection subCollection = new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION));
+                subCollection.setParentCollection(collection);
+                collection.addElement(subCollection);
+            }
+            else {
+                Book book = new Book(jsonObject.toString());
+                book.setParentCollection(collection);
+                collection.addElement(book);
+            }
         }
         return collection;
     }
@@ -70,8 +84,11 @@ public final class Collection extends Element {
      * @return string representation of this collection
      */
     public String getStringRepresentation() {
-        JSONStringer stringer = new JSONStringer();
         JSONArray array = new JSONArray();
+        JSONObject object = new JSONObject();
+        object.put(JsonKey.NAME, name);
+        array.put(object);
+
         for (Element element : elements) {
             if (element instanceof Book)
                 array.put(new JSONObject(((Book) element).getStringRepresentation()));
@@ -79,17 +96,12 @@ public final class Collection extends Element {
                 array.put(new JSONObject(((Collection) element).getStringRepresentation()));
         }
 
+        JSONStringer stringer = new JSONStringer();
         return stringer
-                .array()
-                    .object()
-                        .key(JsonKey.NAME)
-                        .value(name)
-                    .endObject()
-                    .object()
-                        .key(JsonKey.COLLECTION)
-                        .value(array)
-                    .endObject()
-                .endArray().toString();
+                .object()
+                    .key(JsonKey.COLLECTION)
+                    .value(array)
+                .endObject().toString();
     }
 
     public Set<Book> getBooksByCollection(String collection) {
@@ -144,13 +156,8 @@ public final class Collection extends Element {
      * @return true on success, false on fail
      */
     public boolean deleteElement(Element element) {
-        try {
-            element.setParentCollection(null);
-            elements.remove(element);
-            return true;
-        } catch (RuntimeException e) {
-            return false;
-        }
+        element.setParentCollection(null);
+        return elements.remove(element);
     }
 
     /**
