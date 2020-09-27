@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Negation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">problem2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">Negation.java</span></div><h1>Negation.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework2;
+
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * A Boolean expression whose top-level operator is ! (not).
+ */
+public class Negation implements Exp {
+    private final Exp subexp;
+
+    /**
+     * Builds a negated expression of a given Boolean expression.
+     *
+     * @param exp a Boolean expression
+     */
+<span class="fc" id="L17">    public Negation(Exp exp) {</span>
+<span class="fc" id="L18">        subexp = exp;</span>
+<span class="fc" id="L19">    }</span>
+
+    /**
+     * Returns the immediate sub-expression of this expression.
+     *
+     * @return a sub-expression
+     */
+    public Exp getSubexp() {
+<span class="fc" id="L27">        return subexp;</span>
+    }
+
+    @Override
+    public Set&lt;Integer&gt; vars() {
+<span class="nc" id="L32">        return subexp.vars();</span>
+    }
+
+    @Override
+    public Boolean evaluate(Map&lt;Integer, Boolean&gt; assignment) {
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (subexp instanceof Constant)</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            return !((Constant) subexp).getValue();</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (subexp instanceof Variable)</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            return !assignment.get(((Variable) subexp).getIdentifier());</span>
+
+<span class="nc" id="L42">        Exp simplified = simplify();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        return !simplified.evaluate(assignment);</span>
+    }
+
+    @Override
+    public Exp simplify() {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (subexp instanceof Negation)</span>
+<span class="fc" id="L49">            return ((Negation) subexp).subexp;</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (subexp instanceof Conjunction)</span>
+<span class="fc" id="L51">            return new Disjunction(</span>
+<span class="fc" id="L52">                    new Negation(((Conjunction) subexp).getSubexps().get(0)),</span>
+<span class="fc" id="L53">                    new Negation(((Conjunction) subexp).getSubexps().get(1)));</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (subexp instanceof Disjunction)</span>
+<span class="fc" id="L55">            return new Conjunction(</span>
+<span class="fc" id="L56">                    new Negation(((Disjunction) subexp).getSubexps().get(0)),</span>
+<span class="fc" id="L57">                    new Negation(((Disjunction) subexp).getSubexps().get(1)));</span>
+<span class="fc" id="L58">        return this;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L63">        return &quot;(! &quot; + subexp + &quot;)&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

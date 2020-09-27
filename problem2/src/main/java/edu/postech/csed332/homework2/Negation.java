@@ -29,20 +29,33 @@ public class Negation implements Exp {
 
     @Override
     public Set<Integer> vars() {
-        // TODO: implement this
-        return null;
+        return subexp.vars();
     }
 
     @Override
     public Boolean evaluate(Map<Integer, Boolean> assignment) {
-        // TODO: implement this
-        return null;
+        if (subexp instanceof Constant)
+            return !((Constant) subexp).getValue();
+        if (subexp instanceof Variable)
+            return !assignment.get(((Variable) subexp).getIdentifier());
+
+        Exp simplified = simplify();
+        return !simplified.evaluate(assignment);
     }
 
     @Override
     public Exp simplify() {
-        // TODO: implement this
-        return null;
+        if (subexp instanceof Negation)
+            return ((Negation) subexp).subexp;
+        if (subexp instanceof Conjunction)
+            return new Disjunction(
+                    new Negation(((Conjunction) subexp).getSubexps().get(0)),
+                    new Negation(((Conjunction) subexp).getSubexps().get(1)));
+        if (subexp instanceof Disjunction)
+            return new Conjunction(
+                    new Negation(((Disjunction) subexp).getSubexps().get(0)),
+                    new Negation(((Disjunction) subexp).getSubexps().get(1)));
+        return this;
     }
 
     @Override

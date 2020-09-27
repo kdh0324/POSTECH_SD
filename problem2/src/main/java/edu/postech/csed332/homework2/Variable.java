@@ -1,5 +1,6 @@
 package edu.postech.csed332.homework2;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,20 +34,17 @@ public class Variable implements Exp {
 
     @Override
     public Set<Integer> vars() {
-        // TODO: implement this
-        return null;
+        return Collections.singleton(identifier);
     }
 
     @Override
     public Boolean evaluate(Map<Integer, Boolean> assignment) {
-        // TODO: implement this
-        return null;
+        return assignment.get(identifier);
     }
 
     @Override
     public Exp simplify() {
-        // TODO: implement this
-        return null;
+        return this;
     }
 
     @Override

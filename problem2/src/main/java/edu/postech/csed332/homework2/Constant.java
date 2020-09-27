@@ -1,5 +1,6 @@
 package edu.postech.csed332.homework2;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,20 +28,17 @@ public class Constant implements Exp {
 
     @Override
     public Set<Integer> vars() {
-        // TODO: implement this
-        return null;
+        return new HashSet<>();
     }
 
     @Override
     public Boolean evaluate(Map<Integer, Boolean> assignment) {
-        // TODO: implement this
-        return null;
+        return value;
     }
 
     @Override
     public Exp simplify() {
-        // TODO: implement this
-        return null;
+        return this;
     }
 
     @Override

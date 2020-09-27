@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Conjunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">problem2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">Conjunction.java</span></div><h1>Conjunction.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework2;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * A Boolean expression whose top-level operator is &amp;&amp; (and).
+ */
+public class Conjunction implements Exp {
+    private final List&lt;Exp&gt; subexps;
+
+    /**
+     * Builds a conjunction of a given list of Boolean expressions
+     *
+     * @param exps
+     */
+<span class="fc" id="L17">    public Conjunction(Exp... exps) {</span>
+<span class="fc" id="L18">        subexps = new ArrayList&lt;&gt;(Arrays.asList(exps));</span>
+<span class="fc" id="L19">    }</span>
+
+<span class="fc" id="L21">    public Conjunction(List&lt;Exp&gt; expList, Exp... exps) {</span>
+<span class="fc" id="L22">        subexps = new ArrayList&lt;&gt;(Arrays.asList(exps));</span>
+<span class="fc" id="L23">        subexps.addAll(expList);</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Returns the immediate sub-expressions of this expression.
+     *
+     * @return a list of sub-expressions
+     */
+    public List&lt;Exp&gt; getSubexps() {
+<span class="fc" id="L32">        return subexps;</span>
+    }
+
+    @Override
+    public Set&lt;Integer&gt; vars() {
+<span class="fc" id="L37">        Set&lt;Integer&gt; vars = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (Exp exp : subexps)</span>
+<span class="fc" id="L39">            vars.addAll(exp.vars());</span>
+<span class="fc" id="L40">        return vars;</span>
+    }
+
+    @Override
+    public Boolean evaluate(Map&lt;Integer, Boolean&gt; assignment) {
+<span class="fc" id="L45">        boolean result = true;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (Exp exp : subexps)</span>
+<span class="fc" id="L47">            result &amp;= exp.evaluate(assignment);</span>
+<span class="fc" id="L48">        return result;</span>
+    }
+
+    @Override
+    public Exp simplify() {
+<span class="fc" id="L53">        boolean flag = true;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        while (flag) {</span>
+<span class="fc" id="L55">            flag = false;</span>
+<span class="fc" id="L56">            Iterator&lt;Exp&gt; iter = subexps.listIterator();</span>
+<span class="fc" id="L57">            List&lt;Exp&gt; expList = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            while (iter.hasNext()) {</span>
+<span class="fc" id="L59">                Exp exp = iter.next();</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">                if (exp instanceof Conjunction) {</span>
+<span class="nc" id="L61">                    expList.addAll(((Conjunction) exp).getSubexps());</span>
+<span class="nc" id="L62">                    flag = true;</span>
+                }
+<span class="fc" id="L64">            }</span>
+<span class="fc" id="L65">            subexps.addAll(expList);</span>
+<span class="fc" id="L66">        }</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (int i = 0; i &lt; subexps.size(); i++) {</span>
+<span class="fc" id="L68">            Exp exp = subexps.get(i);</span>
+<span class="fc" id="L69">            subexps.set(i, exp.simplify());</span>
+        }
+
+<span class="fc" id="L72">        Exp exp = identityDomination();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (exp != this)</span>
+<span class="fc" id="L74">            return exp;</span>
+
+<span class="fc" id="L76">        return distributive();</span>
+    }
+
+    private Exp identityDomination() {
+<span class="fc" id="L80">        Set&lt;Integer&gt; variableSet = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L81">        Set&lt;Integer&gt; negationSet = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L82">        List&lt;Exp&gt; removed = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (Exp exp : subexps) {</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">            if (exp instanceof Constant) {</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">                if (((Constant) exp).getValue())</span>
+<span class="fc" id="L86">                    removed.add(exp);</span>
+                else
+<span class="fc" id="L88">                    return new Constant(false);</span>
+            }
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            if (exp instanceof Variable) {</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                if (variableSet.contains(((Variable) exp).getIdentifier()))</span>
+<span class="fc" id="L92">                    removed.add(exp);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">                else if (negationSet.contains(((Variable) exp).getIdentifier()))</span>
+<span class="nc" id="L94">                    return new Constant(false);</span>
+                else
+<span class="fc" id="L96">                    variableSet.add(((Variable) exp).getIdentifier());</span>
+            }
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            if (exp instanceof Negation) {</span>
+<span class="fc" id="L99">                Exp subExp = ((Negation) exp).getSubexp();</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">                if (subExp instanceof Constant) {</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                    if (((Constant) subExp).getValue())</span>
+<span class="nc" id="L102">                        return new Constant(false);</span>
+                    else
+<span class="nc" id="L104">                        removed.add(exp);</span>
+                }
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">                if (subExp instanceof Variable) {</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">                    if (variableSet.contains(((Variable) subExp).getIdentifier()))</span>
+<span class="fc" id="L108">                        return new Constant(false);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                    else if (negationSet.contains(((Variable) subExp).getIdentifier()))</span>
+<span class="nc" id="L110">                        removed.add(exp);</span>
+                    else
+<span class="nc" id="L112">                        negationSet.add(((Variable) subExp).getIdentifier());</span>
+                }
+            }
+<span class="fc" id="L115">        }</span>
+<span class="fc" id="L116">        absorption(variableSet);</span>
+<span class="fc" id="L117">        subexps.removeAll(removed);</span>
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (subexps.size() == 1)</span>
+<span class="fc" id="L120">            return subexps.get(0).simplify();</span>
+<span class="fc" id="L121">        return this;</span>
+    }
+
+    private void absorption(Set&lt;Integer&gt; variableSet) {
+<span class="fc" id="L125">        List&lt;Exp&gt; removed = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        for (Exp exp : subexps)</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">            if (exp instanceof Disjunction) {</span>
+<span class="fc" id="L128">                List&lt;Exp&gt; subExps = ((Disjunction) exp).getSubexps();</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">                for (Exp subExp : subExps)</span>
+<span class="pc bpc" id="L130" title="1 of 4 branches missed.">                    if (subExp instanceof Variable &amp;&amp; variableSet.contains(((Variable) subExp).getIdentifier()))</span>
+<span class="fc" id="L131">                        removed.add(exp);</span>
+            }
+
+<span class="fc" id="L134">        subexps.removeAll(removed);</span>
+<span class="fc" id="L135">    }</span>
+
+    private Exp distributive() {
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        for (Exp exp : subexps)</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            if (exp instanceof Disjunction) {</span>
+<span class="fc" id="L140">                List&lt;Exp&gt; expList = subexps;</span>
+<span class="fc" id="L141">                expList.remove(exp);</span>
+<span class="pc bpc" id="L142" title="2 of 4 branches missed.">                if (expList.get(0) instanceof Disjunction || expList.get(0) instanceof Conjunction)</span>
+<span class="nc" id="L143">                    return this;</span>
+
+<span class="fc" id="L145">                List&lt;Exp&gt; disjunctions = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">                for (Exp subExp : ((Disjunction) exp).getSubexps())</span>
+<span class="fc" id="L147">                    disjunctions.add(new Disjunction(expList, subExp));</span>
+
+<span class="fc" id="L149">                return new Conjunction(disjunctions);</span>
+            }
+<span class="fc" id="L151">        return this;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L156">        return &quot;(&quot; + subexps.stream().map(Object::toString).collect(Collectors.joining(&quot; &amp;&amp; &quot;)) + &quot;)&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

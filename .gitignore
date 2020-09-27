@@ -127,4 +127,4 @@ fabric.properties
 hs_err_pid*
 
 # .idea
-.idea/*
+*/.idea/*
