@@ -22,11 +22,60 @@ public class ExpTest {
     }
 
     @Test
-    public void testVars() {
-        Exp exp = ExpParser.parse("p1 && p3 && p4 && p1 && true");
-        Set<Integer> vars = Set.of(1, 3, 4);
+    public void testVariable() {
+       Exception exception = assertThrows(IllegalArgumentException.class, ()-> new Variable(-1));
+       assertEquals("Variable Id must be a positive integer", exception.getMessage());
+    }
 
-        assertEquals(vars, exp.vars());
+    @Test
+    public void testConjunctionVars() {
+        Exp exp = ExpParser.parse("p1 && p2");
+        assertEquals(exp.vars(), Set.of(1, 2));
+
+        exp = ExpParser.parse("p1 && p2 && p3 && p4");
+        assertEquals(exp.vars(), Set.of(1, 2, 3, 4));
+
+        exp = ExpParser.parse("p1 && true && p3");
+        assertEquals(exp.vars(), Set.of(1, 3));
+
+        exp = ExpParser.parse("p1 && !p2");
+        assertEquals(exp.vars(), Set.of(1, 2));
+    }
+
+    @Test
+    public void testDisjunctionVars() {
+        Exp exp = ExpParser.parse("p1 || p2");
+        assertEquals(exp.vars(), Set.of(1, 2));
+
+        exp = ExpParser.parse("p1 || p2 || p3 || p4");
+        assertEquals(exp.vars(), Set.of(1, 2, 3, 4));
+
+        exp = ExpParser.parse("p1 || true || p3");
+        assertEquals(exp.vars(), Set.of(1, 3));
+
+        exp = ExpParser.parse("p1 || !p2");
+        assertEquals(exp.vars(), Set.of(1, 2));
+    }
+
+    @Test
+    public void testNegationVars() {
+        Exp exp = ExpParser.parse("!p1");
+        assertEquals(exp.vars(), Set.of(1));
+    }
+
+    @Test
+    public void testConstantVars() {
+        Exp exp = ExpParser.parse("true");
+        assertEquals(exp.vars(), Set.of());
+
+        exp = ExpParser.parse("false");
+        assertEquals(exp.vars(), Set.of());
+    }
+
+    @Test
+    public void testVariableVars() {
+        Exp exp = ExpParser.parse("p1");
+        assertEquals(exp.vars(), Set.of(1));
     }
 
     @Test
@@ -61,6 +110,15 @@ public class ExpTest {
         exp = ExpParser.parse("!p2");
         assignment.put(2, true);
         assertFalse(exp.evaluate(assignment));
+
+        exp = ExpParser.parse("!true");
+        assertFalse(exp.evaluate(assignment));
+
+        exp = ExpParser.parse("!false");
+        assertTrue(exp.evaluate(assignment));
+
+        exp = ExpParser.parse("!(true && false)");
+        assertTrue(exp.evaluate(assignment));
     }
 
     @Test
@@ -80,6 +138,22 @@ public class ExpTest {
         exp = ExpParser.parse("p1 || p1");
         simplified = exp.simplify();
         assertEquals("p1", simplified.toString());
+
+        exp = ExpParser.parse("true && true");
+        simplified = exp.simplify();
+        assertEquals("true", simplified.toString());
+
+        exp = ExpParser.parse("true || true");
+        simplified = exp.simplify();
+        assertEquals("true", simplified.toString());
+
+        exp = ExpParser.parse("false && false");
+        simplified = exp.simplify();
+        assertEquals("false", simplified.toString());
+
+        exp = ExpParser.parse("false || false");
+        simplified = exp.simplify();
+        assertEquals("false", simplified.toString());
     }
 
     @Test
@@ -97,6 +171,14 @@ public class ExpTest {
         assertEquals("false", simplified.toString());
 
         exp = ExpParser.parse("p1 || !p1");
+        simplified = exp.simplify();
+        assertEquals("true", simplified.toString());
+
+        exp = ExpParser.parse("!p1 && p1");
+        simplified = exp.simplify();
+        assertEquals("false", simplified.toString());
+
+        exp = ExpParser.parse("!p1 || p1");
         simplified = exp.simplify();
         assertEquals("true", simplified.toString());
     }
@@ -131,7 +213,7 @@ public class ExpTest {
     }
 
     @Test
-    public void testDistributive() {
+    public void testDistribution() {
         Exp exp = ExpParser.parse("p1 || (p2 && p3)");
         Exp simplified = exp.simplify();
         assertEquals("((p2 && p1) || (p3 && p1))", simplified.toString());
@@ -139,6 +221,14 @@ public class ExpTest {
         exp = ExpParser.parse("p1 && (p2 || p3)");
         simplified = exp.simplify();
         assertEquals("((p2 || p1) && (p3 || p1))", simplified.toString());
+
+        exp = ExpParser.parse("(p1 && p2) && (p1 && p3)");
+        simplified = exp.simplify();
+        assertEquals("((p1 && p2) && (p1 && p3))", simplified.toString());
+
+        exp = ExpParser.parse("(p1 || p2) || (p1 || p3)");
+        simplified = exp.simplify();
+        assertEquals("((p1 || p2) || (p1 || p3))", simplified.toString());
     }
 
     @Test
@@ -152,10 +242,13 @@ public class ExpTest {
         Exp exp = ExpParser.parse("p1 || (p2 && p3)");
         assertTrue(exp.evaluate(assignment));
 
-        exp = ExpParser.parse("p1 && p3 && p4 && p1 && true");
-        assertTrue(exp.evaluate(assignment));
+        exp = ExpParser.parse("!(p1 && p3) && (p4 && (p1 && true))");
+        assertFalse(exp.evaluate(assignment));
 
         exp = ExpParser.parse("(p1 || p2) && !p2 && p3");
+        assertTrue(exp.evaluate(assignment));
+
+        exp = ExpParser.parse("!p1 && !(p2 || false) || p3");
         assertTrue(exp.evaluate(assignment));
     }
 }

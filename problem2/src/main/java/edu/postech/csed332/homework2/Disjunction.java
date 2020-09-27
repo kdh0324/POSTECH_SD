@@ -50,26 +50,14 @@ public class Disjunction implements Exp {
 
     @Override
     public Exp simplify() {
-        boolean flag = true;
-        while (flag) {
-            flag = false;
-            Iterator<Exp> iter = subexps.listIterator();
-            List<Exp> expList = new ArrayList<>();
-            while (iter.hasNext()) {
-                Exp exp = iter.next();
-                if (exp instanceof Disjunction) {
-                    expList.addAll(((Disjunction) exp).getSubexps());
-                    flag = true;
-                }
-            }
-            subexps.addAll(expList);
-        }
         for (int i = 0; i < subexps.size(); i++) {
             Exp exp = subexps.get(i);
             subexps.set(i, exp.simplify());
         }
 
         Exp exp = identityDomination();
+        if (subexps.size() == 0)
+            return new Constant(false);
         if (exp != this)
             return exp;
 
@@ -97,20 +85,10 @@ public class Disjunction implements Exp {
             }
             if (exp instanceof Negation) {
                 Exp subExp = ((Negation) exp).getSubexp();
-                if (subExp instanceof Constant) {
-                    if (((Constant) subExp).getValue())
-                        removed.add(exp);
-                    else
-                        return new Constant(true);
-                }
-                if (subExp instanceof Variable) {
-                    if (variableSet.contains(((Variable) subExp).getIdentifier()))
-                        return new Constant(true);
-                    else if (negationSet.contains(((Variable) subExp).getIdentifier()))
-                        removed.add(exp);
-                    else
-                        negationSet.add(((Variable) subExp).getIdentifier());
-                }
+                if (variableSet.contains(((Variable) subExp).getIdentifier()))
+                    return new Constant(true);
+                else
+                    negationSet.add(((Variable) subExp).getIdentifier());
             }
         }
         absorption(variableSet);
@@ -139,8 +117,6 @@ public class Disjunction implements Exp {
             if (exp instanceof Conjunction) {
                 List<Exp> expList = new ArrayList<>(subexps);
                 expList.remove(exp);
-                if (expList.get(0) instanceof Disjunction || expList.get(0) instanceof Conjunction)
-                    return this;
 
                 List<Exp> conjunctions = new ArrayList<>();
                 for (Exp subExp : ((Conjunction) exp).getSubexps())

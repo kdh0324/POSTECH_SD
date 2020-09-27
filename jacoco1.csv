@@ -2,5 +2,5 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 homework2,edu.postech.csed332.homework2,Element,0,10,0,0,0,4,0,3,0,3
 homework2,edu.postech.csed332.homework2,Book,3,94,0,4,2,28,0,8,0,6
 homework2,edu.postech.csed332.homework2,JsonKey,3,0,0,0,1,0,1,0,1,0
-homework2,edu.postech.csed332.homework2,Library,19,145,2,10,6,34,2,10,0,6
-homework2,edu.postech.csed332.homework2,Collection,58,255,9,17,13,62,6,17,1,9
+homework2,edu.postech.csed332.homework2,Library,6,160,0,12,4,36,0,12,0,6
+homework2,edu.postech.csed332.homework2,Collection,0,322,0,32,0,75,0,26,0,10

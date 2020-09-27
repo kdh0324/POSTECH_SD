@@ -29,38 +29,37 @@ public class Negation implements Exp {
 
     @Override
     public Set&lt;Integer&gt; vars() {
-<span class="nc" id="L32">        return subexp.vars();</span>
+<span class="fc" id="L32">        return subexp.vars();</span>
     }
 
     @Override
     public Boolean evaluate(Map&lt;Integer, Boolean&gt; assignment) {
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (subexp instanceof Constant)</span>
-<span class="nc bnc" id="L38" title="All 2 branches missed.">            return !((Constant) subexp).getValue();</span>
-<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (subexp instanceof Variable)</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (subexp instanceof Constant)</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            return !((Constant) subexp).getValue();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (subexp instanceof Variable)</span>
 <span class="fc bfc" id="L40" title="All 2 branches covered.">            return !assignment.get(((Variable) subexp).getIdentifier());</span>
 
-<span class="nc" id="L42">        Exp simplified = simplify();</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        return !simplified.evaluate(assignment);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        return !subexp.evaluate(assignment);</span>
     }
 
     @Override
     public Exp simplify() {
-<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (subexp instanceof Negation)</span>
-<span class="fc" id="L49">            return ((Negation) subexp).subexp;</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (subexp instanceof Conjunction)</span>
-<span class="fc" id="L51">            return new Disjunction(</span>
-<span class="fc" id="L52">                    new Negation(((Conjunction) subexp).getSubexps().get(0)),</span>
-<span class="fc" id="L53">                    new Negation(((Conjunction) subexp).getSubexps().get(1)));</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (subexp instanceof Disjunction)</span>
-<span class="fc" id="L55">            return new Conjunction(</span>
-<span class="fc" id="L56">                    new Negation(((Disjunction) subexp).getSubexps().get(0)),</span>
-<span class="fc" id="L57">                    new Negation(((Disjunction) subexp).getSubexps().get(1)));</span>
-<span class="fc" id="L58">        return this;</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (subexp instanceof Negation)</span>
+<span class="fc" id="L48">            return ((Negation) subexp).subexp;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (subexp instanceof Conjunction)</span>
+<span class="fc" id="L50">            return new Disjunction(</span>
+<span class="fc" id="L51">                    new Negation(((Conjunction) subexp).getSubexps().get(0)),</span>
+<span class="fc" id="L52">                    new Negation(((Conjunction) subexp).getSubexps().get(1)));</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (subexp instanceof Disjunction)</span>
+<span class="fc" id="L54">            return new Conjunction(</span>
+<span class="fc" id="L55">                    new Negation(((Disjunction) subexp).getSubexps().get(0)),</span>
+<span class="fc" id="L56">                    new Negation(((Disjunction) subexp).getSubexps().get(1)));</span>
+<span class="fc" id="L57">        return this;</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L63">        return &quot;(! &quot; + subexp + &quot;)&quot;;</span>
+<span class="fc" id="L62">        return &quot;(! &quot; + subexp + &quot;)&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

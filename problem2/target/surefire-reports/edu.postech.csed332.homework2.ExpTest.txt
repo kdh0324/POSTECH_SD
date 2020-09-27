@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: edu.postech.csed332.homework2.ExpTest
 -------------------------------------------------------------------------------
-Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.484 s - in edu.postech.csed332.homework2.ExpTest
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.524 s - in edu.postech.csed332.homework2.ExpTest

@@ -39,8 +39,7 @@ public class Negation implements Exp {
         if (subexp instanceof Variable)
             return !assignment.get(((Variable) subexp).getIdentifier());
 
-        Exp simplified = simplify();
-        return !simplified.evaluate(assignment);
+        return !subexp.evaluate(assignment);
     }
 
     @Override
