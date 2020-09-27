@@ -15,11 +15,11 @@ public class Disjunction implements Exp {
      * @param exps
      */
     public Disjunction(Exp... exps) {
-        subexps = Arrays.asList(exps);
+        subexps = new ArrayList<>(Arrays.asList(exps));
     }
 
     public Disjunction(List<Exp> expList, Exp... exps) {
-        subexps = Arrays.asList(exps);
+        subexps = new ArrayList<>(Arrays.asList(exps));
         subexps.addAll(expList);
     }
 
@@ -56,8 +56,9 @@ public class Disjunction implements Exp {
             Iterator<Exp> iter = subexps.listIterator();
             List<Exp> expList = new ArrayList<>();
             while (iter.hasNext()) {
-                if (iter.next() instanceof Disjunction) {
-                    expList.addAll(((Disjunction) iter.next()).getSubexps());
+                Exp exp = iter.next();
+                if (exp instanceof Disjunction) {
+                    expList.addAll(((Disjunction) exp).getSubexps());
                     flag = true;
                 }
             }
@@ -136,14 +137,16 @@ public class Disjunction implements Exp {
     private Exp distributive() {
         for (Exp exp : subexps)
             if (exp instanceof Conjunction) {
-                List<Exp> expList = subexps;
+                List<Exp> expList = new ArrayList<>(subexps);
                 expList.remove(exp);
+                if (expList.get(0) instanceof Disjunction || expList.get(0) instanceof Conjunction)
+                    return this;
 
-                List<Exp> disjunctions = new ArrayList<>();
+                List<Exp> conjunctions = new ArrayList<>();
                 for (Exp subExp : ((Conjunction) exp).getSubexps())
-                    disjunctions.add(new Disjunction(expList, subExp));
+                    conjunctions.add(new Conjunction(expList, subExp));
 
-                return new Conjunction(disjunctions).simplify();
+                return new Disjunction(conjunctions);
             }
         return this;
     }
