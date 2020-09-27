@@ -1,9 +1,6 @@
 package edu.postech.csed332.homework2;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -21,6 +18,11 @@ public class Conjunction implements Exp {
         subexps = Arrays.asList(exps);
     }
 
+    public Conjunction(List<Exp> expList, Exp... exps) {
+        subexps = Arrays.asList(exps);
+        subexps.addAll(expList);
+    }
+
     /**
      * Returns the immediate sub-expressions of this expression.
      *
@@ -32,24 +34,123 @@ public class Conjunction implements Exp {
 
     @Override
     public Set<Integer> vars() {
-        // TODO: implement this
-        return null;
+        Set<Integer> vars = new HashSet<>();
+        for (Exp exp : subexps)
+            vars.addAll(exp.vars());
+        return vars;
     }
 
     @Override
     public Boolean evaluate(Map<Integer, Boolean> assignment) {
-        // TODO: implement this
-        return null;
+        boolean result = true;
+        for (Exp exp : subexps)
+            result &= exp.evaluate(assignment);
+        return result;
     }
 
     @Override
     public Exp simplify() {
         // TODO: implement this
-        return null;
+        boolean flag = true;
+        while (flag) {
+            flag = false;
+            Iterator<Exp> iter = subexps.listIterator();
+            List<Exp> expList = new ArrayList<>();
+            while (iter.hasNext()) {
+                if (iter.next() instanceof Conjunction) {
+                    expList.addAll(((Conjunction) iter.next()).getSubexps());
+                    flag = true;
+                }
+            }
+            subexps.addAll(expList);
+        }
+        for (int i = 0; i < subexps.size(); i++) {
+            Exp exp = subexps.get(i);
+            subexps.set(i, exp.simplify());
+        }
+
+        Exp exp = identityDomination();
+        if (exp != this)
+            return exp;
+
+        return distributive();
+    }
+
+    private Exp identityDomination() {
+        Set<Integer> variableSet = new HashSet<>();
+        Set<Integer> negationSet = new HashSet<>();
+        List<Exp> removed = new ArrayList<>();
+        for (Exp exp : subexps) {
+            if (exp instanceof Constant) {
+                if (((Constant) exp).getValue())
+                    removed.add(exp);
+                else
+                    return new Constant(false);
+            }
+            if (exp instanceof Variable) {
+                if (variableSet.contains(((Variable) exp).getIdentifier()))
+                    removed.add(exp);
+                else if (negationSet.contains(((Variable) exp).getIdentifier()))
+                    return new Constant(false);
+                else
+                    variableSet.add(((Variable) exp).getIdentifier());
+            }
+            if (exp instanceof Negation) {
+                Exp subExp = ((Negation) exp).getSubexp();
+                if (subExp instanceof Constant) {
+                    if (((Constant) subExp).getValue())
+                        return new Constant(false);
+                    else
+                        removed.add(exp);
+                }
+                if (subExp instanceof Variable) {
+                    if (variableSet.contains(((Variable) subExp).getIdentifier()))
+                        return new Constant(false);
+                    else if (negationSet.contains(((Variable) subExp).getIdentifier()))
+                        removed.add(exp);
+                    else
+                        negationSet.add(((Variable) subExp).getIdentifier());
+                }
+            }
+        }
+        absorption(variableSet);
+        subexps.removeAll(removed);
+
+        if (subexps.size() == 1)
+            return subexps.get(0);
+        return this;
+    }
+
+    private void absorption(Set<Integer> variableSet) {
+        List<Exp> removed = new ArrayList<>();
+        for (Exp exp : subexps)
+            if (exp instanceof Disjunction) {
+                List<Exp> subExps = ((Disjunction) exp).getSubexps();
+                for (Exp subExp : subExps)
+                    if (subExp instanceof Variable && variableSet.contains(((Variable) subExp).getIdentifier()))
+                        removed.add(exp);
+            }
+
+        subexps.removeAll(removed);
+    }
+
+    private Exp distributive() {
+        for (Exp exp : subexps)
+            if (exp instanceof Disjunction) {
+                List<Exp> expList = subexps;
+                expList.remove(exp);
+
+                List<Exp> conjunctions = new ArrayList<>();
+                for (Exp subExp : ((Disjunction) exp).getSubexps())
+                    conjunctions.add(new Conjunction(expList, subExp));
+
+                return new Disjunction(conjunctions).simplify();
+            }
+        return this;
     }
 
     @Override
     public String toString() {
-        return "(" + subexps.stream().map(i -> i.toString()).collect(Collectors.joining(" && ")) + ")";
+        return "(" + subexps.stream().map(Object::toString).collect(Collectors.joining(" && ")) + ")";
     }
 }
