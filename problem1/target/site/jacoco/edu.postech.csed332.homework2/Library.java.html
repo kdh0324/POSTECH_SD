@@ -87,7 +87,7 @@ public final class Library {
     public Set&lt;Book&gt; findBooks(String collection) {
 <span class="fc" id="L88">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
 <span class="fc bfc" id="L89" title="All 2 branches covered.">        for (Collection col : collections)</span>
-<span class="fc" id="L90">            bookSet.addAll(col.getBooksByCollection(collection));</span>
+<span class="fc" id="L90">            bookSet.addAll(col.getBooksByCollection(collection, false));</span>
 <span class="fc bfc" id="L91" title="All 2 branches covered.">        if (bookSet.size() == 0)</span>
 <span class="fc" id="L92">            return null;</span>
 <span class="fc" id="L93">        return bookSet;</span>
@@ -104,11 +104,11 @@ public final class Library {
      */
     public Set&lt;Book&gt; findBooksByAuthor(String author) {
 <span class="fc" id="L106">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        for (Collection col : collections)</span>
-<span class="nc" id="L108">            bookSet.addAll(col.getBooksByAuthor(author));</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (bookSet.size() == 0)</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (Collection col : collections)</span>
+<span class="fc" id="L108">            bookSet.addAll(col.getBooksByAuthor(author));</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (bookSet.size() == 0)</span>
 <span class="fc" id="L110">            return null;</span>
-<span class="nc" id="L111">        return bookSet;</span>
+<span class="fc" id="L111">        return bookSet;</span>
     }
 
     /**

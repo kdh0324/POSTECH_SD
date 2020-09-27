@@ -87,7 +87,7 @@ public final class Library {
     public Set<Book> findBooks(String collection) {
         Set<Book> bookSet = new HashSet<>();
         for (Collection col : collections)
-            bookSet.addAll(col.getBooksByCollection(collection));
+            bookSet.addAll(col.getBooksByCollection(collection, false));
         if (bookSet.size() == 0)
             return null;
         return bookSet;

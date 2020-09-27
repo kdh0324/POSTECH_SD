@@ -46,7 +46,8 @@ public final class Collection extends Element {
 <span class="fc" id="L46">                elements.add(book);</span>
             }
         }
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L49">        setParentCollection(null);</span>
+<span class="fc" id="L50">    }</span>
 
     /**
      * Restores a collection from its string representation in JSON
@@ -54,26 +55,24 @@ public final class Collection extends Element {
      * @param stringRepr the string representation
      */
     public static Collection restoreCollection(String stringRepr) {
-<span class="fc" id="L57">        JSONObject jo = new JSONObject(stringRepr);</span>
-<span class="fc" id="L58">        JSONArray jsonArray = jo.getJSONArray(JsonKey.COLLECTION);</span>
+<span class="fc" id="L58">        JSONObject jo = new JSONObject(stringRepr);</span>
+<span class="fc" id="L59">        JSONArray jsonArray = jo.getJSONArray(JsonKey.COLLECTION);</span>
 
-<span class="fc" id="L60">        String name = jsonArray.getJSONObject(0).getString(JsonKey.NAME);</span>
-<span class="fc" id="L61">        Collection collection = new Collection(name);</span>
+<span class="fc" id="L61">        String name = jsonArray.getJSONObject(0).getString(JsonKey.NAME);</span>
+<span class="fc" id="L62">        Collection collection = new Collection(name);</span>
 
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        for (int i = 1; i &lt; jsonArray.length(); i++) {</span>
-<span class="fc" id="L64">            JSONObject jsonObject = jsonArray.getJSONObject(i);</span>
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            if (jsonObject.has(JsonKey.COLLECTION)) {</span>
-<span class="fc" id="L66">                Collection subCollection = new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION));</span>
-<span class="fc" id="L67">                subCollection.setParentCollection(collection);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (int i = 1; i &lt; jsonArray.length(); i++) {</span>
+<span class="fc" id="L65">            JSONObject jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            if (jsonObject.has(JsonKey.COLLECTION)) {</span>
+<span class="fc" id="L67">                Collection subCollection = new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION));</span>
 <span class="fc" id="L68">                collection.addElement(subCollection);</span>
 <span class="fc" id="L69">            }</span>
             else {
-<span class="nc" id="L71">                Book book = new Book(jsonObject.toString());</span>
-<span class="nc" id="L72">                book.setParentCollection(collection);</span>
-<span class="nc" id="L73">                collection.addElement(book);</span>
+<span class="fc" id="L71">                Book book = new Book(jsonObject.toString());</span>
+<span class="fc" id="L72">                collection.addElement(book);</span>
             }
         }
-<span class="fc" id="L76">        return collection;</span>
+<span class="fc" id="L75">        return collection;</span>
     }
 
     /**
@@ -84,47 +83,48 @@ public final class Collection extends Element {
      * @return string representation of this collection
      */
     public String getStringRepresentation() {
-<span class="fc" id="L87">        JSONArray array = new JSONArray();</span>
-<span class="fc" id="L88">        JSONObject object = new JSONObject();</span>
-<span class="fc" id="L89">        object.put(JsonKey.NAME, name);</span>
-<span class="fc" id="L90">        array.put(object);</span>
+<span class="fc" id="L86">        JSONArray array = new JSONArray();</span>
+<span class="fc" id="L87">        JSONObject object = new JSONObject();</span>
+<span class="fc" id="L88">        object.put(JsonKey.NAME, name);</span>
+<span class="fc" id="L89">        array.put(object);</span>
 
-<span class="fc bfc" id="L92" title="All 2 branches covered.">        for (Element element : elements) {</span>
-<span class="fc bfc" id="L93" title="All 2 branches covered.">            if (element instanceof Book)</span>
-<span class="fc" id="L94">                array.put(new JSONObject(((Book) element).getStringRepresentation()));</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (Element element : elements) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            if (element instanceof Book)</span>
+<span class="fc" id="L93">                array.put(new JSONObject(((Book) element).getStringRepresentation()));</span>
             else
-<span class="fc" id="L96">                array.put(new JSONObject(((Collection) element).getStringRepresentation()));</span>
-<span class="fc" id="L97">        }</span>
+<span class="fc" id="L95">                array.put(new JSONObject(((Collection) element).getStringRepresentation()));</span>
+<span class="fc" id="L96">        }</span>
 
-<span class="fc" id="L99">        JSONStringer stringer = new JSONStringer();</span>
-<span class="fc" id="L100">        return stringer</span>
-<span class="fc" id="L101">                .object()</span>
-<span class="fc" id="L102">                    .key(JsonKey.COLLECTION)</span>
-<span class="fc" id="L103">                    .value(array)</span>
-<span class="fc" id="L104">                .endObject().toString();</span>
+<span class="fc" id="L98">        JSONStringer stringer = new JSONStringer();</span>
+<span class="fc" id="L99">        return stringer</span>
+<span class="fc" id="L100">                .object()</span>
+<span class="fc" id="L101">                    .key(JsonKey.COLLECTION)</span>
+<span class="fc" id="L102">                    .value(array)</span>
+<span class="fc" id="L103">                .endObject().toString();</span>
     }
 
-    public Set&lt;Book&gt; getBooksByCollection(String collection) {
-<span class="fc" id="L108">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
-<span class="fc" id="L109">        boolean flag = false;</span>
+    public Set&lt;Book&gt; getBooksByCollection(String collection, Boolean flag) {
+<span class="fc" id="L107">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (name.equals(collection))</span>
+<span class="fc" id="L109">            flag = true;</span>
 <span class="fc bfc" id="L110" title="All 2 branches covered.">        for (Element element : elements) {</span>
-<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (element instanceof Book)</span>
+<span class="fc bfc" id="L111" title="All 4 branches covered.">            if (element instanceof Book &amp;&amp; flag)</span>
 <span class="fc" id="L112">                bookSet.add((Book) element);</span>
 <span class="fc bfc" id="L113" title="All 2 branches covered.">            if (element instanceof Collection)</span>
-<span class="fc" id="L114">                bookSet.addAll(((Collection) element).getBooksByCollection(collection));</span>
+<span class="fc" id="L114">                bookSet.addAll(((Collection) element).getBooksByCollection(collection, flag));</span>
 <span class="fc" id="L115">        }</span>
 <span class="fc" id="L116">        return bookSet;</span>
     }
 
     public Set&lt;Book&gt; getBooksByAuthor(String author) {
-<span class="nc" id="L120">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">        for (Element element : elements) {</span>
-<span class="nc bnc" id="L122" title="All 4 branches missed.">            if (element instanceof Book &amp;&amp; ((Book) element).getAuthors().contains(author))</span>
-<span class="nc" id="L123">                bookSet.add((Book) element);</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (element instanceof Collection)</span>
-<span class="nc" id="L125">                bookSet.addAll(((Collection) element).getBooksByAuthor(author));</span>
-<span class="nc" id="L126">        }</span>
-<span class="nc" id="L127">        return bookSet;</span>
+<span class="fc" id="L120">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        for (Element element : elements) {</span>
+<span class="fc bfc" id="L122" title="All 4 branches covered.">            if (element instanceof Book &amp;&amp; ((Book) element).getAuthors().contains(author))</span>
+<span class="fc" id="L123">                bookSet.add((Book) element);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            if (element instanceof Collection)</span>
+<span class="fc" id="L125">                bookSet.addAll(((Collection) element).getBooksByAuthor(author));</span>
+<span class="fc" id="L126">        }</span>
+<span class="fc" id="L127">        return bookSet;</span>
     }
 
     /**
@@ -136,13 +136,11 @@ public final class Collection extends Element {
      * @return true on success, false on fail
      */
     public boolean addElement(Element element) {
-        try {
-<span class="fc" id="L140">            element.setParentCollection(this);</span>
-<span class="fc" id="L141">            elements.add(element);</span>
-<span class="fc" id="L142">            return true;</span>
-<span class="nc" id="L143">        } catch (RuntimeException e) {</span>
-<span class="nc" id="L144">            return false;</span>
-        }
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (element.getParentCollection() != null)</span>
+<span class="fc" id="L140">            return false;</span>
+<span class="fc" id="L141">        element.setParentCollection(this);</span>
+<span class="fc" id="L142">        elements.add(element);</span>
+<span class="fc" id="L143">        return true;</span>
     }
 
     /**
@@ -154,8 +152,8 @@ public final class Collection extends Element {
      * @return true on success, false on fail
      */
     public boolean deleteElement(Element element) {
-<span class="fc" id="L157">        element.setParentCollection(null);</span>
-<span class="fc" id="L158">        return elements.remove(element);</span>
+<span class="fc" id="L155">        element.setParentCollection(null);</span>
+<span class="fc" id="L156">        return elements.remove(element);</span>
     }
 
     /**
@@ -164,7 +162,7 @@ public final class Collection extends Element {
      * @return the name
      */
     public String getName() {
-<span class="fc" id="L167">        return name;</span>
+<span class="fc" id="L165">        return name;</span>
     }
 
     /**
@@ -173,7 +171,7 @@ public final class Collection extends Element {
      * @return the list of elements
      */
     public List&lt;Element&gt; getElements() {
-<span class="fc" id="L176">        return elements;</span>
+<span class="fc" id="L174">        return elements;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

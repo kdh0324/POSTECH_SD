@@ -24,6 +24,22 @@ public class LibraryTest {
     }
 
     @Test
+    public void testFindBooksByAuthors() {
+        Library lib = new Library("library.txt");
+        Assertions.assertNotNull(lib.findBooksByAuthor("Name 1"));
+        for (Book book : lib.findBooksByAuthor("Name 1"))
+            Assertions.assertEquals("{\"title\":\"Unit Testing\",\"authors\":[\"Name 1\",\"Name 2\"]}", book.getStringRepresentation());
+    }
+
+    @Test
+    public void testFindBooks() {
+        Library lib = new Library("library.txt");
+        Assertions.assertNotNull(lib.findBooks("Test Collection1"));
+        for (Book book : lib.findBooks("Test Collection1"))
+            Assertions.assertEquals("{\"title\":\"Unit Testing\",\"authors\":[\"Name 1\",\"Name 2\"]}", book.getStringRepresentation());
+    }
+
+    @Test
     public void testLibraryFromFile() {
         Library lib = new Library("library.txt");
         Book book = new Book("Unit Testing", Arrays.asList("Name 1", "Name 2"));

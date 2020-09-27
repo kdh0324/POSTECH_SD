@@ -46,6 +46,7 @@ public final class Collection extends Element {
                 elements.add(book);
             }
         }
+        setParentCollection(null);
     }
 
     /**
@@ -64,12 +65,10 @@ public final class Collection extends Element {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             if (jsonObject.has(JsonKey.COLLECTION)) {
                 Collection subCollection = new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION));
-                subCollection.setParentCollection(collection);
                 collection.addElement(subCollection);
             }
             else {
                 Book book = new Book(jsonObject.toString());
-                book.setParentCollection(collection);
                 collection.addElement(book);
             }
         }
@@ -104,14 +103,15 @@ public final class Collection extends Element {
                 .endObject().toString();
     }
 
-    public Set<Book> getBooksByCollection(String collection) {
+    public Set<Book> getBooksByCollection(String collection, Boolean flag) {
         Set<Book> bookSet = new HashSet<>();
-        boolean flag = false;
+        if (name.equals(collection))
+            flag = true;
         for (Element element : elements) {
-            if (element instanceof Book)
+            if (element instanceof Book && flag)
                 bookSet.add((Book) element);
             if (element instanceof Collection)
-                bookSet.addAll(((Collection) element).getBooksByCollection(collection));
+                bookSet.addAll(((Collection) element).getBooksByCollection(collection, flag));
         }
         return bookSet;
     }
@@ -136,13 +136,11 @@ public final class Collection extends Element {
      * @return true on success, false on fail
      */
     public boolean addElement(Element element) {
-        try {
-            element.setParentCollection(this);
-            elements.add(element);
-            return true;
-        } catch (RuntimeException e) {
+        if (element.getParentCollection() != null)
             return false;
-        }
+        element.setParentCollection(this);
+        elements.add(element);
+        return true;
     }
 
     /**
