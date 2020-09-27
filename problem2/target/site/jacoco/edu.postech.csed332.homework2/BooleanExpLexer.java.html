@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BooleanExpLexer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">problem2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">BooleanExpLexer.java</span></div><h1>BooleanExpLexer.java</h1><pre class="source lang-java linenums">// Generated from edu\postech\csed332\homework2\BooleanExp.g4 by ANTLR 4.8
+package edu.postech.csed332.homework2;
+import org.antlr.v4.runtime.Lexer;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.atn.*;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.misc.*;
+
+@SuppressWarnings({&quot;all&quot;, &quot;warnings&quot;, &quot;unchecked&quot;, &quot;unused&quot;, &quot;cast&quot;})
+public class BooleanExpLexer extends Lexer {
+<span class="fc" id="L14">	static { RuntimeMetaData.checkVersion(&quot;4.8&quot;, RuntimeMetaData.VERSION); }</span>
+
+	protected static final DFA[] _decisionToDFA;
+<span class="fc" id="L17">	protected static final PredictionContextCache _sharedContextCache =</span>
+		new PredictionContextCache();
+	public static final int
+		NOT=1, AND=2, OR=3, TRUE=4, FALSE=5, LPAREN=6, RPAREN=7, ID=8, WS=9;
+<span class="fc" id="L21">	public static String[] channelNames = {</span>
+		&quot;DEFAULT_TOKEN_CHANNEL&quot;, &quot;HIDDEN&quot;
+	};
+
+<span class="fc" id="L25">	public static String[] modeNames = {</span>
+		&quot;DEFAULT_MODE&quot;
+	};
+
+	private static String[] makeRuleNames() {
+<span class="fc" id="L30">		return new String[] {</span>
+			&quot;NOT&quot;, &quot;AND&quot;, &quot;OR&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;LPAREN&quot;, &quot;RPAREN&quot;, &quot;ID&quot;, &quot;WS&quot;
+		};
+	}
+<span class="fc" id="L34">	public static final String[] ruleNames = makeRuleNames();</span>
+
+	private static String[] makeLiteralNames() {
+<span class="fc" id="L37">		return new String[] {</span>
+			null, &quot;'!'&quot;, &quot;'&amp;&amp;'&quot;, &quot;'||'&quot;, &quot;'true'&quot;, &quot;'false'&quot;, &quot;'('&quot;, &quot;')'&quot;
+		};
+	}
+<span class="fc" id="L41">	private static final String[] _LITERAL_NAMES = makeLiteralNames();</span>
+	private static String[] makeSymbolicNames() {
+<span class="fc" id="L43">		return new String[] {</span>
+			null, &quot;NOT&quot;, &quot;AND&quot;, &quot;OR&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;LPAREN&quot;, &quot;RPAREN&quot;, &quot;ID&quot;, 
+			&quot;WS&quot;
+		};
+	}
+<span class="fc" id="L48">	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();</span>
+<span class="fc" id="L49">	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);</span>
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+<span class="fc" id="L57">		tokenNames = new String[_SYMBOLIC_NAMES.length];</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		for (int i = 0; i &lt; tokenNames.length; i++) {</span>
+<span class="fc" id="L59">			tokenNames[i] = VOCABULARY.getLiteralName(i);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">			if (tokenNames[i] == null) {</span>
+<span class="fc" id="L61">				tokenNames[i] = VOCABULARY.getSymbolicName(i);</span>
+			}
+
+<span class="fc bfc" id="L64" title="All 2 branches covered.">			if (tokenNames[i] == null) {</span>
+<span class="fc" id="L65">				tokenNames[i] = &quot;&lt;INVALID&gt;&quot;;</span>
+			}
+		}
+	}
+
+	@Override
+	@Deprecated
+	public String[] getTokenNames() {
+<span class="nc" id="L73">		return tokenNames;</span>
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+<span class="nc" id="L79">		return VOCABULARY;</span>
+	}
+
+
+	public BooleanExpLexer(CharStream input) {
+<span class="fc" id="L84">		super(input);</span>
+<span class="fc" id="L85">		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);</span>
+<span class="fc" id="L86">	}</span>
+
+	@Override
+<span class="nc" id="L89">	public String getGrammarFileName() { return &quot;BooleanExp.g4&quot;; }</span>
+
+	@Override
+<span class="nc" id="L92">	public String[] getRuleNames() { return ruleNames; }</span>
+
+	@Override
+<span class="nc" id="L95">	public String getSerializedATN() { return _serializedATN; }</span>
+
+	@Override
+<span class="nc" id="L98">	public String[] getChannelNames() { return channelNames; }</span>
+
+	@Override
+<span class="nc" id="L101">	public String[] getModeNames() { return modeNames; }</span>
+
+	@Override
+<span class="nc" id="L104">	public ATN getATN() { return _ATN; }</span>
+
+	public static final String _serializedATN =
+		&quot;\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\13;\b\1\4\2\t\2\4&quot;+
+		&quot;\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3\2&quot;+
+		&quot;\3\3\3\3\3\3\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3&quot;+
+		&quot;\7\3\7\3\b\3\b\3\t\3\t\3\t\7\t\60\n\t\f\t\16\t\63\13\t\3\n\6\n\66\n\n&quot;+
+		&quot;\r\n\16\n\67\3\n\3\n\2\2\13\3\3\5\4\7\5\t\6\13\7\r\b\17\t\21\n\23\13\3&quot;+
+		&quot;\2\5\3\2\63;\3\2\62;\5\2\13\f\16\17\&quot;\&quot;\2&lt;\2\3\3\2\2\2\2\5\3\2\2\2\2\7&quot;+
+		&quot;\3\2\2\2\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2&quot;+
+		&quot;\2\2\23\3\2\2\2\3\25\3\2\2\2\5\27\3\2\2\2\7\32\3\2\2\2\t\35\3\2\2\2\13&quot;+
+		&quot;\&quot;\3\2\2\2\r(\3\2\2\2\17*\3\2\2\2\21,\3\2\2\2\23\65\3\2\2\2\25\26\7#\2&quot;+
+		&quot;\2\26\4\3\2\2\2\27\30\7(\2\2\30\31\7(\2\2\31\6\3\2\2\2\32\33\7~\2\2\33&quot;+
+		&quot;\34\7~\2\2\34\b\3\2\2\2\35\36\7v\2\2\36\37\7t\2\2\37 \7w\2\2 !\7g\2\2&quot;+
+		&quot;!\n\3\2\2\2\&quot;#\7h\2\2#$\7c\2\2$%\7n\2\2%&amp;\7u\2\2&amp;\'\7g\2\2\'\f\3\2\2\2&quot;+
+		&quot;()\7*\2\2)\16\3\2\2\2*+\7+\2\2+\20\3\2\2\2,-\7r\2\2-\61\t\2\2\2.\60\t&quot;+
+		&quot;\3\2\2/.\3\2\2\2\60\63\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\22\3\2\2\2&quot;+
+		&quot;\63\61\3\2\2\2\64\66\t\4\2\2\65\64\3\2\2\2\66\67\3\2\2\2\67\65\3\2\2\2&quot;+
+		&quot;\678\3\2\2\289\3\2\2\29:\b\n\2\2:\24\3\2\2\2\5\2\61\67\3\b\2\2&quot;;
+<span class="fc" id="L123">	public static final ATN _ATN =</span>
+<span class="fc" id="L124">		new ATNDeserializer().deserialize(_serializedATN.toCharArray());</span>
+	static {
+<span class="fc" id="L126">		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		for (int i = 0; i &lt; _ATN.getNumberOfDecisions(); i++) {</span>
+<span class="fc" id="L128">			_decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);</span>
+		}
+<span class="fc" id="L130">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
