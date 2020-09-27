@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Variable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">problem2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">Variable.java</span></div><h1>Variable.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework2;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,12 +16,12 @@ public class Variable implements Exp {
      *
      * @param number
      */
-<span class="fc" id="L18">    public Variable(int number) {</span>
-<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (number &gt; 0)</span>
-<span class="fc" id="L20">            this.identifier = number;</span>
+<span class="fc" id="L19">    public Variable(int number) {</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (number &gt; 0)</span>
+<span class="fc" id="L21">            this.identifier = number;</span>
         else
-<span class="nc" id="L22">            throw new IllegalArgumentException(&quot;Variable Id must be a positive integer&quot;);</span>
-<span class="fc" id="L23">    }</span>
+<span class="nc" id="L23">            throw new IllegalArgumentException(&quot;Variable Id must be a positive integer&quot;);</span>
+<span class="fc" id="L24">    }</span>
 
     /**
      * Returns the number identifier of this variable.
@@ -28,30 +29,27 @@ public class Variable implements Exp {
      * @return the number
      */
     public Integer getIdentifier() {
-<span class="nc" id="L31">        return identifier;</span>
+<span class="fc" id="L32">        return identifier;</span>
     }
 
     @Override
     public Set&lt;Integer&gt; vars() {
-        // TODO: implement this
-<span class="nc" id="L37">        return null;</span>
+<span class="fc" id="L37">        return Collections.singleton(identifier);</span>
     }
 
     @Override
     public Boolean evaluate(Map&lt;Integer, Boolean&gt; assignment) {
-        // TODO: implement this
-<span class="nc" id="L43">        return null;</span>
+<span class="fc" id="L42">        return assignment.get(identifier);</span>
     }
 
     @Override
     public Exp simplify() {
-        // TODO: implement this
-<span class="nc" id="L49">        return null;</span>
+<span class="fc" id="L47">        return this;</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L54">        return &quot;p&quot; + identifier;</span>
+<span class="fc" id="L52">        return &quot;p&quot; + identifier;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
