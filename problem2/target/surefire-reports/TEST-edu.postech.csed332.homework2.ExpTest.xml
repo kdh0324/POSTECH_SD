@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="edu.postech.csed332.homework2.ExpTest" time="0.532" tests="2" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="edu.postech.csed332.homework2.ExpTest" time="0.484" tests="13" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="13"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="KR"/>
     <property name="sun.boot.library.path" value="C:\Program Files\JAVA\jdk-13\bin"/>
-    <property name="sun.java.command" value="C:\Users\kimda\AppData\Local\Temp\surefire1962917014838774767\surefirebooter6641702488908447139.jar C:\Users\kimda\AppData\Local\Temp\surefire1962917014838774767 2020-09-27T22-41-44_925-jvmRun1 surefire9613695525332362711tmp surefire_012634141669027842001tmp"/>
+    <property name="sun.java.command" value="C:\Users\kimda\AppData\Local\Temp\surefire15720628836452700992\surefirebooter16440991886500057250.jar C:\Users\kimda\AppData\Local\Temp\surefire15720628836452700992 2020-09-28T00-22-59_589-jvmRun1 surefire3239905184508481041tmp surefire_03752060869449985319tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="D:\Desktop\POSTECH\CSE\SD\HW\homework2\problem2\target\test-classes;D:\Desktop\POSTECH\CSE\SD\HW\homework2\problem2\target\classes;C:\Users\kimda\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.6.2\junit-jupiter-api-5.6.2.jar;C:\Users\kimda\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\kimda\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\kimda\.m2\repository\org\junit\platform\junit-platform-commons\1.6.2\junit-platform-commons-1.6.2.jar;C:\Users\kimda\.m2\repository\org\antlr\antlr4-runtime\4.7.2\antlr4-runtime-4.7.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\kimda\AppData\Local\Temp\surefire1962917014838774767\surefirebooter6641702488908447139.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\kimda\AppData\Local\Temp\surefire15720628836452700992\surefirebooter16440991886500057250.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="13+33"/>
@@ -55,10 +55,23 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="57.0"/>
   </properties>
-  <testcase name="testParserError" classname="edu.postech.csed332.homework2.ExpTest" time="0.451">
-    <system-err><![CDATA[ANTLR Tool version 4.8 used for code generation does not match the current runtime version 4.7.2ANTLR Tool version 4.8 used for code generation does not match the current runtime version 4.7.2line 1:14 token recognition error at: 'p0'
+  <testcase name="testAbsorption" classname="edu.postech.csed332.homework2.ExpTest" time="0.366">
+    <system-err><![CDATA[ANTLR Tool version 4.8 used for code generation does not match the current runtime version 4.7.2ANTLR Tool version 4.8 used for code generation does not match the current runtime version 4.7.2]]></system-err>
+  </testcase>
+  <testcase name="testNegationEvaluate" classname="edu.postech.csed332.homework2.ExpTest" time="0.005"/>
+  <testcase name="testDoubleNegation" classname="edu.postech.csed332.homework2.ExpTest" time="0.002"/>
+  <testcase name="testVariableEvaluate" classname="edu.postech.csed332.homework2.ExpTest" time="0.002"/>
+  <testcase name="testVars" classname="edu.postech.csed332.homework2.ExpTest" time="0.004"/>
+  <testcase name="testDistributive" classname="edu.postech.csed332.homework2.ExpTest" time="0.016"/>
+  <testcase name="testParserError" classname="edu.postech.csed332.homework2.ExpTest" time="0.012">
+    <system-err><![CDATA[line 1:14 token recognition error at: 'p0'
 line 1:17 extraneous input '||' expecting {'!', 'true', 'false', '(', ID}
 ]]></system-err>
   </testcase>
-  <testcase name="testParserOK" classname="edu.postech.csed332.homework2.ExpTest" time="0.036"/>
+  <testcase name="testIdentity" classname="edu.postech.csed332.homework2.ExpTest" time="0.005"/>
+  <testcase name="testDeMorgan" classname="edu.postech.csed332.homework2.ExpTest" time="0.003"/>
+  <testcase name="testEvaluate" classname="edu.postech.csed332.homework2.ExpTest" time="0.006"/>
+  <testcase name="testDomination" classname="edu.postech.csed332.homework2.ExpTest" time="0.003"/>
+  <testcase name="testConstantEvaluate" classname="edu.postech.csed332.homework2.ExpTest" time="0.001"/>
+  <testcase name="testParserOK" classname="edu.postech.csed332.homework2.ExpTest" time="0.003"/>
 </testsuite>
