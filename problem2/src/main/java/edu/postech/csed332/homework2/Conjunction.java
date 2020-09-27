@@ -117,7 +117,7 @@ public class Conjunction implements Exp {
         subexps.removeAll(removed);
 
         if (subexps.size() == 1)
-            return subexps.get(0);
+            return subexps.get(0).simplify();
         return this;
     }
 
