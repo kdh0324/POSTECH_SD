@@ -68,12 +68,9 @@ Let $`T_{this} = (V_{this}, E_{this}, \hat{v}_{this})`$ be an abstract value of 
 ##### Class invariant 
 
 ```math
-\forall (v, w) \in E_{this}.\ v, w \in V_{this},
-
-\hat{v}_{this} \in V_{this},
-
-\forall (v, w) \in E_{this}.\ (w, v) \notin E_{this},
-
+\forall (v, w) \in E_{this}.\ v, w \in V_{this},\n
+\hat{v}_{this} \in V_{this},\n
+\forall (v, w) \in E_{this}.\ (w, v) \notin E_{this},\n
 Let, $`T'_{this} = (V'_{this}, E'_{this}, \hat{v}'_{this})`$, $`T'_{this} \in T_{this}`$.
 \forall v \in V'_{this}, w \in V_{this} - V'_{this}.\ (v, w) \notin E_{this} 
 ```
