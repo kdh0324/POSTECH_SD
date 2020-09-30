@@ -35,8 +35,10 @@ boolean containsVertex(N vertex);
 boolean containsEdge(N source, N target);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: source and target are in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + returns true if source and target is connected by an edge which is in $`\mathcal{N}`$; and
+    - returns false, otherwise.
 
 ##### getSources
 
@@ -44,8 +46,9 @@ boolean containsEdge(N source, N target);
 Set<N> getSources(N target);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: target is in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + returns the set of vertices that have an edge to target, immutable.
 
 ##### getTargets
 
@@ -53,8 +56,9 @@ Set<N> getSources(N target);
 Set<N> getTargets(N source);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: source is in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + returns the set of vertices that have an edge from source, immutable.
 
 
 ## `Tree<N>`
@@ -63,7 +67,13 @@ Let $`T_{this} = (V_{this}, E_{this}, \hat{v}_{this})`$ be an abstract value of 
 
 ##### Class invariant 
 
-<!-- TODO -->
+```math
+\forall (v, w) \in E_{this}.\ v, w \in V_{this},\newline
+\hat{v}_{this} \in V_{this},\newline
+\forall (v, w) \in E_{this}.\ (w, v) \notin E_{this},\newline
+Let, T'_{this} = (V'_{this}, E'_{this}, \hat{v}'_{this}), T'_{this} \in T_{this}.
+\forall v \in V'_{this}, w \in V_{this} - V'_{this}. (v, w) \notin E_{this} 
+```
 
 ##### getDepth
 
@@ -84,8 +94,9 @@ int getDepth(N vertex);
 int getHeight();
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: getRoot.isPresent()
+- ensures:  
+  + returns the maximum of getDepth(N vertex)
 
 ##### getRoot
 
@@ -93,8 +104,10 @@ int getHeight();
 Optional<N> getRoot();
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: 
+- ensures:  
+  + returns Optional.empty() if tree is empty; and
+  + returns $`\hat{v}_{this}`$, otherwise.
 
 ##### getParent
 
@@ -102,8 +115,10 @@ Optional<N> getRoot();
 Optional<N> getParent(N vertex);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: vertex is in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+  + returns Optional.empty() if vertex is getRoot.get(); and
+  + returns an element of getSources(vertex), otherwise.
 
 
 ## `MutableGraph<N>`
@@ -136,8 +151,12 @@ boolean addVertex(N vertex);
 boolean removeVertex(N vertex);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: vertex is in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + $`V_{next} = V_{this} - \{\texttt{vertex}\}`$; 
+    + $`E_{next} = E_{this} - \{\forall (\texttt{vertex}, v)\} - \{\forall (v, \texttt{vertex})\}`$;
+    + If $`G_{this}`$ satisfies the class invariant, $`G_{next}`$ also satisfies the class invariant; and
+    + returns true if and only if $`V_{this} \neq V_{next}`$.
 
 ##### addEdge
 
@@ -145,8 +164,12 @@ boolean removeVertex(N vertex);
 boolean addEdge(N source, N target);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: source and target are in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + $`V_{next} = V_{this}`$; 
+    + $`E_{next} = E_{this} \cup \{(\texttt{source}, \texttt{target})\}`$;
+    + If $`G_{this}`$ satisfies the class invariant, $`G_{next}`$ also satisfies the class invariant; and
+    + returns true if and only if $`E_{this} \neq E_{next}`$.
 
 ##### removeEdge
 
@@ -154,8 +177,12 @@ boolean addEdge(N source, N target);
 boolean removeEdge(N source, N target);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: source and target are in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + $`V_{next} = V_{this}`$; 
+    + $`E_{next} = E_{this} - {(\texttt{source}, \texttt{target})}`$;
+    + If $`G_{this}`$ satisfies the class invariant, $`G_{next}`$ also satisfies the class invariant; and
+    + returns true if and only if $`E_{this} \neq E_{next}`$.
 
 
 ## `MutableTree<N>`
@@ -171,8 +198,13 @@ and $`T_{next} = (V_{next}, E_{next}, \hat{v}_{next})`$ be an abstract value of 
 boolean addVertex(N vertex);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: vertex is in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + If $`V_{this}`$ is empty, $`V_{next} = \texttt{vertex}`$; 
+    + $`E_{next} = E_{this}`$ (the edges are not modified);
+    + If $`V_{this}`$ is empty, &`\hat{v}_{next} = \texttt{vertex}`$
+    + If $`G_{this}`$ satisfies the class invariant, $`G_{next}`$ also satisfies the class invariant; and
+    + returns true if and only if $`V_{this}`$ is empty.
 
 ##### removeVertex
 
@@ -180,8 +212,12 @@ boolean addVertex(N vertex);
 boolean removeVertex(N vertex);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: vertex is in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + $`V_{next} = V_{this} - \{v|v \in \texttt{subgraph which a root is vertex}\}`$; 
+    + $`E_{next} = E_{this} - \{e|e \in \texttt{subgraph which a root is vertex}\}`$;
+    + If $`G_{this}`$ satisfies the class invariant, $`G_{next}`$ also satisfies the class invariant; and
+    + returns true if and only if $`V_{this} \neq V_{next}`$.
 
 ##### addEdge
 
@@ -189,8 +225,14 @@ boolean removeVertex(N vertex);
 boolean addEdge(N source, N target);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: source and target are in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + If $`\texttt{source} \in E_{this} && \texttt{target} \notin E_{this}`$,
+    $`V_{next} = V_{this} \cup \{\texttt{target}\}`$; 
+    + If $`\texttt{source} \in E_{this} && \texttt{target} \notin E_{this}`$,
+    $`E_{next} = E_{this} \cup \{(\texttt{source}, \texttt{target})\}`$;
+    + If $`G_{this}`$ satisfies the class invariant, $`G_{next}`$ also satisfies the class invariant; and
+    + returns true if and only if $`\texttt{source} \in E_{this} && \texttt{target} \notin E_{this}`$.
 
 ##### removeEdge
 
@@ -198,8 +240,14 @@ boolean addEdge(N source, N target);
 boolean removeEdge(N source, N target);
 ```
 
-- requires: <!-- TODO -->
-- ensures:  <!-- TODO -->
+- requires: source and target are in $`\mathcal{N}`$ and not $`\mathsf{null}`$
+- ensures:  
+    + If $`\texttt{source} \in E_{this} && \texttt{target} \in E_{this}`$,
+    $`V_{next} = V_{this} - \{v|v \in \texttt{subgraph which a root is target}\}`$; 
+    + If $`\texttt{source} \in E_{this} && \texttt{target} \in E_{this}`$,
+    $`E_{next} = E_{this} - \{e|e \in \texttt{subgraph which a root is target}\} - \{(source, target)\}`$;
+    + If $`G_{this}`$ satisfies the class invariant, $`G_{next}`$ also satisfies the class invariant; and
+    + returns true if and only if $`\texttt{source} \in E_{this} && \texttt{target} \in E_{this}`$.
 
 
 # Problem 2
@@ -211,19 +259,19 @@ For each question, explain your reasoning _using the abstract specifications tha
 ##### `Tree<N>` and `Graph<N>`
 
 * Is `Tree<N>` a subtype of `Graph<N>`?
-<!-- TODO -->
+    + Yes, it is. Because $`\hat{v}_{this} \in V_{this}`$ and `Tree<N>` extends `Graph<N>`.
 
 ##### `MutableGraph<N>` and `Graph<N>`
 
 * Is `MutableGraph<N>` a subtype of `Graph<N>`
-<!-- TODO -->
+    + Yes, it is. Because `MutableGraph<N>` extends `Graph<N>`.
 
 ##### `MutableTree<N>` and `Tree<N>`
 
 * Is `MutableTree<N>` a subtype of `Tree<N>`
-<!-- TODO -->
+    + Yes, it is. Because `MutableTree<N>` extends `Tree<N>`.
 
 ##### `MutableTree<N>` and `MutableGraph<N>`
 
 * Is `MutableTree<N>` a subtype of `MutableGraph<N>`
-<!-- TODO -->
+    + Yes, it is. Because $`\hat{v}_{this} \in V_{this}`$ and `MutableTree<N>` extends `Tree<N>`.
