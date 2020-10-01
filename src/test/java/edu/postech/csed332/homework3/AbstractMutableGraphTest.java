@@ -35,14 +35,14 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
         Assertions.assertTrue(graph.addEdge(v3, v1));
         Assertions.assertTrue(graph.addEdge(v3, v2));
         Assertions.assertFalse(graph.addEdge(v1, v1));
-        List<AbstractMap.SimpleEntry<V, V>> edges = List.of(
-                (AbstractMap.SimpleEntry<V, V>) Map.entry(v1, v1),
-                (AbstractMap.SimpleEntry<V, V>) Map.entry(v1, v2),
-                (AbstractMap.SimpleEntry<V, V>) Map.entry(v3, v1),
-                (AbstractMap.SimpleEntry<V, V>) Map.entry(v3, v2)
+        List<Edge> edges = List.of(
+                new Edge(v1, v1),
+                new Edge(v1, v2),
+                new Edge(v3, v2),
+                new Edge(v3, v1)
         );
         edges.forEach((edge)
-                -> Assertions.assertTrue(graph.containsEdge(edge.getKey(), edge.getValue())));
+                -> Assertions.assertTrue(graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 
@@ -73,7 +73,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
         Set<V> sources = Set.of(v1, v3);
         Assertions.assertEquals(graph.getSources(v1), sources);
         Assertions.assertEquals(graph.getSources(v2), sources);
-        Assertions.assertEquals(graph.getSources(v3), Set.of());
+        Assertions.assertEquals(graph.getSources(v3), Collections.emptySet());
     }
 
     @Test
@@ -81,7 +81,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
         Set<V> sources = Set.of(v1, v2);
         Assertions.assertEquals(graph.getSources(v1), sources);
         Assertions.assertEquals(graph.getSources(v3), sources);
-        Assertions.assertEquals(graph.getSources(v2), Set.of());
+        Assertions.assertEquals(graph.getSources(v2), Collections.emptySet());
     }
 
     @Test
