@@ -29,50 +29,55 @@ public class AdjacencyListGraph<N extends Comparable<N>> implements MutableGraph
 
     @Override
     public boolean containsVertex(@NotNull N vertex) {
-        // TODO: implement this
-        return false;
+        return adjMap.containsKey(vertex);
     }
 
     @Override
     public boolean addVertex(@NotNull N vertex) {
-        // TODO: implement this
-        return false;
+        if (containsVertex(vertex)) return false;
+        adjMap.put(vertex, new TreeSet<>());
+        return true;
     }
 
     @Override
     public boolean removeVertex(@NotNull N vertex) {
-        // TODO: implement this
-        return false;
+        if (!containsVertex(vertex)) return false;
+        adjMap.values().forEach(targets -> targets.remove(vertex));
+        adjMap.remove(vertex);
+        return true;
     }
 
     @Override
     public boolean containsEdge(@NotNull N source, @NotNull N target) {
-        // TODO: implement this
-        return false;
+        if (!containsVertex(source)) return false;
+        return adjMap.get(source).contains(target);
     }
 
     @Override
     public boolean addEdge(@NotNull N source, @NotNull N target) {
-        // TODO: implement this
-        return false;
+        if (containsEdge(source, target)) return false;
+        if (containsVertex(source))
+            adjMap.get(source).add(target);
+        else
+            adjMap.put(source, new TreeSet<>(Collections.singleton(target)));
+        if (!containsVertex(target)) addVertex(target);
+        return true;
     }
 
     @Override
     public boolean removeEdge(@NotNull N source, @NotNull N target) {
-        // TODO: implement this
-        return false;
+        return adjMap.get(source).remove(target);
     }
 
     @Override
     public @NotNull Set<N> getSources(N target) {
-        // TODO: implement this
-        return Collections.emptySet();
+        return adjMap.keySet().stream()
+                .filter(key -> adjMap.get(key).contains(target)).collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
     public @NotNull Set<N> getTargets(N source) {
-        // TODO: implement this
-        return Collections.emptySet();
+        return Collections.unmodifiableSet(adjMap.get(source));
     }
 
     @Override
@@ -93,8 +98,8 @@ public class AdjacencyListGraph<N extends Comparable<N>> implements MutableGraph
      * @return true if the representation of this graph is valid
      */
     boolean checkInv() {
-        // TODO: implement this
-        return false;
+        return adjMap.values().stream()
+                .allMatch(targets -> targets.stream().allMatch(this::containsVertex));
     }
 
     /**

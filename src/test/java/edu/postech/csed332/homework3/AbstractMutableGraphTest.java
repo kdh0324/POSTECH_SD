@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * An abstract test class for MutableGraph with blackbox test methods
@@ -41,8 +43,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
                 new Edge(v3, v2),
                 new Edge(v3, v1)
         );
-        edges.forEach((edge)
-                -> Assertions.assertTrue(graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertTrue(edges.stream().allMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 
@@ -60,6 +61,10 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
     void testFindReachableVertices() {
         graph.addVertex(v4);
 
+        graph.addEdge(v1, v1);
+        graph.addEdge(v1, v2);
+        graph.addEdge(v3, v1);
+        graph.addEdge(v3, v2);
         Assertions.assertEquals(graph.findReachableVertices(v1), Set.of(v1, v2));
         Assertions.assertEquals(graph.findReachableVertices(v2), Set.of(v2));
         Assertions.assertEquals(graph.findReachableVertices(v3), Set.of(v1, v2, v3));
@@ -70,6 +75,11 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
 
     @Test
     void testGetSources() {
+        graph.addEdge(v1, v1);
+        graph.addEdge(v1, v2);
+        graph.addEdge(v3, v1);
+        graph.addEdge(v3, v2);
+
         Set<V> sources = Set.of(v1, v3);
         Assertions.assertEquals(graph.getSources(v1), sources);
         Assertions.assertEquals(graph.getSources(v2), sources);
@@ -78,20 +88,35 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
 
     @Test
     void testGetTargets() {
+        graph.addEdge(v1, v1);
+        graph.addEdge(v1, v2);
+        graph.addEdge(v3, v1);
+        graph.addEdge(v3, v2);
+
         Set<V> sources = Set.of(v1, v2);
-        Assertions.assertEquals(graph.getSources(v1), sources);
-        Assertions.assertEquals(graph.getSources(v3), sources);
-        Assertions.assertEquals(graph.getSources(v2), Collections.emptySet());
+        Assertions.assertEquals(graph.getTargets(v1), sources);
+        Assertions.assertEquals(graph.getTargets(v3), sources);
+        Assertions.assertEquals(graph.getTargets(v2), Collections.emptySet());
     }
 
     @Test
     void testGetVertices() {
-        Set<V> sources = Set.of(v1, v2, v3, v4, v6, v7);
+        graph.addEdge(v1, v1);
+        graph.addEdge(v1, v2);
+        graph.addEdge(v3, v1);
+        graph.addEdge(v3, v2);
+
+        Set<V> sources = Set.of(v1, v2, v3);
         Assertions.assertEquals(graph.getVertices(), sources);
     }
 
     @Test
     void testGetEdges() {
+        graph.addEdge(v1, v1);
+        graph.addEdge(v1, v2);
+        graph.addEdge(v3, v1);
+        graph.addEdge(v3, v2);
+
         Set<Edge> edges = Set.of(
                 new Edge(v1, v1),
                 new Edge(v1, v2),
@@ -103,6 +128,10 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
 
     @Test
     void testRemoveEdge() {
+        graph.addEdge(v1, v1);
+        graph.addEdge(v1, v2);
+        graph.addEdge(v3, v1);
+        graph.addEdge(v3, v2);
         graph.addEdge(v4, v6);
         graph.addEdge(v6, v7);
         graph.addEdge(v6, v1);
@@ -116,13 +145,17 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
                 new Edge(v6, v7),
                 new Edge(v6, v1)
         );
-        edges.forEach((edge)
-                -> Assertions.assertFalse(graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertFalse(edges.stream().allMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 
     @Test
     void testRemoveVertex() {
+        graph.addEdge(v1, v1);
+        graph.addEdge(v1, v2);
+        graph.addEdge(v3, v1);
+        graph.addEdge(v3, v2);
+
         Assertions.assertTrue(graph.removeVertex(v1));
         Assertions.assertFalse(graph.removeVertex(v8));
         Assertions.assertFalse(graph.containsVertex(v1));
@@ -131,8 +164,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
                 new Edge(v1, v2),
                 new Edge(v3, v1)
         );
-        edges.forEach((edge)
-                -> Assertions.assertFalse(graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertFalse(edges.stream().allMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 }
