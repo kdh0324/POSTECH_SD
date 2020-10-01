@@ -260,18 +260,22 @@ For each question, explain your reasoning _using the abstract specifications tha
 
 * Is `Tree<N>` a subtype of `Graph<N>`?
     + Yes, it is. Because $`\hat{v}_{this} \in V_{this}`$ and `Tree<N>` extends `Graph<N>`.
+    + Also, a class invariant of `Graph<N>` contains a class invariant of `Tree<N>`. 
 
 ##### `MutableGraph<N>` and `Graph<N>`
 
 * Is `MutableGraph<N>` a subtype of `Graph<N>`
     + Yes, it is. Because `MutableGraph<N>` extends `Graph<N>`.
+    + Also, a class invariant of `MutableGraph<N>` contains a class invariant of `Graph<N>`.
 
 ##### `MutableTree<N>` and `Tree<N>`
 
 * Is `MutableTree<N>` a subtype of `Tree<N>`
     + Yes, it is. Because `MutableTree<N>` extends `Tree<N>`.
+    + Also, a class invariant of `MutableTree<N>` contains a class invariant of `Tree<N>`.
 
 ##### `MutableTree<N>` and `MutableGraph<N>`
 
 * Is `MutableTree<N>` a subtype of `MutableGraph<N>`
     + Yes, it is. Because $`\hat{v}_{this} \in V_{this}`$ and `MutableTree<N>` extends `Tree<N>`.
+    + Also, a class invariant of `MutableTree<N>` contains a class invariant of `MutableGraph<N>`.
