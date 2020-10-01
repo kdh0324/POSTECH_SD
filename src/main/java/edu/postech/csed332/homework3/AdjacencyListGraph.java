@@ -42,13 +42,14 @@ public class AdjacencyListGraph<N extends Comparable<N>> implements MutableGraph
     @Override
     public boolean removeVertex(@NotNull N vertex) {
         if (!containsVertex(vertex)) return false;
-        adjMap.get(vertex).forEach(key -> adjMap.get(key).remove(vertex));
+        adjMap.values().forEach(targets -> targets.remove(vertex));
         adjMap.remove(vertex);
         return true;
     }
 
     @Override
     public boolean containsEdge(@NotNull N source, @NotNull N target) {
+        if (!containsVertex(source)) return false;
         return adjMap.get(source).contains(target);
     }
 
