@@ -76,6 +76,8 @@ public class ParentPointerTree<N extends Comparable<N>> implements MutableTree<N
                 removed.add(key);
         });
         removed.forEach(nodeMap::remove);
+        if (vertex.equals(root))
+            root = null;
         return true;
     }
 
@@ -88,7 +90,7 @@ public class ParentPointerTree<N extends Comparable<N>> implements MutableTree<N
     @Override
     public boolean addEdge(@NotNull N source, @NotNull N target) {
         if (!containsVertex(source) || containsVertex(target)) return false;
-        nodeMap.put(target, new Node<>(source, getHeight()));
+        nodeMap.put(target, new Node<>(source, getHeight() + 1));
         return true;
     }
 
@@ -106,7 +108,7 @@ public class ParentPointerTree<N extends Comparable<N>> implements MutableTree<N
     @Override
     public @NotNull Set<N> getTargets(N source) {
         return nodeMap.keySet().stream()
-                .filter(target -> Objects.equals(nodeMap.get(target).parent, source))
+                .filter(v -> Objects.equals(nodeMap.get(v).parent, source))
                 .collect(Collectors.toUnmodifiableSet());
     }
 
