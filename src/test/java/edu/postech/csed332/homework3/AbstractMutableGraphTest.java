@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * An abstract test class for MutableGraph with blackbox test methods
@@ -41,8 +43,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
                 new Edge(v3, v2),
                 new Edge(v3, v1)
         );
-        edges.forEach((edge)
-                -> Assertions.assertTrue(graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertTrue(edges.stream().allMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 
@@ -116,8 +117,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
                 new Edge(v6, v7),
                 new Edge(v6, v1)
         );
-        edges.forEach((edge)
-                -> Assertions.assertFalse(graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertFalse(edges.stream().allMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 
@@ -131,8 +131,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
                 new Edge(v1, v2),
                 new Edge(v3, v1)
         );
-        edges.forEach((edge)
-                -> Assertions.assertFalse(graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertFalse(edges.stream().allMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 }

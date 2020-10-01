@@ -147,8 +147,7 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
                 new Edge(v3, v6),
                 new Edge(v3, v7)
         );
-        edges.forEach((edge ->
-                Assertions.assertFalse(tree.containsEdge((V) edge.getTarget(), (V) edge.getSource()))));
+        Assertions.assertFalse(edges.stream().allMatch(edge -> tree.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
 
         Assertions.assertTrue(tree.removeVertex(v1));
         Assertions.assertEquals(tree.getRoot(), Optional.empty());
@@ -174,7 +173,6 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
                 new Edge(v3, v6),
                 new Edge(v3, v7)
         );
-        edges.forEach((edge ->
-                Assertions.assertFalse(tree.containsEdge((V) edge.getTarget(), (V) edge.getSource()))));
+        Assertions.assertFalse(edges.stream().allMatch(edge -> tree.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
     }
 }
