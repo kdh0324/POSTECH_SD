@@ -12,7 +12,7 @@ import java.util.*;
  * @param <V> type of vertices
  * @param <T> type of Tree
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes"})
 @Disabled
 public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends MutableTree<V>> {
 
@@ -88,6 +88,29 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
         Assertions.assertFalse(tree.addEdge(v3, v1));
         Assertions.assertFalse(tree.containsVertex(v3));
         Assertions.assertTrue(checkInv());
+    }
+
+    @Test
+    void testGetVertices() {
+        init();
+
+        Assertions.assertEquals(tree.getVertices(), Set.of(v1, v2, v3, v4, v5, v6, v7, v8));
+    }
+
+    @Test
+    void testGetEdges() {
+        init();
+
+        Set<Edge> edges = Set.of(
+                new Edge(v1, v2),
+                new Edge(v1, v3),
+                new Edge(v2, v4),
+                new Edge(v3, v5),
+                new Edge(v3, v6),
+                new Edge(v3, v7),
+                new Edge(v7, v8)
+        );
+        Assertions.assertEquals(tree.getEdges(), edges);
     }
 
     @Test

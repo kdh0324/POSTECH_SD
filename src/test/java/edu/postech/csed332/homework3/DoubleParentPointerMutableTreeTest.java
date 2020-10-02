@@ -1,6 +1,8 @@
 package edu.postech.csed332.homework3;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DoubleParentPointerMutableTreeTest extends AbstractMutableTreeTest<Double, ParentPointerTree<Double>> {
 
@@ -20,5 +22,12 @@ public class DoubleParentPointerMutableTreeTest extends AbstractMutableTreeTest<
     @Override
     boolean checkInv() {
         return tree.checkInv();
+    }
+
+    @Test
+    void testConstructor() {
+        Assertions.assertDoesNotThrow(() -> {
+            tree = new ParentPointerTree<>();
+        });
     }
 }

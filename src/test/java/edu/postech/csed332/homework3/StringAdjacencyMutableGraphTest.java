@@ -1,6 +1,8 @@
 package edu.postech.csed332.homework3;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class StringAdjacencyMutableGraphTest extends AbstractMutableGraphTest<String, AdjacencyListGraph<String>> {
 
@@ -20,5 +22,12 @@ public class StringAdjacencyMutableGraphTest extends AbstractMutableGraphTest<St
     @Override
     boolean checkInv() {
         return graph.checkInv();
+    }
+
+    @Test
+    void testConstructor() {
+        Assertions.assertDoesNotThrow(() -> {
+            graph = new AdjacencyListGraph<>();
+        });
     }
 }

@@ -1,6 +1,8 @@
 package edu.postech.csed332.homework3;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class IntegerDelegateMutableTreeTest extends AbstractMutableTreeTest<Integer, DelegateTree<Integer>> {
 
@@ -20,5 +22,19 @@ public class IntegerDelegateMutableTreeTest extends AbstractMutableTreeTest<Inte
     @Override
     boolean checkInv() {
         return tree.checkInv();
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    void testConstructor() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            AdjacencyListGraph adjacencyListGraph = new AdjacencyListGraph<Integer>();
+            adjacencyListGraph.addVertex(v1);
+            tree = new DelegateTree<>(adjacencyListGraph);
+        });
+
+        Assertions.assertDoesNotThrow(() -> {
+            tree = new DelegateTree<>(new AdjacencyListGraph<Integer>());
+        });
     }
 }
