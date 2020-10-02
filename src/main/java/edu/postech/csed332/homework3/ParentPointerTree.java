@@ -121,7 +121,8 @@ public class ParentPointerTree<N extends Comparable<N>> implements MutableTree<N
     @Override
     public @NotNull Set<Edge<N>> getEdges() {
         return nodeMap.entrySet().stream()
-                .map(entry -> new Edge<>(entry.getKey(), entry.getValue().parent))
+                .map(entry -> new Edge<>(entry.getValue().parent, entry.getKey()))
+                .filter(entry -> entry.getSource() != null)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
