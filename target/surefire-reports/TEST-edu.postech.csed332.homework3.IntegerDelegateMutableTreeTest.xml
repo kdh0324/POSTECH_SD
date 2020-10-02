@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.126" tests="18" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.08" tests="18" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="13"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="KR"/>
     <property name="sun.boot.library.path" value="C:\Program Files\JAVA\jdk-13\bin"/>
-    <property name="sun.java.command" value="C:\Users\kimda\AppData\Local\Temp\surefire13489029484269515314\surefirebooter7311019490131586957.jar C:\Users\kimda\AppData\Local\Temp\surefire13489029484269515314 2020-10-03T03-50-18_746-jvmRun1 surefire3898911318788845819tmp surefire_0936604570379448780tmp"/>
+    <property name="sun.java.command" value="C:\Users\kimda\AppData\Local\Temp\surefire16190497520238704665\surefirebooter15070754690361771289.jar C:\Users\kimda\AppData\Local\Temp\surefire16190497520238704665 2020-10-03T03-57-33_472-jvmRun1 surefire11019354894163973485tmp surefire_08156641629599346572tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="D:\Desktop\POSTECH\CSE\SD\HW\homework3\target\test-classes;D:\Desktop\POSTECH\CSE\SD\HW\homework3\target\classes;C:\Users\kimda\.m2\repository\org\jetbrains\annotations\20.1.0\annotations-20.1.0.jar;C:\Users\kimda\.m2\repository\org\junit\jupiter\junit-jupiter\5.7.0\junit-jupiter-5.7.0.jar;C:\Users\kimda\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.7.0\junit-jupiter-api-5.7.0.jar;C:\Users\kimda\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\kimda\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\kimda\.m2\repository\org\junit\platform\junit-platform-commons\1.7.0\junit-platform-commons-1.7.0.jar;C:\Users\kimda\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.7.0\junit-jupiter-params-5.7.0.jar;C:\Users\kimda\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.7.0\junit-jupiter-engine-5.7.0.jar;C:\Users\kimda\.m2\repository\org\junit\platform\junit-platform-engine\1.7.0\junit-platform-engine-1.7.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\kimda\AppData\Local\Temp\surefire13489029484269515314\surefirebooter7311019490131586957.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\kimda\AppData\Local\Temp\surefire16190497520238704665\surefirebooter15070754690361771289.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="13+33"/>
@@ -55,22 +55,22 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="57.0"/>
   </properties>
-  <testcase name="testGetDepthTwo" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.057"/>
-  <testcase name="testGetSources" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.003"/>
+  <testcase name="testGetDepthTwo" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.01"/>
+  <testcase name="testGetSources" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.004"/>
   <testcase name="testGetEdges" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.003"/>
-  <testcase name="testAddEdge" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
+  <testcase name="testAddEdge" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.006"/>
   <testcase name="testGetChildren" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
-  <testcase name="testGetTargets" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.001"/>
+  <testcase name="testGetTargets" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
   <testcase name="testGetHeightNoRoot" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.001"/>
   <testcase name="testGetVertices" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.001"/>
-  <testcase name="testGetRoot" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.003"/>
-  <testcase name="testGetDepthNoVertex" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
-  <testcase name="testRemoveVertex" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.006"/>
-  <testcase name="testGetDepthNoRoot" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
+  <testcase name="testGetRoot" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.001"/>
+  <testcase name="testGetDepthNoVertex" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.001"/>
+  <testcase name="testRemoveVertex" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.007"/>
+  <testcase name="testGetDepthNoRoot" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.001"/>
   <testcase name="testGetDepthRoot" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
   <testcase name="testRemoveEdge" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.004"/>
-  <testcase name="testAddVertex" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
-  <testcase name="testGetHeight" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.003"/>
+  <testcase name="testAddVertex" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.001"/>
+  <testcase name="testGetHeight" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
   <testcase name="testGetParent" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
   <testcase name="testConstructor" classname="edu.postech.csed332.homework3.IntegerDelegateMutableTreeTest" time="0.002"/>
 </testsuite>
