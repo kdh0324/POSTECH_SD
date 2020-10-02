@@ -92,23 +92,15 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
 
     @Test
     void testGetChildren() {
-        Set<V> vertices = Set.of(v1, v2, v3, v4, v5, v6, v7, v8);
-        init();
+        tree.addVertex(v1);
+        tree.addEdge(v1, v2);
+        tree.addEdge(v1, v3);
+        tree.addEdge(v1, v4);
+        tree.addEdge(v4, v5);
 
-        Set<V> children = new HashSet<>(vertices);
-        children.remove(v1);
-        Assertions.assertEquals(tree.getChildren(v1), children);
-        Assertions.assertEquals(tree.getChildren(v2), Set.of(v4));
-
-        children.remove(v2);
-        children.remove(v3);
-        children.remove(v4);
-        Assertions.assertEquals(tree.getChildren(v3), children);
-        Assertions.assertEquals(tree.getChildren(v4), Collections.emptySet());
-        Assertions.assertEquals(tree.getChildren(v5), Collections.emptySet());
-        Assertions.assertEquals(tree.getChildren(v6), Collections.emptySet());
-        Assertions.assertEquals(tree.getChildren(v7), Set.of(v8));
-        Assertions.assertEquals(tree.getChildren(v8), Collections.emptySet());
+        Assertions.assertEquals(tree.getChildren(v1), Set.of(v2, v3, v4));
+        Assertions.assertEquals(tree.getChildren(v2), Collections.emptySet());
+        Assertions.assertEquals(tree.getChildren(v4), Set.of(v5));
     }
 
     @Test
@@ -116,8 +108,8 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
         tree.addVertex(v1);
         tree.addEdge(v1, v2);
 
-        Assertions.assertEquals(tree.getParent(v1), Optional.empty());
         Assertions.assertEquals(tree.getParent(v2), Optional.of(v1));
+        Assertions.assertEquals(tree.getParent(v1), Optional.empty());
     }
 
     @Test
