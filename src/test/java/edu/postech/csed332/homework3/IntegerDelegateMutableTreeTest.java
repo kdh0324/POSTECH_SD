@@ -1,8 +1,6 @@
 package edu.postech.csed332.homework3;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 public class IntegerDelegateMutableTreeTest extends AbstractMutableTreeTest<Integer, DelegateTree<Integer>> {
 
@@ -23,8 +21,4 @@ public class IntegerDelegateMutableTreeTest extends AbstractMutableTreeTest<Inte
     boolean checkInv() {
         return tree.checkInv();
     }
-
-    // TODO: write more white-box test cases to achieve more code coverage, if needed.
-    // You do not need to add more test methods, if you tests already meet the desired coverage.
-
 }

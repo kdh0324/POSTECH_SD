@@ -21,7 +21,4 @@ public class DoubleParentPointerMutableTreeTest extends AbstractMutableTreeTest<
     boolean checkInv() {
         return tree.checkInv();
     }
-
-    // TODO: write more white-box test cases to achieve more code coverage, if needed.
-    // You do not need to add more test methods, if you tests already meet the desired coverage.
 }
