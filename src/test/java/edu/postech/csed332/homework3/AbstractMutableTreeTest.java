@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * An abstract test class for MutableTree with blackbox test methods
@@ -21,7 +22,7 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
 
     abstract boolean checkInv();    // call checkInv of tree
 
-    private void init() {
+    protected void init() {
         tree.addVertex(v1);
         tree.addEdge(v1, v2);
         tree.addEdge(v1, v3);
@@ -84,10 +85,43 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
 
         Assertions.assertTrue(tree.addEdge(v1, v2));
         Assertions.assertTrue(tree.containsVertex(v2));
-        Assertions.assertFalse(tree.addEdge(v1, v1));
+        Assertions.assertTrue(tree.addEdge(v2, v3));
         Assertions.assertFalse(tree.addEdge(v3, v1));
-        Assertions.assertFalse(tree.containsVertex(v3));
+        Assertions.assertFalse(tree.addEdge(v4, v5));
+        Assertions.assertFalse(tree.addEdge(v4, v1));
+        List<Edge> edges = List.of(
+                new Edge(v1, v2),
+                new Edge(v2, v3)
+        );
+        Assertions.assertTrue(edges.stream().allMatch(edge -> tree.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
+    }
+
+    @Test
+    void testGetSources() {
+        Assertions.assertEquals(tree.getSources(v1), Collections.emptySet());
+        tree.addVertex(v1);
+        tree.addEdge(v1, v2);
+        tree.addEdge(v1, v3);
+        tree.addEdge(v2, v4);
+
+        Assertions.assertEquals(tree.getSources(v1), Collections.emptySet());
+        Assertions.assertEquals(tree.getSources(v2), Set.of(v1));
+        Assertions.assertEquals(tree.getSources(v3), Set.of(v1));
+        Assertions.assertEquals(tree.getSources(v4), Set.of(v2));
+    }
+
+    @Test
+    void testGetTargets() {
+        Assertions.assertEquals(tree.getTargets(v1), Collections.emptySet());
+        tree.addVertex(v1);
+        tree.addEdge(v1, v2);
+        tree.addEdge(v1, v3);
+        tree.addEdge(v2, v4);
+
+        Assertions.assertEquals(tree.getTargets(v1), Set.of(v2, v3));
+        Assertions.assertEquals(tree.getTargets(v3), Collections.emptySet());
+        Assertions.assertEquals(tree.getTargets(v2), Set.of(v4));
     }
 
     @Test
@@ -162,7 +196,7 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
                 new Edge(v3, v6),
                 new Edge(v3, v7)
         );
-        Assertions.assertFalse(edges.stream().allMatch(edge -> tree.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertFalse(edges.stream().anyMatch(edge -> tree.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
 
         Assertions.assertTrue(tree.removeVertex(v1));
         Assertions.assertEquals(tree.getRoot(), Optional.empty());
@@ -172,6 +206,9 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
     @Test
     void testRemoveEdge() {
         init();
+
+        tree.removeVertex(v7);
+        Assertions.assertFalse(tree.removeEdge(v7, v8));
 
         Assertions.assertTrue(tree.removeEdge(v2, v4));
         Assertions.assertFalse(tree.containsVertex(v4));
@@ -188,6 +225,6 @@ public abstract class AbstractMutableTreeTest<V extends Comparable<V>, T extends
                 new Edge(v3, v6),
                 new Edge(v3, v7)
         );
-        Assertions.assertFalse(edges.stream().allMatch(edge -> tree.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertFalse(edges.stream().anyMatch(edge -> tree.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
     }
 }

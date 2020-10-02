@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Graph.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework3</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework3</a> &gt; <span class="el_source">Graph.java</span></div><h1>Graph.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework3;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * A directed graph consisting of a set of vertices and edges. Vertices are given by
+ * any immutable type N. Edges have source and target vertices (that can be identical).
+ *
+ * @param &lt;N&gt; type of vertices, which must be immutable and comparable
+ */
+public interface Graph&lt;N extends Comparable&lt;N&gt;&gt; {
+
+    /**
+     * Returns true if this graph contains a given vertex.
+     *
+     * @param vertex a vertex
+     * @return {@code true} if the graph contains vertex
+     */
+    boolean containsVertex(@NotNull N vertex);
+
+    /**
+     * Returns true if this graph contains a directed edge from source to target.
+     *
+     * @param source a source vertex
+     * @param target a target vertex
+     * @return true if source and target is connected by an edge
+     */
+    boolean containsEdge(@NotNull N source, @NotNull N target);
+
+    /**
+     * Returns the set of source vertices that are connected to a given target vertex,
+     * by a directed edge from each source to the given target in the graph. If target
+     * is not in the graph, returns the empty set.
+     *
+     * @param target a vertex
+     * @return the set of vertices that have an edge to target, immutable
+     */
+    @NotNull Set&lt;N&gt; getSources(N target);
+
+    /**
+     * Returns the set of target vertices that are connected to a given source vertex,
+     * by a directed edge from the given source to each target in the graph. If source
+     * is not in the graph, returns the empty set.
+     *
+     * @param source a vertex
+     * @return the set of vertices that have an edge from source, immutable
+     */
+    @NotNull Set&lt;N&gt; getTargets(N source);
+
+    /**
+     * Returns all the vertices in this graph.
+     *
+     * @return the set of vertices in the graph, immutable
+     */
+    @NotNull Set&lt;N&gt; getVertices();
+
+    /**
+     * Returns all the edges in this graph.
+     *
+     * @return the set of edges in the graph, immutable
+     */
+    @NotNull Set&lt;Edge&lt;N&gt;&gt; getEdges();
+
+    /**
+     * Returns all the vertices that are reachable from a given vertex in this graph,
+     * based on a breadth-first search strategy. For example, consider a graph with
+     * vertices {v1, v2, v3, v4} and edges {(v1,v1), (v1,v2), (v3,v1), (v3,v2)}. Then,
+     * findReachableVertices(v2) = {v2}, findReachableVertices(v3) = {v1, v2, v3},
+     * findReachableVertices(v4) = {v4}, and findReachableVertices(v5) = {}.
+     *
+     * @param vertex a vertex
+     * @return the set of reachable vertices from {@code vertex}, immutable
+     */
+    default @NotNull Set&lt;N&gt; findReachableVertices(@NotNull N vertex) {
+<span class="fc" id="L80">        Set&lt;N&gt; seen = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L81">        Set&lt;N&gt; frontier = new HashSet&lt;&gt;();</span>
+
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (containsVertex(vertex))</span>
+<span class="fc" id="L84">            frontier.add(vertex);</span>
+
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        while (!seen.containsAll(frontier)) {</span>
+<span class="fc" id="L87">            seen.addAll(frontier);</span>
+<span class="fc" id="L88">            frontier = frontier.stream()</span>
+<span class="fc" id="L89">                    .flatMap(n -&gt; getTargets(n).stream())</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">                    .filter(n -&gt; !seen.contains(n))</span>
+<span class="fc" id="L91">                    .collect(Collectors.toSet());</span>
+        }
+<span class="fc" id="L93">        return Collections.unmodifiableSet(seen);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

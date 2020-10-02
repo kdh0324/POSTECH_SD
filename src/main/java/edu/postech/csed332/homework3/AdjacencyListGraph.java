@@ -77,6 +77,7 @@ public class AdjacencyListGraph<N extends Comparable<N>> implements MutableGraph
 
     @Override
     public @NotNull Set<N> getTargets(N source) {
+        if (adjMap.isEmpty()) return Collections.emptySet();
         return Collections.unmodifiableSet(adjMap.get(source));
     }
 

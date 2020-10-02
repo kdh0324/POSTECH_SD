@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: edu.postech.csed332.homework3.DoubleParentPointerMutableTreeTest
+-------------------------------------------------------------------------------
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.212 s - in edu.postech.csed332.homework3.DoubleParentPointerMutableTreeTest

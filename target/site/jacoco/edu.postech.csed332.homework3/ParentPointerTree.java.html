@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ParentPointerTree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework3</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework3</a> &gt; <span class="el_source">ParentPointerTree.java</span></div><h1>ParentPointerTree.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework3;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * An implementation of Tree, where each vertex has a reference to its parent node but
+ * no references to its children.
+ *
+ * @param &lt;N&gt; type of vertices, which must be immutable and comparable
+ */
+public class ParentPointerTree&lt;N extends Comparable&lt;N&gt;&gt; implements MutableTree&lt;N&gt; {
+
+    /**
+     * A map assigning to each vertex a pair of a parent reference and a depth. The parent
+     * of the root is {@code null}. For example, a tree with four vertices {v1, v2, v3, v4}
+     * and three edges {(v1,v2), (v1,v3), (v2,v4)}, where v1 is the root, is represented by
+     * the map {v1 |-&gt; (null,0), v2 |-&gt; (v1,1), v3 |-&gt; (v1,1), v4 |-&gt; (v2,2)}.
+     */
+    private final @NotNull SortedMap&lt;N, Node&lt;N&gt;&gt; nodeMap;
+    /**
+     * A root vertex of this tree; {@code null} for an empty tree.
+     */
+    private @Nullable N root;
+
+    /**
+     * Creates an empty parent pointer tree.
+     */
+<span class="fc" id="L32">    public ParentPointerTree() {</span>
+<span class="fc" id="L33">        this.root = null;</span>
+<span class="fc" id="L34">        this.nodeMap = new TreeMap&lt;&gt;();</span>
+<span class="fc" id="L35">    }</span>
+
+    @Override
+    public @NotNull Optional&lt;N&gt; getRoot() {
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (root == null) return Optional.empty();</span>
+<span class="fc" id="L40">        return Optional.of(root);</span>
+    }
+
+    @Override
+    public int getDepth(@NotNull N vertex) {
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (getRoot().isEmpty()) throw new IllegalStateException(&quot;Tree has no root.&quot;);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (!containsVertex(vertex)) throw new IllegalArgumentException(&quot;The vertex in not in tree.&quot;);</span>
+<span class="fc" id="L47">        return nodeMap.get(vertex).depth;</span>
+    }
+
+    @Override
+    public int getHeight() {
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (getRoot().isEmpty()) throw new IllegalStateException(&quot;Tree has no root.&quot;);</span>
+<span class="fc" id="L53">        return nodeMap.get(nodeMap.lastKey()).depth;</span>
+    }
+
+    @Override
+    public boolean containsVertex(@NotNull N vertex) {
+<span class="fc" id="L58">        return nodeMap.containsKey(vertex);</span>
+    }
+
+    @Override
+    public boolean addVertex(@NotNull N vertex) {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (getRoot().isPresent()) return false;</span>
+<span class="fc" id="L64">        nodeMap.put(vertex, new Node&lt;&gt;(null, 0));</span>
+<span class="fc" id="L65">        root = vertex;</span>
+<span class="fc" id="L66">        return true;</span>
+    }
+
+    @Override
+    public boolean removeVertex(@NotNull N vertex) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (!containsVertex(vertex)) return false;</span>
+<span class="fc" id="L72">        Set&lt;N&gt; removed = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L73">        removed.add(vertex);</span>
+<span class="fc" id="L74">        nodeMap.forEach((key, value) -&gt; {</span>
+<span class="fc bfc" id="L75" title="All 4 branches covered.">            if (value.parent != null &amp;&amp; removed.contains(value.parent))</span>
+<span class="fc" id="L76">                removed.add(key);</span>
+<span class="fc" id="L77">        });</span>
+<span class="fc" id="L78">        removed.forEach(nodeMap::remove);</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (vertex.equals(root))</span>
+<span class="fc" id="L80">            root = null;</span>
+<span class="fc" id="L81">        return true;</span>
+    }
+
+    @Override
+    public boolean containsEdge(@NotNull N source, @NotNull N target) {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (!containsVertex(target)) return false;</span>
+<span class="fc" id="L87">        return Objects.equals(nodeMap.get(target).parent, source);</span>
+    }
+
+    @Override
+    public boolean addEdge(@NotNull N source, @NotNull N target) {
+<span class="fc bfc" id="L92" title="All 4 branches covered.">        if (!containsVertex(source) || containsVertex(target)) return false;</span>
+<span class="fc" id="L93">        nodeMap.put(target, new Node&lt;&gt;(source, getHeight() + 1));</span>
+<span class="fc" id="L94">        return true;</span>
+    }
+
+    @Override
+    public boolean removeEdge(@NotNull N source, @NotNull N target) {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (!containsVertex(source)) return false;</span>
+<span class="fc" id="L100">        return removeVertex(target);</span>
+    }
+
+    @Override
+    public @NotNull Set&lt;N&gt; getSources(N target) {
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (nodeMap.isEmpty()) return Collections.emptySet();</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        return nodeMap.get(target).parent == null ?</span>
+<span class="fc" id="L107">                Collections.emptySet() : Collections.singleton(nodeMap.get(target).parent);</span>
+    }
+
+    @Override
+    public @NotNull Set&lt;N&gt; getTargets(N source) {
+<span class="fc" id="L112">        return nodeMap.keySet().stream()</span>
+<span class="fc" id="L113">                .filter(v -&gt; Objects.equals(nodeMap.get(v).parent, source))</span>
+<span class="fc" id="L114">                .collect(Collectors.toUnmodifiableSet());</span>
+    }
+
+    @Override
+    public @NotNull Set&lt;N&gt; getVertices() {
+<span class="fc" id="L119">        return nodeMap.keySet();</span>
+    }
+
+    @Override
+    public @NotNull Set&lt;Edge&lt;N&gt;&gt; getEdges() {
+<span class="fc" id="L124">        return nodeMap.entrySet().stream()</span>
+<span class="fc" id="L125">                .map(entry -&gt; new Edge&lt;&gt;(entry.getValue().parent, entry.getKey()))</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                .filter(entry -&gt; entry.getSource() != null)</span>
+<span class="fc" id="L127">                .collect(Collectors.toUnmodifiableSet());</span>
+    }
+
+    /**
+     * Checks if all class invariants hold for this object
+     *
+     * @return true if the representation of this tree is valid
+     */
+    boolean checkInv() {
+<span class="fc" id="L136">        return nodeMap.values().stream()</span>
+<span class="fc" id="L137">                .allMatch(node -&gt; {</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">                    if (node.parent == null)</span>
+<span class="fc" id="L139">                        return true;</span>
+<span class="fc" id="L140">                    return containsVertex(node.parent);</span>
+                });
+    }
+
+    /**
+     * Provides a human-readable string representation for the abstract value of the tree
+     *
+     * @return a string representation
+     */
+    @Override
+    public String toString() {
+<span class="fc" id="L151">        return String.format(&quot;[root: %s, vertex: {%s}, edge: {%s}]&quot;,</span>
+                root,
+<span class="fc" id="L153">                getVertices().stream().map(N::toString).collect(Collectors.joining(&quot;, &quot;)),</span>
+<span class="fc" id="L154">                getEdges().stream().map(Edge::toString).collect(Collectors.joining(&quot;, &quot;)));</span>
+    }
+
+    private static class Node&lt;V&gt; {
+        final @Nullable V parent;
+        final int depth;
+
+<span class="fc" id="L161">        Node(@Nullable V parent, int depth) {</span>
+<span class="fc" id="L162">            this.parent = parent;</span>
+<span class="fc" id="L163">            this.depth = depth;</span>
+<span class="fc" id="L164">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

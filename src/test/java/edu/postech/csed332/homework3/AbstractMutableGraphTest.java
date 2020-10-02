@@ -14,7 +14,7 @@ import java.util.Set;
  * @param <V> type of vertices
  * @param <G> type of Graph
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({"rawtypes"})
 @Disabled
 public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extends MutableGraph<V>> {
 
@@ -75,6 +75,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
 
     @Test
     void testGetSources() {
+        Assertions.assertEquals(graph.getSources(v1), Collections.emptySet());
         graph.addEdge(v1, v1);
         graph.addEdge(v1, v2);
         graph.addEdge(v3, v1);
@@ -88,6 +89,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
 
     @Test
     void testGetTargets() {
+        Assertions.assertEquals(graph.getTargets(v1), Collections.emptySet());
         graph.addEdge(v1, v1);
         graph.addEdge(v1, v2);
         graph.addEdge(v3, v1);
@@ -101,6 +103,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
 
     @Test
     void testGetVertices() {
+        Assertions.assertEquals(graph.getVertices(), Collections.emptySet());
         graph.addEdge(v1, v1);
         graph.addEdge(v1, v2);
         graph.addEdge(v3, v1);
@@ -112,6 +115,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
 
     @Test
     void testGetEdges() {
+        Assertions.assertEquals(graph.getTargets(v1), Collections.emptySet());
         graph.addEdge(v1, v1);
         graph.addEdge(v1, v2);
         graph.addEdge(v3, v1);
@@ -145,7 +149,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
                 new Edge(v6, v7),
                 new Edge(v6, v1)
         );
-        Assertions.assertFalse(edges.stream().allMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertFalse(edges.stream().anyMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 
@@ -164,7 +168,7 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
                 new Edge(v1, v2),
                 new Edge(v3, v1)
         );
-        Assertions.assertFalse(edges.stream().allMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
+        Assertions.assertFalse(edges.stream().anyMatch(edge -> graph.containsEdge((V) edge.getSource(), (V) edge.getTarget())));
         Assertions.assertTrue(checkInv());
     }
 }

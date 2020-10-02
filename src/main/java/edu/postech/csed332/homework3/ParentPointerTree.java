@@ -102,6 +102,7 @@ public class ParentPointerTree<N extends Comparable<N>> implements MutableTree<N
 
     @Override
     public @NotNull Set<N> getSources(N target) {
+        if (nodeMap.isEmpty()) return Collections.emptySet();
         return nodeMap.get(target).parent == null ?
                 Collections.emptySet() : Collections.singleton(nodeMap.get(target).parent);
     }
