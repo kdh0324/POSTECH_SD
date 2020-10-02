@@ -48,6 +48,16 @@ public abstract class AbstractMutableGraphTest<V extends Comparable<V>, G extend
     }
 
     @Test
+    void testContainsEdge() {
+        graph.addEdge(v1, v1);
+
+        Assertions.assertTrue(graph.containsEdge(v1, v1));
+        Assertions.assertFalse(graph.containsEdge(v1, v4));
+        Assertions.assertFalse(graph.containsEdge(v4, v1));
+        Assertions.assertFalse(graph.containsEdge(v4, v4));
+    }
+
+    @Test
     void testAddDuplicateVertices() {
         Assertions.assertTrue(graph.addVertex(v6));
         Assertions.assertTrue(graph.addVertex(v7));

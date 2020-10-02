@@ -49,7 +49,7 @@ public class AdjacencyListGraph&lt;N extends Comparable&lt;N&gt;&gt; implements 
 
     @Override
     public boolean containsEdge(@NotNull N source, @NotNull N target) {
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (!containsVertex(source)) return false;</span>
+<span class="fc bfc" id="L52" title="All 4 branches covered.">        if (!containsVertex(source) || !containsVertex(target)) return false;</span>
 <span class="fc" id="L53">        return adjMap.get(source).contains(target);</span>
     }
 
@@ -71,24 +71,24 @@ public class AdjacencyListGraph&lt;N extends Comparable&lt;N&gt;&gt; implements 
 
     @Override
     public @NotNull Set&lt;N&gt; getSources(N target) {
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        return adjMap.keySet().stream()</span>
+<span class="fc" id="L74">        return adjMap.keySet().stream()</span>
 <span class="fc" id="L75">                .filter(key -&gt; adjMap.get(key).contains(target)).collect(Collectors.toUnmodifiableSet());</span>
     }
 
     @Override
     public @NotNull Set&lt;N&gt; getTargets(N source) {
-<span class="pc bpc" id="L80" title="1 of 4 branches missed.">        if (adjMap.isEmpty()) return Collections.emptySet();</span>
-<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        return Collections.unmodifiableSet(adjMap.get(source));</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (adjMap.isEmpty()) return Collections.emptySet();</span>
+<span class="fc" id="L81">        return Collections.unmodifiableSet(adjMap.get(source));</span>
     }
 
     @Override
     public @NotNull Set&lt;N&gt; getVertices() {
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        return Collections.unmodifiableSet(adjMap.keySet());</span>
+<span class="fc" id="L86">        return Collections.unmodifiableSet(adjMap.keySet());</span>
     }
 
     @Override
     public @NotNull Set&lt;Edge&lt;N&gt;&gt; getEdges() {
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        return adjMap.entrySet().stream()</span>
+<span class="fc" id="L91">        return adjMap.entrySet().stream()</span>
 <span class="fc" id="L92">                .flatMap(entry -&gt; entry.getValue().stream().map(n -&gt; new Edge&lt;&gt;(entry.getKey(), n)))</span>
 <span class="fc" id="L93">                .collect(Collectors.toUnmodifiableSet());</span>
     }
@@ -110,9 +110,9 @@ public class AdjacencyListGraph&lt;N extends Comparable&lt;N&gt;&gt; implements 
      */
     @Override
     public String toString() {
-<span class="fc" id="L113">        return String.format(&quot;[vertex: {%s}, edge: {%s}]&quot;,</span>
-<span class="fc" id="L114">                getVertices().stream().map(N::toString).collect(Collectors.joining(&quot;, &quot;)),</span>
-<span class="fc" id="L115">                getEdges().stream().map(Edge::toString).collect(Collectors.joining(&quot;, &quot;)));</span>
+<span class="nc" id="L113">        return String.format(&quot;[vertex: {%s}, edge: {%s}]&quot;,</span>
+<span class="nc" id="L114">                getVertices().stream().map(N::toString).collect(Collectors.joining(&quot;, &quot;)),</span>
+<span class="nc" id="L115">                getEdges().stream().map(Edge::toString).collect(Collectors.joining(&quot;, &quot;)));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
