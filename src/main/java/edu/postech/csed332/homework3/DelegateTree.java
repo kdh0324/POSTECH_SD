@@ -133,6 +133,9 @@ public class DelegateTree<N extends Comparable<N>> implements MutableTree<N> {
     /**
      * Checks if all class invariants hold for this object
      *
+     * Class invariant:
+     * Each parent of every vertices except root in tree is contained in tree.
+     *
      * @return true if the representation of this tree is valid
      */
     boolean checkInv() {
