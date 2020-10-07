@@ -277,5 +277,8 @@ For each question, explain your reasoning _using the abstract specifications tha
 ##### `MutableTree<N>` and `MutableGraph<N>`
 
 * Is `MutableTree<N>` a subtype of `MutableGraph<N>`
-    + Yes, it is. Because $`\hat{v}_{this} \in V_{this}`$ and `MutableTree<N>` extends `Tree<N>`.
-    + Also, a class invariant of `MutableTree<N>` contains a class invariant of `MutableGraph<N>`.
+    + No, it isn't.
+    + `addVertex` in `MutableTree<N>` returns false when $`V_{this}`$ is not empty, 
+    but `MutableGraph<N>` returns true only if vertex is not in $`V_{this}`$.
+    + Also, `removeVertex` in `MutableTree<N>` remove only selected vertex, 
+    but `MutableGraph<N>` remove subtree which a root is selected vertex.
