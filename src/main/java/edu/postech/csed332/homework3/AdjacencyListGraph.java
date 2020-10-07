@@ -96,6 +96,9 @@ public class AdjacencyListGraph<N extends Comparable<N>> implements MutableGraph
     /**
      * Checks if all class invariants hold for this object.
      *
+     * Class invariant:
+     * Every targets of every vertices are contained in graph.
+     *
      * @return true if the representation of this graph is valid
      */
     boolean checkInv() {

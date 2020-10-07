@@ -132,6 +132,8 @@ public class ParentPointerTree<N extends Comparable<N>> implements MutableTree<N
      *
      * Class invariant:
      * Each parent of every vertices except root in tree is contained in tree.
+     * Every vertices can't reach itself through edges.
+     * A difference of depth between vertex and its parent is 1.
      *
      * @return true if the representation of this tree is valid
      */
