@@ -1,9 +1,6 @@
 package edu.postech.csed332.homework5;
 
-import edu.postech.csed332.homework5.expression.BinaryExp;
-import edu.postech.csed332.homework5.expression.Exp;
-import edu.postech.csed332.homework5.expression.NumberExp;
-import edu.postech.csed332.homework5.expression.VariableExp;
+import edu.postech.csed332.homework5.expression.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -22,9 +19,35 @@ public class EquivalenceVisitor implements ExpVisitor<Boolean> {
         Exp left = binaryExp.getLeft();
         Exp right = binaryExp.getRight();
 
-        return binaryExp.getClass().equals(other.getClass())
-                && left.accept(new EquivalenceVisitor(((BinaryExp) other).getLeft()))
-                && right.accept(new EquivalenceVisitor(((BinaryExp) other).getRight()));
+        boolean result;
+        Exp origin = other;
+        other = ((BinaryExp) origin).getLeft();
+        result = left.accept(this);
+        other = ((BinaryExp) origin).getRight();
+        result &= right.accept(this);
+
+        boolean isInstanceOf;
+        switch (operator) {
+            case "/" :
+                isInstanceOf = origin instanceof DivideExp;
+                break;
+            case "^" :
+                isInstanceOf = origin instanceof ExponentiationExp;
+                break;
+            case "-" :
+                isInstanceOf = origin instanceof MinusExp;
+                break;
+            case "*" :
+                isInstanceOf = origin instanceof MultiplyExp;
+                break;
+            case "+" :
+                isInstanceOf = origin instanceof PlusExp;
+                break;
+            default:
+                isInstanceOf = false;
+        }
+
+        return isInstanceOf && result;
     }
 
     @Override
