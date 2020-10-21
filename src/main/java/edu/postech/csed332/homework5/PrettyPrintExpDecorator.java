@@ -1,7 +1,10 @@
 package edu.postech.csed332.homework5;
 
 import edu.postech.csed332.homework5.expression.Exp;
+import edu.postech.csed332.homework5.expression.NumberExp;
 import org.jetbrains.annotations.NotNull;
+
+import java.math.BigDecimal;
 
 /**
  * The string representation is given without exponents of double values. For example,
@@ -16,8 +19,11 @@ public class PrettyPrintExpDecorator extends ExpDecorator {
     @NotNull
     @Override
     public String toString() {
-        // TODO implement this
-        return null;
+        return accept(new ToStringVisitor() {
+            @Override
+            public String visitNumber(NumberExp numberExp) {
+                return BigDecimal.valueOf(numberExp.getValue()).toPlainString();
+            }
+        });
     }
-
 }
