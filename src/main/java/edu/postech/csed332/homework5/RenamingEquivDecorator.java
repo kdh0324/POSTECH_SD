@@ -1,7 +1,11 @@
 package edu.postech.csed332.homework5;
 
+import edu.postech.csed332.homework5.expression.BinaryExp;
 import edu.postech.csed332.homework5.expression.Exp;
+import edu.postech.csed332.homework5.expression.VariableExp;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
 
 /**
  * This expression is equivalent to another expression that is syntactically identical up to renaming.
@@ -16,7 +20,17 @@ public class RenamingEquivDecorator extends ExpDecorator {
 
     @Override
     public boolean equiv(@NotNull Exp other) {
-        // TODO implement this
-        return false;
+        return accept(new EquivalenceVisitor(other) {
+            final HashMap<Integer, Integer> key = new HashMap<>();
+
+            @Override
+            public Boolean visitVariable(VariableExp variableExp) {
+                if (!(other instanceof VariableExp)) return false;
+                if (key.containsKey(variableExp.getName()))
+                    return key.get(variableExp.getName()) == ((VariableExp) other).getName();
+                key.put(variableExp.getName(), ((VariableExp) other).getName());
+                return true;
+            }
+        });
     }
 }
