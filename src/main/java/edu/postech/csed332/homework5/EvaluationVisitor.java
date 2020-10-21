@@ -18,8 +18,8 @@ public class EvaluationVisitor implements ExpVisitor<Double> {
 
     @Override
     public Double visitBinary(BinaryExp binaryExp, String operator) {
-        Double left = binaryExp.getLeft().eval(valuation);
-        Double right = binaryExp.getRight().eval(valuation);
+        Double left = binaryExp.getLeft().accept(this);
+        Double right = binaryExp.getRight().accept(this);
         switch (operator) {
             case "/" :
                 return left / right;

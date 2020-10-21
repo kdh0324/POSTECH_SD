@@ -25,7 +25,7 @@ public class DefaultValueExpDecorator extends ExpDecorator {
             @Override
             public Double visitVariable(VariableExp variableExp) {
                 if (!valuation.containsKey(variableExp.getName())) return defaultValue;
-                return super.visitVariable(variableExp);
+                return valuation.get(variableExp.getName());
             }
         });
     }
