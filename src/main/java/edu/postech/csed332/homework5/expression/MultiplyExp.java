@@ -15,8 +15,6 @@ public class MultiplyExp extends BinaryExp {
     @Override
     @NotNull
     public <T> T accept(@NotNull ExpVisitor<T> visitor) {
-        // TODO implement this
-        return null;
+        return visitor.visitBinary(this, "*");
     }
-
 }

@@ -1,6 +1,9 @@
 package edu.postech.csed332.homework5;
 
+import edu.postech.csed332.homework5.expression.BinaryExp;
 import edu.postech.csed332.homework5.expression.Exp;
+import edu.postech.csed332.homework5.expression.NumberExp;
+import edu.postech.csed332.homework5.expression.VariableExp;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -8,10 +11,24 @@ import org.jetbrains.annotations.NotNull;
  */
 public class EquivalenceVisitor implements ExpVisitor<Boolean> {
 
+    Exp other;
+
     public EquivalenceVisitor(@NotNull Exp other) {
-        // TODO: implement this
+        this.other = other;
     }
 
-    // TODO write and implement the visitor methods for EquivalenceVisitor, satisfying
-    //  the specification of Exp.equiv. You may need to add more member variables.
+    @Override
+    public Boolean visitBinary(BinaryExp binaryExp, String operator) {
+        return binaryExp.equiv(other);
+    }
+
+    @Override
+    public Boolean visitNumber(NumberExp numberExp) {
+        return numberExp.equiv(other);
+    }
+
+    @Override
+    public Boolean visitVariable(VariableExp variableExp) {
+        return variableExp.equiv(other);
+    }
 }
