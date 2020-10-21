@@ -22,7 +22,9 @@ public class EquivalenceVisitor implements ExpVisitor<Boolean> {
         Exp left = binaryExp.getLeft();
         Exp right = binaryExp.getRight();
 
-        return binaryExp.getClass().equals(other.getClass()) && left.accept(this) && right.accept(this);
+        return binaryExp.getClass().equals(other.getClass())
+                && left.accept(new EquivalenceVisitor(((BinaryExp) other).getLeft()))
+                && right.accept(new EquivalenceVisitor(((BinaryExp) other).getRight()));
     }
 
     @Override
