@@ -19,16 +19,19 @@ public class EquivalenceVisitor implements ExpVisitor<Boolean> {
 
     @Override
     public Boolean visitBinary(BinaryExp binaryExp, String operator) {
-        return binaryExp.equiv(other);
+        Exp left = binaryExp.getLeft();
+        Exp right = binaryExp.getRight();
+
+        return binaryExp.getClass().equals(other.getClass()) && left.accept(this) && right.accept(this);
     }
 
     @Override
     public Boolean visitNumber(NumberExp numberExp) {
-        return numberExp.equiv(other);
+        return other instanceof NumberExp && numberExp.getValue().equals(((NumberExp) other).getValue());
     }
 
     @Override
     public Boolean visitVariable(VariableExp variableExp) {
-        return variableExp.equiv(other);
+        return other instanceof VariableExp && variableExp.getName() == ((VariableExp) other).getName();
     }
 }
