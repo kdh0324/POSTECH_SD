@@ -12,7 +12,7 @@ public class ToStringVisitor implements ExpVisitor<String> {
     public String visitBinary(BinaryExp binaryExp, String operator) {
         String left = binaryExp.getLeft().toString();
         String right = binaryExp.getRight().toString();
-        return "(" + left + operator + right + ")";
+        return "(" + left + " " + operator + " " + right + ")";
     }
 
     @Override
