@@ -22,6 +22,7 @@ public class PrettyPrintExpDecorator extends ExpDecorator {
         return accept(new ToStringVisitor() {
             @Override
             public String visitNumber(NumberExp numberExp) {
+                if (numberExp.getValue() < 0) return "(" + BigDecimal.valueOf(numberExp.getValue()).toPlainString() + ")";
                 return BigDecimal.valueOf(numberExp.getValue()).toPlainString();
             }
         });
