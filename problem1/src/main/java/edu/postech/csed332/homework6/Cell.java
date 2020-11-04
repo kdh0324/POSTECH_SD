@@ -6,9 +6,10 @@ import edu.postech.csed332.homework6.events.SetNumberEvent;
 import edu.postech.csed332.homework6.events.UnsetNumberEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * A cell that has a number and a set of possibilities. Even cells can contain only even numbers, and odd cells can
@@ -16,11 +17,9 @@ import java.util.Optional;
  */
 public class Cell extends Subject {
     enum Type {EVEN, ODD}
-
-    //TODO: add private member variables for Board
     private int number;
     private final Type type;
-    private final List<Group> groups = new ArrayList<>();
+    private final Set<Integer> possibilities = new HashSet<>();
 
     /**
      * Creates an empty cell with a given type. Initially, no number is assigned.
@@ -29,6 +28,10 @@ public class Cell extends Subject {
      */
     public Cell(@NotNull Type type) {
         this.type = type;
+        if (type == Type.ODD)
+            possibilities.addAll(List.of(1, 3, 5, 7, 9));
+        else
+            possibilities.addAll(List.of(2, 4, 6, 8));
         number = 0;
     }
 
@@ -49,6 +52,8 @@ public class Cell extends Subject {
      */
     @NotNull
     public Optional<Integer> getNumber() {
+        if (number == 0)
+            return Optional.empty();
         return Optional.of(number);
     }
 
@@ -59,30 +64,32 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void setNumber(int number) {
-        notifyObservers(new SetNumberEvent(number));
+        if (!containsPossibility(number))
+            return;
 
-        if (containsPossibility(number)) {
-            notifyObservers(new DisabledEvent());
-            this.number = number;
-        }
+        notifyObservers(new SetNumberEvent(number));
+        notifyObservers(new DisabledEvent());
+        this.number = number;
     }
 
     /**
      * Removes the number of this cell and notifies an UnsetNumberEvent, provided that the cell has a number.
      */
     public void unsetNumber() {
+        if (number == 0)
+            return;
         notifyObservers(new UnsetNumberEvent(number));
         notifyObservers(new EnabledEvent());
+        number = 0;
     }
 
     /**
      * Adds a group for this cell. This methods should also call addObserver(group).
      *
-     * @param group
+     * @param group Group to add.
      */
     public void addGroup(@NotNull Group group) {
         addObserver(group);
-        groups.add(group);
     }
 
     /**
@@ -93,13 +100,7 @@ public class Cell extends Subject {
      */
     @NotNull
     public Boolean containsPossibility(int n) {
-        if ((n % 2 == 1 && type == Type.EVEN) || (n % 2 == 0 && type == Type.ODD))
-            return false;
-
-        for (Group group: groups)
-            if (!group.isAvailable(n))
-                return false;
-        return true;
+        return possibilities.contains(n);
     }
 
     /**
@@ -109,14 +110,7 @@ public class Cell extends Subject {
      */
     @NotNull
     public Boolean emptyPossibility() {
-        int i = type == Type.EVEN? 2 : 1;
-
-        while (i < 10) {
-            if (containsPossibility(i))
-                return true;
-            i += 2;
-        }
-        return false;
+        return possibilities.isEmpty();
     }
 
     /**
@@ -128,7 +122,13 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void addPossibility(int number) {
-        //TODO: implement this
+        if (isInvalidNumber(number))
+            return;
+
+        if (possibilities.isEmpty())
+            notifyObservers(new EnabledEvent());
+
+        possibilities.add(number);
     }
 
     /**
@@ -138,6 +138,12 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void removePossibility(int number) {
-        //TODO: implement this
+        possibilities.remove(number);
+        if (possibilities.isEmpty())
+            notifyObservers(new DisabledEvent());
+    }
+
+    private boolean isInvalidNumber(int n) {
+        return !((n % 2 == 0 && type == Type.EVEN) || (n % 2 == 1 && type == Type.ODD));
     }
 }
