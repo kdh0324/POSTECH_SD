@@ -6,7 +6,6 @@ import edu.postech.csed332.homework6.events.UnsetNumberEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,7 +14,6 @@ import java.util.Set;
  */
 public class Group implements Observer {
     private final Set<Cell> cells = new HashSet<>();
-    private final Set<Integer> possibilities = new HashSet<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
     /**
      * Creates an empty group.
@@ -52,7 +50,10 @@ public class Group implements Observer {
      */
     @NotNull
     public Boolean isAvailable(int number) {
-        return possibilities.contains(number);
+        for (Cell cell : cells)
+            if (cell.containsPossibility(number))
+                return true;
+        return false;
     }
 
     /**
@@ -66,13 +67,11 @@ public class Group implements Observer {
     public void update(Subject caller, Event arg) {
         if (arg instanceof SetNumberEvent) {
             int number = ((SetNumberEvent) arg).getNumber();
-            possibilities.remove(number);
 
             for (Cell cell : cells)
                 cell.removePossibility(number);
         } else if (arg instanceof UnsetNumberEvent) {
             int number = ((UnsetNumberEvent) arg).getNumber();
-            possibilities.add(number);
 
             for (Cell cell : cells)
                 cell.addPossibility(number);
