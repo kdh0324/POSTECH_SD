@@ -70,6 +70,8 @@ public class Group implements Observer {
 
             for (Cell cell : cells)
                 cell.removePossibility(number);
+
+            System.out.println(possibilities);
         } else if (arg instanceof UnsetNumberEvent) {
             int number = ((UnsetNumberEvent) arg).getNumber();
             possibilities.add(number);

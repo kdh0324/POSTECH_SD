@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 public class GameUI {
     private static final int unitSize = 10;
@@ -50,11 +51,26 @@ public class GameUI {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                cells[i][j] = new CellUI(board.getCell(i, j));
-                cells[i][j].addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.out.println(e.getActionCommand());
+                Cell cell = board.getCell(i, j);
+                cells[i][j] = new CellUI(cell);
+                CellUI cellUI = cells[i][j];
+                cells[i][j].addActionListener(e -> {
+                    try {
+                        int number = Integer.parseInt(cellUI.getText());
+                        Optional<Integer> prev = cell.getNumber();
+                        if (prev.isPresent() && number == prev.get())
+                            return;
+
+                        if (0 >= number || 9 < number || !cell.containsPossibility(number)) {
+                            cellUI.setText("");
+                            cell.unsetNumber();
+                            return;
+                        }
+
+                        cell.setNumber(number);
+                    } catch (NumberFormatException ex) {
+                        cellUI.setText("");
+                        cell.unsetNumber();
                     }
                 });
                 squares[i / 3][j / 3].add(cells[i][j]);
@@ -64,7 +80,6 @@ public class GameUI {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 top.add(squares[i][j]);
-        //TODO: implement this. Create cells and squares, to add them to top, and to define layouts for them.
     }
 
 }
