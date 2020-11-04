@@ -18,8 +18,13 @@ public class Board {
      */
     Board(@NotNull GameInstance game) {
         for (int i = 0; i < 9; i++) {
+            rowGroups[i] = new Group();
+            colGroups[i] = new Group();
+            squareGroups[i / 3][i % 3] = new Group();
+        }
+        for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                Cell.Type type = game.isEven(i, j)? Cell.Type.EVEN : Cell.Type.ODD;
+                Cell.Type type = game.isEven(i, j) ? Cell.Type.EVEN : Cell.Type.ODD;
                 cells[i][j] = new Cell(type);
                 rowGroups[i].addCell(cells[i][j]);
                 colGroups[j].addCell(cells[i][j]);
