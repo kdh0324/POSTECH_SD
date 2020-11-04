@@ -2,8 +2,6 @@ package edu.postech.csed332.homework6;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
 /**
  * An even-odd Sudoku board
  */
@@ -28,14 +26,15 @@ public class Board {
             for (int j = 0; j < 9; j++) {
                 Cell.Type type = game.isEven(i, j) ? Cell.Type.EVEN : Cell.Type.ODD;
                 cells[i][j] = new Cell(type);
-                Optional<Integer> numbers = game.getNumbers(i, j);
-                rowGroups[i].addCell(cells[i][j]);
-                colGroups[j].addCell(cells[i][j]);
-                squareGroups[i / 3][j / 3].addCell(cells[i][j]);
-                if (numbers.isPresent())
-                    cells[i][j].setNumber(numbers.get());
+                final Cell cell = cells[i][j];
+                rowGroups[i].addCell(cell);
+                colGroups[j].addCell(cell);
+                squareGroups[i / 3][j / 3].addCell(cell);
             }
         }
+        for (int i = 0; i < 9; i++)
+            for (int j = 0; j < 9; j++)
+                game.getNumbers(i, j).ifPresent(cells[i][j]::setNumber);
     }
 
     /**

@@ -61,8 +61,8 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void setNumber(int number) {
-        notifyObservers(new SetNumberEvent(number));
         this.number = number;
+        notifyObservers(new SetNumberEvent(number));
     }
 
     /**
@@ -130,7 +130,7 @@ public class Cell extends Subject {
      */
     public void removePossibility(int number) {
         possibilities.remove(number);
-        if (possibilities.isEmpty() && number != 0)
+        if (possibilities.isEmpty() && this.number == 0)
             notifyObservers(new DisabledEvent());
     }
 

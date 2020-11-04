@@ -6,6 +6,7 @@ import edu.postech.csed332.homework6.events.Event;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 public class CellUI extends JTextField implements Observer {
 
@@ -19,9 +20,32 @@ public class CellUI extends JTextField implements Observer {
         initCellUI(cell);
 
         if (cell.getNumber().isEmpty()) {
-            //TODO: whenever the content is changed, cell.setNumber() or cell.unsetNumber() is accordingly invoked.
-            // You may use an action listener, a key listener, a document listener, etc.
+            addActionListener(e -> {
+                int number;
+                try {
+                    number = Integer.parseInt(getText());
+                } catch (NumberFormatException ex) {
+                    clearCell(cell);
+                    return;
+                }
+                Optional<Integer> prev = cell.getNumber();
+
+                if (prev.isPresent() && number == prev.get())
+                    return;
+
+                if (!(1 <= number && number <= 9 && cell.containsPossibility(number))) {
+                    clearCell(cell);
+                    return;
+                }
+
+                cell.setNumber(number);
+            });
         }
+    }
+
+    private void clearCell(Cell cell) {
+        setText("");
+        cell.unsetNumber();
     }
 
     /**
