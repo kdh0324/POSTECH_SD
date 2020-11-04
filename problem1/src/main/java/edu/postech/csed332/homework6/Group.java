@@ -3,12 +3,18 @@ package edu.postech.csed332.homework6;
 import edu.postech.csed332.homework6.events.Event;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * A group that observes a set of cells, and maintains the invariant: if one of the members has a particular value,
  * none of its other members can have the value as a possibility.
  */
 public class Group implements Observer {
     //TODO: add private member variables for Board
+    private final Set<Cell> cells = new HashSet<>();
 
     /**
      * Creates an empty group.
@@ -24,6 +30,7 @@ public class Group implements Observer {
      */
     void addCell(Cell cell) {
         //TODO: implement this
+        cell.addGroup(this);
     }
 
     /**
@@ -34,8 +41,7 @@ public class Group implements Observer {
      */
     @NotNull
     Boolean contains(@NotNull Cell cell) {
-        //TODO: implement this
-        return null;
+        return cells.contains(cell);
     }
 
     /**

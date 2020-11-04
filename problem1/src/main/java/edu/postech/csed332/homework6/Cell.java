@@ -1,7 +1,13 @@
 package edu.postech.csed332.homework6;
 
+import edu.postech.csed332.homework6.events.DisabledEvent;
+import edu.postech.csed332.homework6.events.EnabledEvent;
+import edu.postech.csed332.homework6.events.SetNumberEvent;
+import edu.postech.csed332.homework6.events.UnsetNumberEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,6 +18,9 @@ public class Cell extends Subject {
     enum Type {EVEN, ODD}
 
     //TODO: add private member variables for Board
+    private int number;
+    private final Type type;
+    private final List<Group> groups = new ArrayList<>();
 
     /**
      * Creates an empty cell with a given type. Initially, no number is assigned.
@@ -19,7 +28,8 @@ public class Cell extends Subject {
      * @param type EVEN or ODD
      */
     public Cell(@NotNull Type type) {
-        //TODO: implement this
+        this.type = type;
+        number = 0;
     }
 
     /**
@@ -29,8 +39,7 @@ public class Cell extends Subject {
      */
     @NotNull
     public Type getType() {
-        //TODO: implement this
-        return null;
+        return type;
     }
 
     /**
@@ -40,8 +49,7 @@ public class Cell extends Subject {
      */
     @NotNull
     public Optional<Integer> getNumber() {
-        //TODO: implement this
-        return Optional.empty();
+        return Optional.of(number);
     }
 
     /**
@@ -51,14 +59,20 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void setNumber(int number) {
-        //TODO: implement this
+        notifyObservers(new SetNumberEvent(number));
+
+        if (containsPossibility(number)) {
+            notifyObservers(new DisabledEvent());
+            this.number = number;
+        }
     }
 
     /**
      * Removes the number of this cell and notifies an UnsetNumberEvent, provided that the cell has a number.
      */
     public void unsetNumber() {
-        //TODO: implement this
+        notifyObservers(new UnsetNumberEvent(number));
+        notifyObservers(new EnabledEvent());
     }
 
     /**
@@ -68,8 +82,7 @@ public class Cell extends Subject {
      */
     public void addGroup(@NotNull Group group) {
         addObserver(group);
-
-        //TODO: implement this
+        groups.add(group);
     }
 
     /**
@@ -80,8 +93,13 @@ public class Cell extends Subject {
      */
     @NotNull
     public Boolean containsPossibility(int n) {
-        //TODO: implement this
-        return null;
+        if ((n % 2 == 1 && type == Type.EVEN) || (n % 2 == 0 && type == Type.ODD))
+            return false;
+
+        for (Group group: groups)
+            if (!group.isAvailable(n))
+                return false;
+        return true;
     }
 
     /**
@@ -91,8 +109,14 @@ public class Cell extends Subject {
      */
     @NotNull
     public Boolean emptyPossibility() {
-        //TODO: implement this
-        return null;
+        int i = type == Type.EVEN? 2 : 1;
+
+        while (i < 10) {
+            if (containsPossibility(i))
+                return true;
+            i += 2;
+        }
+        return false;
     }
 
     /**
@@ -107,7 +131,7 @@ public class Cell extends Subject {
         //TODO: implement this
     }
 
-    /*
+    /**
      * Removes the possibility of a given number. Notifies a DisabledEvent if the set of possibilities becomes empty.
      * Note that even (resp., odd) cells have only even (resp., odd) possibilities.
      *
