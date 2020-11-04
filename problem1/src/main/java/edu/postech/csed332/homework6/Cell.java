@@ -6,10 +6,7 @@ import edu.postech.csed332.homework6.events.SetNumberEvent;
 import edu.postech.csed332.homework6.events.UnsetNumberEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A cell that has a number and a set of possibilities. Even cells can contain only even numbers, and odd cells can
@@ -127,7 +124,6 @@ public class Cell extends Subject {
 
         if (possibilities.isEmpty())
             notifyObservers(new EnabledEvent());
-
         possibilities.add(number);
     }
 

@@ -1,10 +1,12 @@
 package edu.postech.csed332.homework6;
 
 import edu.postech.csed332.homework6.events.Event;
+import edu.postech.csed332.homework6.events.SetNumberEvent;
+import edu.postech.csed332.homework6.events.UnsetNumberEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,14 +14,13 @@ import java.util.Set;
  * none of its other members can have the value as a possibility.
  */
 public class Group implements Observer {
-    //TODO: add private member variables for Board
     private final Set<Cell> cells = new HashSet<>();
+    private final Set<Integer> possibilities = new HashSet<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
     /**
      * Creates an empty group.
      */
     Group() {
-        //TODO: implement this
     }
 
     /**
@@ -51,12 +52,7 @@ public class Group implements Observer {
      */
     @NotNull
     public Boolean isAvailable(int number) {
-        for (Cell cell : cells) {
-            final Optional<Integer> number1 = cell.getNumber();
-            if (number1.isPresent() && number1.get() == number)
-                return false;
-        }
-        return true;
+        return possibilities.contains(number);
     }
 
     /**
@@ -68,6 +64,18 @@ public class Group implements Observer {
      */
     @Override
     public void update(Subject caller, Event arg) {
-        //TODO: implement this
+        if (arg instanceof SetNumberEvent) {
+            int number = ((SetNumberEvent) arg).getNumber();
+            possibilities.remove(number);
+
+            for (Cell cell : cells)
+                cell.removePossibility(number);
+        } else if (arg instanceof UnsetNumberEvent) {
+            int number = ((UnsetNumberEvent) arg).getNumber();
+            possibilities.add(number);
+
+            for (Cell cell : cells)
+                cell.addPossibility(number);
+        }
     }
 }
