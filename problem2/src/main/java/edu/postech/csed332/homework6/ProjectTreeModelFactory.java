@@ -4,14 +4,12 @@ import com.intellij.ide.projectView.impl.nodes.PackageUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.psi.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 class ProjectTreeModelFactory {
 
@@ -30,26 +28,29 @@ class ProjectTreeModelFactory {
 
         // The visitor to traverse the Java hierarchy and to construct the tree
         final JavaElementVisitor visitor = new JavaElementVisitor() {
-            // TODO: add member variables if necessary
-
             @Override
             public void visitPackage(PsiPackage pack) {
-                // TODO: add a new node to the parent node, and traverse the content of the package
+                root.add(new DefaultMutableTreeNode(pack));
+                Arrays.stream(pack.getSubPackages()).forEach(psiPackage -> psiPackage.accept(this));
+                Arrays.stream(pack.getClasses()).forEach(psiClass -> psiClass.accept(this));
             }
 
             @Override
             public void visitClass(PsiClass aClass) {
-                // TODO: add a new node the parent node, and traverse the content of the class
+                root.add(new DefaultMutableTreeNode(aClass));
+                Arrays.stream(aClass.getInnerClasses()).forEach(psiClass -> psiClass.accept(this));
+                Arrays.stream(aClass.getMethods()).forEach(psiMethod -> psiMethod.accept(this));
+                Arrays.stream(aClass.getFields()).forEach(psiField -> psiField.accept(this));
             }
 
             @Override
             public void visitMethod(PsiMethod method) {
-                // TODO: add a new node to the parent node
+                root.add(new DefaultMutableTreeNode(method));
             }
 
             @Override
             public void visitField(PsiField field) {
-                // TODO: add a new node to the parent node
+                root.add(new DefaultMutableTreeNode(field));
             }
         };
 
