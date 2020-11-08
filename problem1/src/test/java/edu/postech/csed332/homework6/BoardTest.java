@@ -1,10 +1,15 @@
 package edu.postech.csed332.homework6;
 
-import edu.postech.csed332.homework6.events.*;
+import edu.postech.csed332.homework6.events.DisabledEvent;
+import edu.postech.csed332.homework6.events.Event;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BoardTest {
 
@@ -51,5 +56,45 @@ public class BoardTest {
         assertTrue(cell.emptyPossibility());
     }
 
-    //TODO: add more test methods for non-GUI code, if you want.
+    @Test
+    void testGroupIsAvailableSetNumber() {
+        Group group = new Group();
+        List<Cell> cellList = new ArrayList<>();
+
+        for (int i = 0; i < 9; i++) {
+            Cell.Type type = i % 2 == 0 ? Cell.Type.EVEN : Cell.Type.ODD;
+            Cell cell = new Cell(type);
+            cellList.add(cell);
+            group.addCell(cell);
+        }
+
+        for (int i = 0; i < 9; i++)
+            assertTrue(group.isAvailable(i + 1));
+
+        for (int i = 0; i < 9; i++) {
+            cellList.get(i).setNumber(i + 1);
+            assertFalse(group.isAvailable(i + 1));
+        }
+    }
+
+    @Test
+    void testGroupIsAvailableUnsetNumber() {
+        Group group = new Group();
+        List<Cell> cellList = new ArrayList<>();
+
+        for (int i = 0; i < 9; i++) {
+            Cell.Type type = i % 2 == 0 ? Cell.Type.EVEN : Cell.Type.ODD;
+            Cell cell = new Cell(type);
+            cellList.add(cell);
+            group.addCell(cell);
+        }
+
+        for (int i = 0; i < 9; i++)
+            cellList.get(i).setNumber(i + 1);
+
+        for (int i = 0; i < 9; i++) {
+            cellList.get(i).unsetNumber();
+            assertTrue(group.isAvailable(i + 1));
+        }
+    }
 }
