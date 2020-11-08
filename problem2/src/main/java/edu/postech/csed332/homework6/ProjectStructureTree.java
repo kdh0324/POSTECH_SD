@@ -1,11 +1,11 @@
 package edu.postech.csed332.homework6;
 
+import com.intellij.openapi.project.Project;
+import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
-import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import com.intellij.ui.treeStructure.Tree;
-import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -46,7 +46,6 @@ class ProjectStructureTree extends Tree {
             @Override
             public void customizeCellRenderer(@NotNull JTree tree, Object value, boolean selected,
                                               boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                // TODO: implement the renderer behavior here
                 // hint: use the setIcon method to assign icons, and the append method to add text
                 DefaultMutableTreeNode defaultMutableTreeNode =  (DefaultMutableTreeNode) value;
                 Object userObject = defaultMutableTreeNode.getUserObject();
@@ -55,10 +54,14 @@ class ProjectStructureTree extends Tree {
                     append(((Project) userObject).getName());
                 } else if (userObject instanceof PsiPackage) {
                     setIcon(packageIcon);
-                    append(((PsiPackage) userObject).getName());
+                    String name = ((PsiPackage) userObject).getName();
+                    if (name == null) name = "default package";
+                    append(name);
                 } else if (userObject instanceof PsiClass) {
                     setIcon(classIcon);
-                    append(((PsiClass) userObject).getName());
+                    String name = ((PsiClass) userObject).getName();
+                    if (name == null) name = "anonymous class";
+                    append(name);
                 } else if (userObject instanceof PsiMethod) {
                     setIcon(methodIcon);
                     append(((PsiMethod) userObject).getName());
@@ -75,14 +78,11 @@ class ProjectStructureTree extends Tree {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    // TODO: implement the double-click behavior here
                     // hint: use the navigate method of the classes PsiMethod and PsiField
                     DefaultMutableTreeNode defaultMutableTreeNode = (DefaultMutableTreeNode) getLastSelectedPathComponent();
                     Object userObject = defaultMutableTreeNode.getUserObject();
-                    if (userObject instanceof PsiMethod)
-                        ((PsiMethod) userObject).navigate(true);
-                    else if (userObject instanceof PsiField)
-                        ((PsiField) userObject).navigate(true);
+                    if (treeModel.isLeaf(defaultMutableTreeNode) && userObject instanceof Navigatable)
+                        ((Navigatable) userObject).navigate(true);
                 }
             }
         });
@@ -117,8 +117,19 @@ class ProjectStructureTree extends Tree {
      * @param target  a target element
      */
     private void updateTree(@NotNull Project project, @NotNull PsiElement target) {
-        // TODO: implement this method
         setModel(ProjectTreeModelFactory.createProjectTreeModel(project));
+
+        DefaultMutableTreeNode now = (DefaultMutableTreeNode) treeModel.getRoot();
+
+        while (now != null) {
+            if (now.getUserObject().equals(target)) {
+                final TreePath treePath = new TreePath(now.getPath());
+                setSelectionPath(treePath);
+                scrollPathToVisible(treePath);
+                return;
+            }
+            now = now.getNextNode();
+        }
 
     }
 

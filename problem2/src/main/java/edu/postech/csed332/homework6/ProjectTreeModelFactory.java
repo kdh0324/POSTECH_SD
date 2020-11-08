@@ -28,29 +28,39 @@ class ProjectTreeModelFactory {
 
         // The visitor to traverse the Java hierarchy and to construct the tree
         final JavaElementVisitor visitor = new JavaElementVisitor() {
+            final Deque<DefaultMutableTreeNode> stack = new ArrayDeque<>(Collections.singleton(root));
+
             @Override
             public void visitPackage(PsiPackage pack) {
-                root.add(new DefaultMutableTreeNode(pack));
+                final DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(pack);
+                stack.getFirst().add(newChild);
+                stack.push(newChild);
                 Arrays.stream(pack.getSubPackages()).forEach(psiPackage -> psiPackage.accept(this));
                 Arrays.stream(pack.getClasses()).forEach(psiClass -> psiClass.accept(this));
+                stack.pop();
             }
 
             @Override
             public void visitClass(PsiClass aClass) {
-                root.add(new DefaultMutableTreeNode(aClass));
+                final DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(aClass);
+                stack.getFirst().add(newChild);
+                stack.push(newChild);
                 Arrays.stream(aClass.getInnerClasses()).forEach(psiClass -> psiClass.accept(this));
-                Arrays.stream(aClass.getMethods()).forEach(psiMethod -> psiMethod.accept(this));
                 Arrays.stream(aClass.getFields()).forEach(psiField -> psiField.accept(this));
+                Arrays.stream(aClass.getMethods()).forEach(psiMethod -> psiMethod.accept(this));
+                stack.pop();
             }
 
             @Override
             public void visitMethod(PsiMethod method) {
-                root.add(new DefaultMutableTreeNode(method));
+                final DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(method);
+                stack.getFirst().add(newChild);
             }
 
             @Override
             public void visitField(PsiField field) {
-                root.add(new DefaultMutableTreeNode(field));
+                final DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(field);
+                stack.getFirst().add(newChild);
             }
         };
 
