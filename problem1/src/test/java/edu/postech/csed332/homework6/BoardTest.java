@@ -62,7 +62,7 @@ public class BoardTest {
         List<Cell> cellList = new ArrayList<>();
 
         for (int i = 0; i < 9; i++) {
-            Cell.Type type = i % 2 == 0 ? Cell.Type.EVEN : Cell.Type.ODD;
+            Cell.Type type = i % 2 == 0 ? Cell.Type.ODD : Cell.Type.EVEN;
             Cell cell = new Cell(type);
             cellList.add(cell);
             group.addCell(cell);
@@ -83,7 +83,7 @@ public class BoardTest {
         List<Cell> cellList = new ArrayList<>();
 
         for (int i = 0; i < 9; i++) {
-            Cell.Type type = i % 2 == 0 ? Cell.Type.EVEN : Cell.Type.ODD;
+            Cell.Type type = i % 2 == 0 ? Cell.Type.ODD : Cell.Type.EVEN;
             Cell cell = new Cell(type);
             cellList.add(cell);
             group.addCell(cell);

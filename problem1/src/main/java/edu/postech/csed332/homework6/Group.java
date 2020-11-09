@@ -72,7 +72,8 @@ public class Group implements Observer {
             int number = ((SetNumberEvent) arg).getNumber();
 
             for (Cell cell : cells)
-                cell.removePossibility(number);
+                if (cell != caller)
+                    cell.removePossibility(number);
         } else if (arg instanceof UnsetNumberEvent) {
             int number = ((UnsetNumberEvent) arg).getNumber();
 

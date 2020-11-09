@@ -34,15 +34,26 @@ public class CellUI extends JTextField implements Observer {
                 if (prev.isPresent() && number == prev.get())
                     return;
                 // Invalid number
-                if (!(1 <= number && number <= 9 && cell.containsPossibility(number))) {
+                if (!(1 <= number && number <= 9)) {
                     clearCell(cell);
                     return;
                 }
                 if (prev.isPresent())
                     cell.unsetNumber();
                 cell.setNumber(number);
+                printCellText(cell);
             });
         }
+    }
+
+    private void printCellText(Cell cell)
+    {
+        final Optional<Integer> cellNumber = cell.getNumber();
+        if(cellNumber.isEmpty()) {
+            setText("");
+            return;
+        }
+        setText(cellNumber.get().toString());
     }
 
     private void clearCell(Cell cell) {
