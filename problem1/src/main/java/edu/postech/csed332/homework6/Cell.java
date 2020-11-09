@@ -64,6 +64,7 @@ public class Cell extends Subject {
     public void setNumber(int number) {
         if (this.number != 0 || !containsPossibility(number))
             return;
+
         this.number = number;
         notifyObservers(new SetNumberEvent(number));
     }
@@ -74,6 +75,7 @@ public class Cell extends Subject {
     public void unsetNumber() {
         if (number == 0)
             return;
+
         final int prevNumber = number;
         number = 0;
         notifyObservers(new UnsetNumberEvent(prevNumber));
@@ -124,6 +126,7 @@ public class Cell extends Subject {
         for (Group group : groups)
             if (!group.isAvailable(number))
                 return;
+
         final boolean wasEmpty = possibilities.isEmpty();
         possibilities.add(number);
         if (wasEmpty)
@@ -137,6 +140,9 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void removePossibility(int number) {
+        if (number == this.number)
+            return;
+
         possibilities.remove(number);
         if (possibilities.isEmpty())
             notifyObservers(new DisabledEvent());

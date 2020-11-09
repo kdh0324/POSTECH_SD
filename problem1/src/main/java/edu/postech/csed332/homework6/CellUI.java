@@ -5,7 +5,14 @@ import edu.postech.csed332.homework6.events.EnabledEvent;
 import edu.postech.csed332.homework6.events.Event;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Optional;
 
 public class CellUI extends JTextField implements Observer {
@@ -20,40 +27,79 @@ public class CellUI extends JTextField implements Observer {
         initCellUI(cell);
 
         if (cell.getNumber().isEmpty()) {
-            addActionListener(e -> {
-                int number;
-                try {
-                    number = Integer.parseInt(getText());
-                } catch (NumberFormatException ex) {
-                    // Not a number
-                    clearCell(cell);
-                    return;
+            setDocument(new PlainDocument() {
+                @Override
+                public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                    if (str == null)
+                        return;
+
+                    try {
+                        Integer.parseInt(str);
+                    } catch (NumberFormatException ex) {
+                        return;
+                    }
+
+                    if (getLength() + str.length() <= 1)
+                        super.insertString(offs, str, a);
                 }
-                Optional<Integer> prev = cell.getNumber();
-                // The same number
-                if (prev.isPresent() && number == prev.get())
-                    return;
-                // Invalid number
-                if (!(1 <= number && number <= 9)) {
-                    clearCell(cell);
-                    return;
+            });
+
+            getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    int number;
+                    try {
+                        number = Integer.parseInt(e.getDocument().getText(0, 1));
+                    } catch (NumberFormatException | BadLocationException ex) {
+                        return;
+                    }
+
+                    Optional<Integer> prev = cell.getNumber();
+                    // The same number
+                    if (prev.isPresent() && number == prev.get())
+                        return;
+
+                    if (prev.isPresent())
+                        cell.unsetNumber();
+                    cell.setNumber(number);
                 }
-                if (prev.isPresent())
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
                     cell.unsetNumber();
-                cell.setNumber(number);
-                printCellText(cell);
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    // no-op
+                }
+            });
+
+            addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    // no-op
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    // no-op
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    int number;
+                    try {
+                        number = Integer.parseInt(String.valueOf(e.getKeyChar()));
+                    } catch (NumberFormatException ex) {
+                        return;
+                    }
+                    // Invalid number
+                    if (!(1 <= number && number <= 9 && cell.containsPossibility(number)))
+                        clearCell(cell);
+                }
             });
         }
-    }
-
-    private void printCellText(Cell cell)
-    {
-        final Optional<Integer> cellNumber = cell.getNumber();
-        if(cellNumber.isEmpty()) {
-            setText("");
-            return;
-        }
-        setText(cellNumber.get().toString());
     }
 
     private void clearCell(Cell cell) {
@@ -87,8 +133,8 @@ public class CellUI extends JTextField implements Observer {
      */
     @Override
     public void update(Subject caller, Event arg) {
-        if(arg instanceof EnabledEvent) setActivate();
-        else if(arg instanceof DisabledEvent) setDeactivate();
+        if (arg instanceof EnabledEvent) setActivate();
+        else if (arg instanceof DisabledEvent) setDeactivate();
     }
 
     /**
