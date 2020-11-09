@@ -25,19 +25,21 @@ public class CellUI extends JTextField implements Observer {
                 try {
                     number = Integer.parseInt(getText());
                 } catch (NumberFormatException ex) {
+                    // Not a number
                     clearCell(cell);
                     return;
                 }
                 Optional<Integer> prev = cell.getNumber();
-
+                // The same number
                 if (prev.isPresent() && number == prev.get())
                     return;
-
+                // Invalid number
                 if (!(1 <= number && number <= 9 && cell.containsPossibility(number))) {
                     clearCell(cell);
                     return;
                 }
-
+                if (prev.isPresent())
+                    cell.unsetNumber();
                 cell.setNumber(number);
             });
         }

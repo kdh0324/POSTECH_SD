@@ -6,6 +6,7 @@ import edu.postech.csed332.homework6.events.UnsetNumberEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -50,10 +51,12 @@ public class Group implements Observer {
      */
     @NotNull
     public Boolean isAvailable(int number) {
-        for (Cell cell : cells)
-            if (cell.containsPossibility(number))
-                return true;
-        return false;
+        for (Cell cell : cells) {
+            final Optional<Integer> cellNumber = cell.getNumber();
+            if (cellNumber.isPresent() && cellNumber.get() == number)
+                return false;
+        }
+        return true;
     }
 
     /**

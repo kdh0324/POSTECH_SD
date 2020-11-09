@@ -17,6 +17,7 @@ public class Cell extends Subject {
     private int number;
     private final Type type;
     private final Set<Integer> possibilities = new HashSet<>();
+    private final List<Group> groups = new ArrayList<>();
 
     /**
      * Creates an empty cell with a given type. Initially, no number is assigned.
@@ -61,6 +62,8 @@ public class Cell extends Subject {
      * @param number the number
      */
     public void setNumber(int number) {
+        if (this.number != 0)
+            return;
         this.number = number;
         notifyObservers(new SetNumberEvent(number));
     }
@@ -71,8 +74,9 @@ public class Cell extends Subject {
     public void unsetNumber() {
         if (number == 0)
             return;
-        notifyObservers(new UnsetNumberEvent(number));
+        final int prevNumber = number;
         number = 0;
+        notifyObservers(new UnsetNumberEvent(prevNumber));
     }
 
     /**
@@ -82,6 +86,7 @@ public class Cell extends Subject {
      */
     public void addGroup(@NotNull Group group) {
         addObserver(group);
+        groups.add(group);
     }
 
     /**
@@ -116,10 +121,13 @@ public class Cell extends Subject {
     public void addPossibility(int number) {
         if (isInvalidNumber(number))
             return;
-
-        if (possibilities.isEmpty())
-            notifyObservers(new EnabledEvent());
+        for (Group group : groups)
+            if (!group.isAvailable(number))
+                return;
+        final boolean wasEmpty = possibilities.isEmpty();
         possibilities.add(number);
+        if (wasEmpty)
+            notifyObservers(new EnabledEvent());
     }
 
     /**
@@ -130,7 +138,7 @@ public class Cell extends Subject {
      */
     public void removePossibility(int number) {
         possibilities.remove(number);
-        if (possibilities.isEmpty() && this.number == 0)
+        if (possibilities.isEmpty())
             notifyObservers(new DisabledEvent());
     }
 
