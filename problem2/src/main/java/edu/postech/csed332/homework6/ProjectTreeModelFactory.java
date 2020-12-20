@@ -13,6 +13,9 @@ import java.util.*;
 
 class ProjectTreeModelFactory {
 
+    private ProjectTreeModelFactory() {
+    }
+
     /**
      * Create a tree model that describes the structure of a java project. This method use JavaElementVisitor to
      * traverse the Java hierarchy of each root package in the source directory, and to create a tree. Each node is an
@@ -81,7 +84,7 @@ class ProjectTreeModelFactory {
         final Set<PsiPackage> rootPackages = new HashSet<>();
         PsiElementVisitor visitor = new PsiElementVisitor() {
             @Override
-            public void visitDirectory(PsiDirectory dir) {
+            public void visitDirectory(@NotNull PsiDirectory dir) {
                 final PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(dir);
                 if (psiPackage != null && !PackageUtil.isPackageDefault(psiPackage))
                     rootPackages.add(psiPackage);
