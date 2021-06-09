@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: edu.postech.csed332.homework1.GameTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.053 s <<< FAILURE! - in edu.postech.csed332.homework1.GameTest
+testPlaceTwoUnits  Time elapsed: 0.014 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at edu.postech.csed332.homework1.GameTest.testPlaceTwoUnits(GameTest.java:51)
+
