@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework3</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework3</a> &gt; <span class="el_source">Tree.java</span></div><h1>Tree.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework3;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
+import java.util.Set;
+
+/**
+ * A tree, specified as a subclass of Graph. A tree has a single root vertex, and there
+ * exists exactly one path from the root to any vertex. This invariant is maintained by
+ * restricting the operations for adding and removing vertices and edges.
+ *
+ * @param &lt;N&gt; type of vertices, which must be immutable and comparable
+ */
+public interface Tree&lt;N extends Comparable&lt;N&gt;&gt; extends Graph&lt;N&gt; {
+
+    /**
+     * Returns the root of this tree.
+     *
+     * @return the root, or {@code Optional.empty()} if the tree is empty
+     */
+    @NotNull Optional&lt;N&gt; getRoot();
+
+    /**
+     * Returns the distance of vertex from the root of this tree. For example, the root
+     * has depth 0, and a child of the root has depth 1.
+     *
+     * @param vertex a vertex
+     * @return the depth of vertex
+     * @throws IllegalStateException    if the tree has no root
+     * @throws IllegalArgumentException if vertex is not in the graph
+     */
+    int getDepth(@NotNull N vertex);
+
+    /**
+     * Returns the maximum depth in this tree.
+     *
+     * @return the maximum depth in this tree
+     * @throws IllegalStateException if the tree has no root
+     */
+    int getHeight();
+
+    /**
+     * Returns the children of a given vertex in this tree, which are exactly the set
+     * of the target vertices of the given vertex.
+     *
+     * @param vertex a vertex
+     * @return the set of children of vertex in the tree
+     */
+    default @NotNull Set&lt;N&gt; getChildren(@NotNull N vertex) {
+<span class="fc" id="L51">        return getTargets(vertex);</span>
+    }
+
+    /**
+     * Returns the parent of a given vertex in this tree, which is the unique source
+     * vertex of the given vertex.
+     *
+     * @param vertex a vertex
+     * @return the parent of vertex, or {@code Optional.empty()} if vertex is the root
+     */
+    default @NotNull Optional&lt;N&gt; getParent(N vertex) {
+<span class="fc" id="L62">        return getSources(vertex).stream().findAny();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
