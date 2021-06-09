@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Disjunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">problem2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">Disjunction.java</span></div><h1>Disjunction.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework2;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * A Boolean expression whose top-level operator is || (or).
+ */
+public class Disjunction implements Exp {
+    private final List&lt;Exp&gt; subexps;
+
+    /**
+     * Builds a disjunction of a given list of Boolean expressions
+     *
+     * @param exps
+     */
+<span class="fc" id="L17">    public Disjunction(Exp... exps) {</span>
+<span class="fc" id="L18">        subexps = new ArrayList&lt;&gt;(Arrays.asList(exps));</span>
+<span class="fc" id="L19">    }</span>
+
+<span class="fc" id="L21">    public Disjunction(List&lt;Exp&gt; expList, Exp... exps) {</span>
+<span class="fc" id="L22">        subexps = new ArrayList&lt;&gt;(Arrays.asList(exps));</span>
+<span class="fc" id="L23">        subexps.addAll(expList);</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Returns the immediate sub-expressions of this expression.
+     *
+     * @return a list of sub-expressions
+     */
+    public List&lt;Exp&gt; getSubexps() {
+<span class="fc" id="L32">        return subexps;</span>
+    }
+
+    @Override
+    public Set&lt;Integer&gt; vars() {
+<span class="fc" id="L37">        Set&lt;Integer&gt; vars = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (Exp exp : subexps)</span>
+<span class="fc" id="L39">            vars.addAll(exp.vars());</span>
+<span class="fc" id="L40">        return vars;</span>
+    }
+
+    @Override
+    public Boolean evaluate(Map&lt;Integer, Boolean&gt; assignment) {
+<span class="fc" id="L45">        boolean result = false;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (Exp exp : subexps)</span>
+<span class="fc" id="L47">            result |= exp.evaluate(assignment);</span>
+<span class="fc" id="L48">        return result;</span>
+    }
+
+    @Override
+    public Exp simplify() {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (int i = 0; i &lt; subexps.size(); i++) {</span>
+<span class="fc" id="L54">            Exp exp = subexps.get(i);</span>
+<span class="fc" id="L55">            subexps.set(i, exp.simplify());</span>
+        }
+
+<span class="fc" id="L58">        Exp exp = identityDomination();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (subexps.size() == 0)</span>
+<span class="fc" id="L60">            return new Constant(false);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (exp != this)</span>
+<span class="fc" id="L62">            return exp;</span>
+
+<span class="fc" id="L64">        return distributive();</span>
+    }
+
+    private Exp identityDomination() {
+<span class="fc" id="L68">        Set&lt;Integer&gt; variableSet = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L69">        Set&lt;Integer&gt; negationSet = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L70">        List&lt;Exp&gt; removed = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (Exp exp : subexps) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            if (exp instanceof Constant) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">                if (((Constant) exp).getValue())</span>
+<span class="fc" id="L74">                    return new Constant(true);</span>
+                else
+<span class="fc" id="L76">                    removed.add(exp);</span>
+            }
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            if (exp instanceof Variable) {</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">                if (variableSet.contains(((Variable) exp).getIdentifier()))</span>
+<span class="fc" id="L80">                    removed.add(exp);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">                else if (negationSet.contains(((Variable) exp).getIdentifier()))</span>
+<span class="fc" id="L82">                    return new Constant(true);</span>
+                else
+<span class="fc" id="L84">                    variableSet.add(((Variable) exp).getIdentifier());</span>
+            }
+<span class="fc bfc" id="L86" title="All 2 branches covered.">            if (exp instanceof Negation) {</span>
+<span class="fc" id="L87">                Exp subExp = ((Negation) exp).getSubexp();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">                if (variableSet.contains(((Variable) subExp).getIdentifier()))</span>
+<span class="fc" id="L89">                    return new Constant(true);</span>
+                else
+<span class="fc" id="L91">                    negationSet.add(((Variable) subExp).getIdentifier());</span>
+            }
+<span class="fc" id="L93">        }</span>
+<span class="fc" id="L94">        absorption(variableSet);</span>
+<span class="fc" id="L95">        subexps.removeAll(removed);</span>
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (subexps.size() == 1)</span>
+<span class="fc" id="L98">            return subexps.get(0).simplify();</span>
+<span class="fc" id="L99">        return this;</span>
+    }
+
+    private void absorption(Set&lt;Integer&gt; variableSet) {
+<span class="fc" id="L103">        List&lt;Exp&gt; removed = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        for (Exp exp : subexps)</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">            if (exp instanceof Conjunction) {</span>
+<span class="fc" id="L106">                List&lt;Exp&gt; subExps = ((Conjunction) exp).getSubexps();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">                for (Exp subExp : subExps)</span>
+<span class="pc bpc" id="L108" title="1 of 4 branches missed.">                    if (subExp instanceof Variable &amp;&amp; variableSet.contains(((Variable) subExp).getIdentifier()))</span>
+<span class="fc" id="L109">                        removed.add(exp);</span>
+            }
+
+<span class="fc" id="L112">        subexps.removeAll(removed);</span>
+<span class="fc" id="L113">    }</span>
+
+    private Exp distributive() {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        for (Exp exp : subexps)</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            if (exp instanceof Conjunction) {</span>
+<span class="fc" id="L118">                List&lt;Exp&gt; expList = new ArrayList&lt;&gt;(subexps);</span>
+<span class="fc" id="L119">                expList.remove(exp);</span>
+
+<span class="fc" id="L121">                List&lt;Exp&gt; conjunctions = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">                for (Exp subExp : ((Conjunction) exp).getSubexps())</span>
+<span class="fc" id="L123">                    conjunctions.add(new Conjunction(expList, subExp));</span>
+
+<span class="fc" id="L125">                return new Disjunction(conjunctions);</span>
+            }
+<span class="fc" id="L127">        return this;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L132">        return &quot;(&quot; + subexps.stream().map(Object::toString).collect(Collectors.joining(&quot; || &quot;)) + &quot;)&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

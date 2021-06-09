@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BooleanExpParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">problem2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">BooleanExpParser.java</span></div><h1>BooleanExpParser.java</h1><pre class="source lang-java linenums">// Generated from edu\postech\csed332\homework2\BooleanExp.g4 by ANTLR 4.8
+package edu.postech.csed332.homework2;
+import org.antlr.v4.runtime.atn.*;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
+import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
+
+@SuppressWarnings({&quot;all&quot;, &quot;warnings&quot;, &quot;unchecked&quot;, &quot;unused&quot;, &quot;cast&quot;})
+public class BooleanExpParser extends Parser {
+<span class="fc" id="L14">	static { RuntimeMetaData.checkVersion(&quot;4.8&quot;, RuntimeMetaData.VERSION); }</span>
+
+	protected static final DFA[] _decisionToDFA;
+<span class="fc" id="L17">	protected static final PredictionContextCache _sharedContextCache =</span>
+		new PredictionContextCache();
+	public static final int
+		NOT=1, AND=2, OR=3, TRUE=4, FALSE=5, LPAREN=6, RPAREN=7, ID=8, WS=9;
+	public static final int
+		RULE_expression = 0;
+	private static String[] makeRuleNames() {
+<span class="fc" id="L24">		return new String[] {</span>
+			&quot;expression&quot;
+		};
+	}
+<span class="fc" id="L28">	public static final String[] ruleNames = makeRuleNames();</span>
+
+	private static String[] makeLiteralNames() {
+<span class="fc" id="L31">		return new String[] {</span>
+			null, &quot;'!'&quot;, &quot;'&amp;&amp;'&quot;, &quot;'||'&quot;, &quot;'true'&quot;, &quot;'false'&quot;, &quot;'('&quot;, &quot;')'&quot;
+		};
+	}
+<span class="fc" id="L35">	private static final String[] _LITERAL_NAMES = makeLiteralNames();</span>
+	private static String[] makeSymbolicNames() {
+<span class="fc" id="L37">		return new String[] {</span>
+			null, &quot;NOT&quot;, &quot;AND&quot;, &quot;OR&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;LPAREN&quot;, &quot;RPAREN&quot;, &quot;ID&quot;, 
+			&quot;WS&quot;
+		};
+	}
+<span class="fc" id="L42">	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();</span>
+<span class="fc" id="L43">	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);</span>
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+<span class="fc" id="L51">		tokenNames = new String[_SYMBOLIC_NAMES.length];</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		for (int i = 0; i &lt; tokenNames.length; i++) {</span>
+<span class="fc" id="L53">			tokenNames[i] = VOCABULARY.getLiteralName(i);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">			if (tokenNames[i] == null) {</span>
+<span class="fc" id="L55">				tokenNames[i] = VOCABULARY.getSymbolicName(i);</span>
+			}
+
+<span class="fc bfc" id="L58" title="All 2 branches covered.">			if (tokenNames[i] == null) {</span>
+<span class="fc" id="L59">				tokenNames[i] = &quot;&lt;INVALID&gt;&quot;;</span>
+			}
+		}
+	}
+
+	@Override
+	@Deprecated
+	public String[] getTokenNames() {
+<span class="nc" id="L67">		return tokenNames;</span>
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+<span class="fc" id="L73">		return VOCABULARY;</span>
+	}
+
+	@Override
+<span class="nc" id="L77">	public String getGrammarFileName() { return &quot;BooleanExp.g4&quot;; }</span>
+
+	@Override
+<span class="nc" id="L80">	public String[] getRuleNames() { return ruleNames; }</span>
+
+	@Override
+<span class="nc" id="L83">	public String getSerializedATN() { return _serializedATN; }</span>
+
+	@Override
+<span class="fc" id="L86">	public ATN getATN() { return _ATN; }</span>
+
+	public BooleanExpParser(TokenStream input) {
+<span class="fc" id="L89">		super(input);</span>
+<span class="fc" id="L90">		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);</span>
+<span class="fc" id="L91">	}</span>
+
+	public static class ExpressionContext extends ParserRuleContext {
+		public ExpressionContext(ParserRuleContext parent, int invokingState) {
+<span class="fc" id="L95">			super(parent, invokingState);</span>
+<span class="fc" id="L96">		}</span>
+<span class="nc" id="L97">		@Override public int getRuleIndex() { return RULE_expression; }</span>
+	 
+<span class="fc" id="L99">		public ExpressionContext() { }</span>
+		public void copyFrom(ExpressionContext ctx) {
+<span class="fc" id="L101">			super.copyFrom(ctx);</span>
+<span class="fc" id="L102">		}</span>
+	}
+	public static class ConstantContext extends ExpressionContext {
+		public Token value;
+<span class="nc" id="L106">		public TerminalNode TRUE() { return getToken(BooleanExpParser.TRUE, 0); }</span>
+<span class="nc" id="L107">		public TerminalNode FALSE() { return getToken(BooleanExpParser.FALSE, 0); }</span>
+<span class="fc" id="L108">		public ConstantContext(ExpressionContext ctx) { copyFrom(ctx); }</span>
+		@Override
+		public &lt;T&gt; T accept(ParseTreeVisitor&lt;? extends T&gt; visitor) {
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			if ( visitor instanceof BooleanExpVisitor ) return ((BooleanExpVisitor&lt;? extends T&gt;)visitor).visitConstant(this);</span>
+<span class="nc" id="L112">			else return visitor.visitChildren(this);</span>
+		}
+	}
+	public static class BinaryExpContext extends ExpressionContext {
+		public ExpressionContext left;
+		public Token op;
+		public ExpressionContext right;
+		public List&lt;ExpressionContext&gt; expression() {
+<span class="nc" id="L120">			return getRuleContexts(ExpressionContext.class);</span>
+		}
+		public ExpressionContext expression(int i) {
+<span class="nc" id="L123">			return getRuleContext(ExpressionContext.class,i);</span>
+		}
+<span class="nc" id="L125">		public TerminalNode AND() { return getToken(BooleanExpParser.AND, 0); }</span>
+<span class="nc" id="L126">		public TerminalNode OR() { return getToken(BooleanExpParser.OR, 0); }</span>
+<span class="fc" id="L127">		public BinaryExpContext(ExpressionContext ctx) { copyFrom(ctx); }</span>
+		@Override
+		public &lt;T&gt; T accept(ParseTreeVisitor&lt;? extends T&gt; visitor) {
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			if ( visitor instanceof BooleanExpVisitor ) return ((BooleanExpVisitor&lt;? extends T&gt;)visitor).visitBinaryExp(this);</span>
+<span class="nc" id="L131">			else return visitor.visitChildren(this);</span>
+		}
+	}
+	public static class UnaryExpContext extends ExpressionContext {
+		public Token op;
+		public ExpressionContext sub;
+<span class="nc" id="L137">		public TerminalNode NOT() { return getToken(BooleanExpParser.NOT, 0); }</span>
+		public ExpressionContext expression() {
+<span class="nc" id="L139">			return getRuleContext(ExpressionContext.class,0);</span>
+		}
+<span class="fc" id="L141">		public UnaryExpContext(ExpressionContext ctx) { copyFrom(ctx); }</span>
+		@Override
+		public &lt;T&gt; T accept(ParseTreeVisitor&lt;? extends T&gt; visitor) {
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			if ( visitor instanceof BooleanExpVisitor ) return ((BooleanExpVisitor&lt;? extends T&gt;)visitor).visitUnaryExp(this);</span>
+<span class="nc" id="L145">			else return visitor.visitChildren(this);</span>
+		}
+	}
+	public static class VariableContext extends ExpressionContext {
+		public Token name;
+<span class="nc" id="L150">		public TerminalNode ID() { return getToken(BooleanExpParser.ID, 0); }</span>
+<span class="fc" id="L151">		public VariableContext(ExpressionContext ctx) { copyFrom(ctx); }</span>
+		@Override
+		public &lt;T&gt; T accept(ParseTreeVisitor&lt;? extends T&gt; visitor) {
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">			if ( visitor instanceof BooleanExpVisitor ) return ((BooleanExpVisitor&lt;? extends T&gt;)visitor).visitVariable(this);</span>
+<span class="nc" id="L155">			else return visitor.visitChildren(this);</span>
+		}
+	}
+	public static class ParenExpContext extends ExpressionContext {
+		public ExpressionContext sub;
+<span class="nc" id="L160">		public TerminalNode LPAREN() { return getToken(BooleanExpParser.LPAREN, 0); }</span>
+<span class="nc" id="L161">		public TerminalNode RPAREN() { return getToken(BooleanExpParser.RPAREN, 0); }</span>
+		public ExpressionContext expression() {
+<span class="nc" id="L163">			return getRuleContext(ExpressionContext.class,0);</span>
+		}
+<span class="nc" id="L165">		public ParenExpContext(ExpressionContext ctx) { copyFrom(ctx); }</span>
+		@Override
+		public &lt;T&gt; T accept(ParseTreeVisitor&lt;? extends T&gt; visitor) {
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			if ( visitor instanceof BooleanExpVisitor ) return ((BooleanExpVisitor&lt;? extends T&gt;)visitor).visitParenExp(this);</span>
+<span class="nc" id="L169">			else return visitor.visitChildren(this);</span>
+		}
+	}
+
+	public final ExpressionContext expression() throws RecognitionException {
+<span class="fc" id="L174">		return expression(0);</span>
+	}
+
+	private ExpressionContext expression(int _p) throws RecognitionException {
+<span class="fc" id="L178">		ParserRuleContext _parentctx = _ctx;</span>
+<span class="fc" id="L179">		int _parentState = getState();</span>
+<span class="fc" id="L180">		ExpressionContext _localctx = new ExpressionContext(_ctx, _parentState);</span>
+<span class="fc" id="L181">		ExpressionContext _prevctx = _localctx;</span>
+<span class="fc" id="L182">		int _startState = 0;</span>
+<span class="fc" id="L183">		enterRecursionRule(_localctx, 0, RULE_expression, _p);</span>
+		int _la;
+		try {
+			int _alt;
+<span class="fc" id="L187">			enterOuterAlt(_localctx, 1);</span>
+			{
+<span class="fc" id="L189">			setState(11);</span>
+<span class="fc" id="L190">			_errHandler.sync(this);</span>
+<span class="pc bpc" id="L191" title="2 of 5 branches missed.">			switch (_input.LA(1)) {</span>
+			case NOT:
+				{
+<span class="fc" id="L194">				_localctx = new UnaryExpContext(_localctx);</span>
+<span class="fc" id="L195">				_ctx = _localctx;</span>
+<span class="fc" id="L196">				_prevctx = _localctx;</span>
+
+<span class="fc" id="L198">				setState(3);</span>
+<span class="fc" id="L199">				((UnaryExpContext)_localctx).op = match(NOT);</span>
+<span class="fc" id="L200">				setState(4);</span>
+<span class="fc" id="L201">				((UnaryExpContext)_localctx).sub = expression(6);</span>
+				}
+<span class="fc" id="L203">				break;</span>
+			case LPAREN:
+				{
+<span class="nc" id="L206">				_localctx = new ParenExpContext(_localctx);</span>
+<span class="nc" id="L207">				_ctx = _localctx;</span>
+<span class="nc" id="L208">				_prevctx = _localctx;</span>
+<span class="nc" id="L209">				setState(5);</span>
+<span class="nc" id="L210">				match(LPAREN);</span>
+<span class="nc" id="L211">				setState(6);</span>
+<span class="nc" id="L212">				((ParenExpContext)_localctx).sub = expression(0);</span>
+<span class="nc" id="L213">				setState(7);</span>
+<span class="nc" id="L214">				match(RPAREN);</span>
+				}
+<span class="nc" id="L216">				break;</span>
+			case ID:
+				{
+<span class="fc" id="L219">				_localctx = new VariableContext(_localctx);</span>
+<span class="fc" id="L220">				_ctx = _localctx;</span>
+<span class="fc" id="L221">				_prevctx = _localctx;</span>
+<span class="fc" id="L222">				setState(9);</span>
+<span class="fc" id="L223">				((VariableContext)_localctx).name = match(ID);</span>
+				}
+<span class="fc" id="L225">				break;</span>
+			case TRUE:
+			case FALSE:
+				{
+<span class="fc" id="L229">				_localctx = new ConstantContext(_localctx);</span>
+<span class="fc" id="L230">				_ctx = _localctx;</span>
+<span class="fc" id="L231">				_prevctx = _localctx;</span>
+<span class="fc" id="L232">				setState(10);</span>
+<span class="fc" id="L233">				((ConstantContext)_localctx).value = _input.LT(1);</span>
+<span class="fc" id="L234">				_la = _input.LA(1);</span>
+<span class="pc bpc" id="L235" title="3 of 4 branches missed.">				if ( !(_la==TRUE || _la==FALSE) ) {</span>
+<span class="nc" id="L236">					((ConstantContext)_localctx).value = (Token)_errHandler.recoverInline(this);</span>
+				}
+				else {
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;</span>
+<span class="fc" id="L240">					_errHandler.reportMatch(this);</span>
+<span class="fc" id="L241">					consume();</span>
+				}
+				}
+<span class="fc" id="L244">				break;</span>
+			default:
+<span class="nc" id="L246">				throw new NoViableAltException(this);</span>
+			}
+<span class="fc" id="L248">			_ctx.stop = _input.LT(-1);</span>
+<span class="fc" id="L249">			setState(21);</span>
+<span class="fc" id="L250">			_errHandler.sync(this);</span>
+<span class="fc" id="L251">			_alt = getInterpreter().adaptivePredict(_input,2,_ctx);</span>
+<span class="pc bpc" id="L252" title="1 of 4 branches missed.">			while ( _alt!=2 &amp;&amp; _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">				if ( _alt==1 ) {</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">					if ( _parseListeners!=null ) triggerExitRuleEvent();</span>
+<span class="fc" id="L255">					_prevctx = _localctx;</span>
+					{
+<span class="fc" id="L257">					setState(19);</span>
+<span class="fc" id="L258">					_errHandler.sync(this);</span>
+<span class="pc bpc" id="L259" title="1 of 3 branches missed.">					switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {</span>
+					case 1:
+						{
+<span class="fc" id="L262">						_localctx = new BinaryExpContext(new ExpressionContext(_parentctx, _parentState));</span>
+<span class="fc" id="L263">						((BinaryExpContext)_localctx).left = _prevctx;</span>
+<span class="fc" id="L264">						pushNewRecursionContext(_localctx, _startState, RULE_expression);</span>
+<span class="fc" id="L265">						setState(13);</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, &quot;precpred(_ctx, 5)&quot;);</span>
+<span class="fc" id="L267">						setState(14);</span>
+<span class="fc" id="L268">						((BinaryExpContext)_localctx).op = match(AND);</span>
+<span class="fc" id="L269">						setState(15);</span>
+<span class="fc" id="L270">						((BinaryExpContext)_localctx).right = expression(6);</span>
+						}
+<span class="fc" id="L272">						break;</span>
+					case 2:
+						{
+<span class="fc" id="L275">						_localctx = new BinaryExpContext(new ExpressionContext(_parentctx, _parentState));</span>
+<span class="fc" id="L276">						((BinaryExpContext)_localctx).left = _prevctx;</span>
+<span class="fc" id="L277">						pushNewRecursionContext(_localctx, _startState, RULE_expression);</span>
+<span class="fc" id="L278">						setState(16);</span>
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, &quot;precpred(_ctx, 4)&quot;);</span>
+<span class="fc" id="L280">						setState(17);</span>
+<span class="fc" id="L281">						((BinaryExpContext)_localctx).op = match(OR);</span>
+<span class="fc" id="L282">						setState(18);</span>
+<span class="fc" id="L283">						((BinaryExpContext)_localctx).right = expression(5);</span>
+						}
+						break;
+					}
+					} 
+				}
+<span class="fc" id="L289">				setState(23);</span>
+<span class="fc" id="L290">				_errHandler.sync(this);</span>
+<span class="fc" id="L291">				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);</span>
+			}
+			}
+		}
+<span class="nc" id="L295">		catch (RecognitionException re) {</span>
+<span class="nc" id="L296">			_localctx.exception = re;</span>
+<span class="nc" id="L297">			_errHandler.reportError(this, re);</span>
+<span class="nc" id="L298">			_errHandler.recover(this, re);</span>
+		}
+		finally {
+<span class="fc" id="L301">			unrollRecursionContexts(_parentctx);</span>
+		}
+<span class="fc" id="L303">		return _localctx;</span>
+	}
+
+	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		switch (ruleIndex) {</span>
+		case 0:
+<span class="nc" id="L309">			return expression_sempred((ExpressionContext)_localctx, predIndex);</span>
+		}
+<span class="nc" id="L311">		return true;</span>
+	}
+	private boolean expression_sempred(ExpressionContext _localctx, int predIndex) {
+<span class="nc bnc" id="L314" title="All 3 branches missed.">		switch (predIndex) {</span>
+		case 0:
+<span class="nc" id="L316">			return precpred(_ctx, 5);</span>
+		case 1:
+<span class="nc" id="L318">			return precpred(_ctx, 4);</span>
+		}
+<span class="nc" id="L320">		return true;</span>
+	}
+
+	public static final String _serializedATN =
+		&quot;\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\13\33\4\2\t\2\3\2&quot;+
+		&quot;\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\5\2\16\n\2\3\2\3\2\3\2\3\2\3\2\3\2\7&quot;+
+		&quot;\2\26\n\2\f\2\16\2\31\13\2\3\2\2\3\2\3\2\2\3\3\2\6\7\2\36\2\r\3\2\2\2&quot;+
+		&quot;\4\5\b\2\1\2\5\6\7\3\2\2\6\16\5\2\2\b\7\b\7\b\2\2\b\t\5\2\2\2\t\n\7\t&quot;+
+		&quot;\2\2\n\16\3\2\2\2\13\16\7\n\2\2\f\16\t\2\2\2\r\4\3\2\2\2\r\7\3\2\2\2\r&quot;+
+		&quot;\13\3\2\2\2\r\f\3\2\2\2\16\27\3\2\2\2\17\20\f\7\2\2\20\21\7\4\2\2\21\26&quot;+
+		&quot;\5\2\2\b\22\23\f\6\2\2\23\24\7\5\2\2\24\26\5\2\2\7\25\17\3\2\2\2\25\22&quot;+
+		&quot;\3\2\2\2\26\31\3\2\2\2\27\25\3\2\2\2\27\30\3\2\2\2\30\3\3\2\2\2\31\27&quot;+
+		&quot;\3\2\2\2\5\r\25\27&quot;;
+<span class="fc" id="L333">	public static final ATN _ATN =</span>
+<span class="fc" id="L334">		new ATNDeserializer().deserialize(_serializedATN.toCharArray());</span>
+	static {
+<span class="fc" id="L336">		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">		for (int i = 0; i &lt; _ATN.getNumberOfDecisions(); i++) {</span>
+<span class="fc" id="L338">			_decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);</span>
+		}
+<span class="fc" id="L340">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

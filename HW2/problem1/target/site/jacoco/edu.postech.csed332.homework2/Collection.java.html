@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Collection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">Collection.java</span></div><h1>Collection.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework2;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * The Collection class represents a single collection, which contains
+ * a name of the collection and also has a list of references to every
+ * book and every subcollection in the collection. A collection can
+ * also be exported to and imported from a JSON string representation.
+ */
+public final class Collection extends Element {
+    private final List&lt;Element&gt; elements;
+    private final String name;
+
+    /**
+     * Creates a new collection with the given name.
+     *
+     * @param name the name of the collection
+     */
+<span class="fc" id="L27">    public Collection(String name) {</span>
+<span class="fc" id="L28">        this.name = name;</span>
+<span class="fc" id="L29">        elements = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L30">        setParentCollection(null);</span>
+<span class="fc" id="L31">    }</span>
+
+<span class="fc" id="L33">    public Collection(JSONArray jsonArray) {</span>
+<span class="fc" id="L34">        name = jsonArray.getJSONObject(0).getString(JsonKey.NAME);</span>
+<span class="fc" id="L35">        elements = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        for (int i = 1; i &lt; jsonArray.length(); i++) {</span>
+<span class="fc" id="L37">            JSONObject jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            if (jsonObject.has(JsonKey.COLLECTION)) {</span>
+<span class="fc" id="L39">                Collection collection = new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION));</span>
+<span class="fc" id="L40">                collection.setParentCollection(this);</span>
+<span class="fc" id="L41">                elements.add(collection);</span>
+<span class="fc" id="L42">            }</span>
+            else {
+<span class="fc" id="L44">                Book book = new Book(jsonObject.toString());</span>
+<span class="fc" id="L45">                book.setParentCollection(this);</span>
+<span class="fc" id="L46">                elements.add(book);</span>
+            }
+        }
+<span class="fc" id="L49">        setParentCollection(null);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Restores a collection from its string representation in JSON
+     *
+     * @param stringRepr the string representation
+     */
+    public static Collection restoreCollection(String stringRepr) {
+<span class="fc" id="L58">        JSONObject jo = new JSONObject(stringRepr);</span>
+<span class="fc" id="L59">        JSONArray jsonArray = jo.getJSONArray(JsonKey.COLLECTION);</span>
+
+<span class="fc" id="L61">        String name = jsonArray.getJSONObject(0).getString(JsonKey.NAME);</span>
+<span class="fc" id="L62">        Collection collection = new Collection(name);</span>
+
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (int i = 1; i &lt; jsonArray.length(); i++) {</span>
+<span class="fc" id="L65">            JSONObject jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            if (jsonObject.has(JsonKey.COLLECTION)) {</span>
+<span class="fc" id="L67">                Collection subCollection = new Collection(jsonObject.getJSONArray(JsonKey.COLLECTION));</span>
+<span class="fc" id="L68">                collection.addElement(subCollection);</span>
+<span class="fc" id="L69">            }</span>
+            else {
+<span class="fc" id="L71">                Book book = new Book(jsonObject.toString());</span>
+<span class="fc" id="L72">                collection.addElement(book);</span>
+            }
+        }
+<span class="fc" id="L75">        return collection;</span>
+    }
+
+    /**
+     * Returns the JSON string representation of this collection, which
+     * contains the name of this collection and all elements (books and
+     * subcollections) contained in the collection.
+     *
+     * @return string representation of this collection
+     */
+    public String getStringRepresentation() {
+<span class="fc" id="L86">        JSONArray array = new JSONArray();</span>
+<span class="fc" id="L87">        JSONObject object = new JSONObject();</span>
+<span class="fc" id="L88">        object.put(JsonKey.NAME, name);</span>
+<span class="fc" id="L89">        array.put(object);</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (Element element : elements) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            if (element instanceof Book)</span>
+<span class="fc" id="L93">                array.put(new JSONObject(((Book) element).getStringRepresentation()));</span>
+            else
+<span class="fc" id="L95">                array.put(new JSONObject(((Collection) element).getStringRepresentation()));</span>
+<span class="fc" id="L96">        }</span>
+
+<span class="fc" id="L98">        JSONStringer stringer = new JSONStringer();</span>
+<span class="fc" id="L99">        return stringer</span>
+<span class="fc" id="L100">                .object()</span>
+<span class="fc" id="L101">                    .key(JsonKey.COLLECTION)</span>
+<span class="fc" id="L102">                    .value(array)</span>
+<span class="fc" id="L103">                .endObject().toString();</span>
+    }
+
+    public Set&lt;Book&gt; getBooksByCollection(String collection, Boolean flag) {
+<span class="fc" id="L107">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (name.equals(collection))</span>
+<span class="fc" id="L109">            flag = true;</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        for (Element element : elements) {</span>
+<span class="fc bfc" id="L111" title="All 4 branches covered.">            if (element instanceof Book &amp;&amp; flag)</span>
+<span class="fc" id="L112">                bookSet.add((Book) element);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            if (element instanceof Collection)</span>
+<span class="fc" id="L114">                bookSet.addAll(((Collection) element).getBooksByCollection(collection, flag));</span>
+<span class="fc" id="L115">        }</span>
+<span class="fc" id="L116">        return bookSet;</span>
+    }
+
+    public Set&lt;Book&gt; getBooksByAuthor(String author) {
+<span class="fc" id="L120">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        for (Element element : elements) {</span>
+<span class="fc bfc" id="L122" title="All 4 branches covered.">            if (element instanceof Book &amp;&amp; ((Book) element).getAuthors().contains(author))</span>
+<span class="fc" id="L123">                bookSet.add((Book) element);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            if (element instanceof Collection)</span>
+<span class="fc" id="L125">                bookSet.addAll(((Collection) element).getBooksByAuthor(author));</span>
+<span class="fc" id="L126">        }</span>
+<span class="fc" id="L127">        return bookSet;</span>
+    }
+
+    /**
+     * Adds an element to this collection, if the element has no parent
+     * collection yet. Otherwise, this method returns false, without
+     * actually adding the element to this collection.
+     *
+     * @param element the element to add
+     * @return true on success, false on fail
+     */
+    public boolean addElement(Element element) {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (element.getParentCollection() != null)</span>
+<span class="fc" id="L140">            return false;</span>
+<span class="fc" id="L141">        element.setParentCollection(this);</span>
+<span class="fc" id="L142">        elements.add(element);</span>
+<span class="fc" id="L143">        return true;</span>
+    }
+
+    /**
+     * Deletes an element from the collection. Returns false if the
+     * collection does not have this element. Hint: do not forget to
+     * clear parentCollection of given element.
+     *
+     * @param element the element to remove
+     * @return true on success, false on fail
+     */
+    public boolean deleteElement(Element element) {
+<span class="fc" id="L155">        element.setParentCollection(null);</span>
+<span class="fc" id="L156">        return elements.remove(element);</span>
+    }
+
+    /**
+     * Returns the name of the collection.
+     *
+     * @return the name
+     */
+    public String getName() {
+<span class="fc" id="L165">        return name;</span>
+    }
+
+    /**
+     * Returns the list of elements.
+     *
+     * @return the list of elements
+     */
+    public List&lt;Element&gt; getElements() {
+<span class="fc" id="L174">        return elements;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExpParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">problem2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">ExpParser.java</span></div><h1>ExpParser.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework2;
+
+import org.antlr.v4.runtime.*;
+
+<span class="nc" id="L5">public class ExpParser {</span>
+    /**
+     * Parse a string and create its Exp data structure. The syntax is as follows:
+     * &lt;p&gt;
+     * exp ::=  true  |  false  |  variable  | ! exp  |  ( exp )  |  exp &amp;&amp; exp  |  exp || exp
+     * &lt;p&gt;
+     * where variable has the form pN with positive number N, e.g., p1, p2, p3, ...
+     *
+     * @param str string to be parsed
+     * @return an Exp instance
+     * @throws IllegalStateException if the string cannot be parsed as Exp
+     */
+    public static Exp parse(String str) throws IllegalStateException {
+
+<span class="fc" id="L19">        BooleanExpLexer lex = new BooleanExpLexer(CharStreams.fromString(str));</span>
+<span class="fc" id="L20">        BooleanExpParser par = new BooleanExpParser(new CommonTokenStream(lex));</span>
+
+<span class="fc" id="L22">        par.addErrorListener(new BaseErrorListener() {</span>
+            @Override
+            public void syntaxError(Recognizer&lt;?, ?&gt; recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+<span class="fc" id="L25">                throw new IllegalStateException(&quot;Failed to parse at line &quot; + line + &quot; (&quot; + msg + &quot;)&quot;, e);</span>
+            }
+        });
+
+<span class="fc" id="L29">        return new BooleanExpBaseVisitor&lt;Exp&gt;() {</span>
+            @Override
+            public Exp visitParenExp(BooleanExpParser.ParenExpContext ctx) {
+<span class="fc" id="L32">                return visit(ctx.sub);</span>
+            }
+
+            @Override
+            public Exp visitUnaryExp(BooleanExpParser.UnaryExpContext ctx) {
+<span class="fc" id="L37">                return new Negation(visit(ctx.sub));</span>
+            }
+
+            @Override
+            public Exp visitBinaryExp(BooleanExpParser.BinaryExpContext ctx) {
+<span class="pc bpc" id="L42" title="1 of 3 branches missed.">                switch (ctx.op.getType()) {</span>
+                    case BooleanExpLexer.AND:
+<span class="fc" id="L44">                        return new Conjunction(visit(ctx.left), visit(ctx.right));</span>
+                    case BooleanExpLexer.OR:
+<span class="fc" id="L46">                        return new Disjunction(visit(ctx.left), visit(ctx.right));</span>
+                    default:
+<span class="nc" id="L48">                        throw new UnsupportedOperationException();</span>
+                }
+            }
+
+            @Override
+            public Exp visitConstant(BooleanExpParser.ConstantContext ctx) {
+<span class="fc" id="L54">                return new Constant(Boolean.parseBoolean(ctx.value.getText()));</span>
+            }
+
+            @Override
+            public Exp visitVariable(BooleanExpParser.VariableContext ctx) {
+<span class="fc" id="L59">                return new Variable(Integer.parseUnsignedInt(ctx.name.getText().substring(1)));</span>
+            }
+<span class="fc" id="L61">        }.visit(par.expression());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

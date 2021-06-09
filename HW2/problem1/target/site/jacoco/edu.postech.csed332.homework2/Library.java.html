@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Library.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework2</a> &gt; <a href="index.source.html" class="el_package">edu.postech.csed332.homework2</a> &gt; <span class="el_source">Library.java</span></div><h1>Library.java</h1><pre class="source lang-java linenums">package edu.postech.csed332.homework2;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * A container class for all collections (that eventually contain all
+ * books). A library can be exported to or imported from a JSON file.
+ */
+public final class Library {
+    private final List&lt;Collection&gt; collections;
+
+    /**
+     * Builds a new, empty library.
+     */
+<span class="fc" id="L25">    public Library() {</span>
+<span class="fc" id="L26">        collections = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L27">    }</span>
+
+    /**
+     * Builds a new library and restores its contents from a file.
+     *
+     * @param fileName the file from where to restore the library.
+     */
+<span class="fc" id="L34">    public Library(String fileName) {</span>
+<span class="fc" id="L35">        collections = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="fc" id="L38">            String text = new String(Files.readAllBytes(Paths.get(fileName)));</span>
+<span class="fc" id="L39">            JSONArray jsonArray = new JSONArray(text);</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            for (int i = 0; i &lt; jsonArray.length(); i++) {</span>
+<span class="fc" id="L41">                JSONObject jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="fc" id="L42">                JSONArray collectionArray = jsonObject.getJSONArray(JsonKey.COLLECTION);</span>
+<span class="fc" id="L43">                Collection collection = new Collection(collectionArray);</span>
+<span class="fc" id="L44">                collection.setParentCollection(null);</span>
+<span class="fc" id="L45">                collections.add(collection);</span>
+            }
+<span class="nc" id="L47">        } catch (IOException e) {</span>
+<span class="nc" id="L48">            e.printStackTrace();</span>
+<span class="fc" id="L49">        }</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Saves the contents of the library to the given file.
+     *
+     * @param fileName the file where to save the library
+     */
+    public void saveLibraryToFile(String fileName) {
+<span class="fc" id="L58">        JSONArray jsonArray = new JSONArray();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (Collection collection : collections)</span>
+<span class="fc" id="L60">            jsonArray.put(new JSONObject(collection.getStringRepresentation()));</span>
+
+<span class="fc" id="L62">        try (FileWriter fileWriter = new FileWriter(fileName)) {</span>
+<span class="fc" id="L63">            fileWriter.write(jsonArray.toString());</span>
+<span class="fc" id="L64">            fileWriter.flush();</span>
+<span class="nc" id="L65">        } catch (IOException e) {</span>
+<span class="nc" id="L66">            e.printStackTrace();</span>
+<span class="fc" id="L67">        }</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Returns the set of all books that belong to the collections
+     * of a given name. Note that different collections may have the
+     * same name. Return null if there is no collection of the
+     * given name, and the empty set of there are such collections but
+     * all of them are empty. For example, suppose that
+     * - &quot;Computer Science&quot; is a top collection.
+     * - &quot;Operating Systems&quot; is a collection under &quot;Computer Science&quot;.
+     * - &quot;Linux Kernel&quot; is a book under &quot;Operating System&quot;.
+     * - &quot;Software Engineering&quot; is a collection under &quot;Computer Science&quot;.
+     * - &quot;Software Design Methods&quot; is a bool under &quot;Software Engineering&quot;.
+     * Then, the findBooks method for &quot;Computer Science&quot; returns the set
+     * of two books &quot;Linux Kernel&quot; and &quot;Software Design Methods&quot;.
+     *
+     * @param collection a collection name
+     * @return a set of books
+     */
+    public Set&lt;Book&gt; findBooks(String collection) {
+<span class="fc" id="L88">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (Collection col : collections)</span>
+<span class="fc" id="L90">            bookSet.addAll(col.getBooksByCollection(collection, false));</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (bookSet.size() == 0)</span>
+<span class="fc" id="L92">            return null;</span>
+<span class="fc" id="L93">        return bookSet;</span>
+    }
+
+    /**
+     * Return the set of all books written by a given author in this
+     * collection (including the sub-collections). Return the empty
+     * set if there is no book written by the author. Note that a book
+     * may involve multiple authors.
+     *
+     * @param author an author
+     * @return Return the set of books written by the given author
+     */
+    public Set&lt;Book&gt; findBooksByAuthor(String author) {
+<span class="fc" id="L106">        Set&lt;Book&gt; bookSet = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (Collection col : collections)</span>
+<span class="fc" id="L108">            bookSet.addAll(col.getBooksByAuthor(author));</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (bookSet.size() == 0)</span>
+<span class="fc" id="L110">            return null;</span>
+<span class="fc" id="L111">        return bookSet;</span>
+    }
+
+    /**
+     * Returns the collections contained in the library.
+     *
+     * @return library contained elements
+     */
+    public List&lt;Collection&gt; getCollections() {
+<span class="fc" id="L120">        return collections;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
